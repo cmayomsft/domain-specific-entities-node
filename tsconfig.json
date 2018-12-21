@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2016",
+        "strict": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "sourceMap": true
+    },
+    "exclude": ["node_modules"],
+    "files": [],
+    "references": [
+        { "path": "packages/conversation-processor" },
+        { "path": "packages/conversation-processor-cli"}
+    ]
+}

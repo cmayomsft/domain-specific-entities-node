@@ -1,0 +1,33 @@
+{
+  "name": "conversation-processor",
+  "version": "0.0.1",
+  "author": "Drew Marsh (@drub0y)",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc --build .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "description": "> TODO: description",
+  "keywords": [
+    "nlp",
+    "token",
+    "domain",
+    "entity"
+  ],
+  "homepage": "https://github.com/cmayomsft/domain-specific-entities-node#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmayomsft/domain-specific-entities-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cmayomsft/domain-specific-entities-node/issues"
+  }
+}

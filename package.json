@@ -1,0 +1,15 @@
+{
+    "name": "domain-specific-entities",
+    "private": true,
+    "scripts": {
+        "bootstrap": "lerna bootstrap --hoist",
+        "build": "tsc -b",
+        "lint": "lerna run --parallel lint",
+        "test": "lerna run --parallel test"
+    },
+    "devDependencies": {
+        "lerna": "^3.7.1",
+        "tslint": "^5.12.0",
+        "typescript": "^3.2.2"
+    }
+}
