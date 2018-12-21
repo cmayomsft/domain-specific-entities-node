@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug All Tests",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "Build All",           
+            "cwd": "${workspaceFolder}",
+            "runtimeArgs": ["--inspect-brk", "./node_modules/jest/bin/jest.js", "--runInBand", "--config", "jest.json", "--coverage", "false"],
+            "skipFiles": [
+                "<node_internals>/**/*.*",
+                "${workspaceFolder}/**/node_modules/**/*.*"
+            ],
+            "outFiles": ["${workspaceFolder}/packages/**/lib/**/*.js"],
+            "smartStep": true,
+            "sourceMaps": true,
+            "port": 9229
+        }
+    ]
+}

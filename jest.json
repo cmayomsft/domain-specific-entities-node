@@ -2,5 +2,6 @@
   "testEnvironment": "node",
   "preset": "ts-jest",
   "testMatch": ["<rootDir>/packages/**/tests/*.ts"],
-  "verbose": true
+  "collectCoverage": true,
+  "collectCoverageFrom": ["<rootDir>/packages/**/src/**/*.ts"]
 }

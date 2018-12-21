@@ -1,3 +1,7 @@
 {
-    "recommendations": ["Orta.vscode-jest"]
+    "recommendations": [
+        "Orta.vscode-jest",
+        "esbenp.prettier-vscode",
+        "GitHub.vscode-pull-request-github"
+    ]
 }
