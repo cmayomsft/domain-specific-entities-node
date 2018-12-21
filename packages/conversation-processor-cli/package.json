@@ -4,8 +4,7 @@
   "author": "Drew Marsh (@drub0y)",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --build .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --build ."
   },
   "directories": {
     "lib": "dist"
@@ -18,7 +17,10 @@
     "nlp",
     "token",
     "domain",
-    "entity"
+    "entity",
+    "cli",
+    "testing",
+    "batch"
   ],
   "homepage": "http://github.com/cmayomicrosoft/domain-specific-entities-node#readme",
   "license": "MIT",
