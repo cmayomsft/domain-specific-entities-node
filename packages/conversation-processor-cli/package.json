@@ -1,0 +1,37 @@
+{
+  "name": "conversation-processor-cli",
+  "version": "0.0.1",
+  "author": "Drew Marsh (@drub0y)",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc --build ."
+  },
+  "directories": {
+    "lib": "dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "description": "> TODO: description",
+  "keywords": [
+    "nlp",
+    "token",
+    "domain",
+    "entity",
+    "cli",
+    "testing",
+    "batch"
+  ],
+  "homepage": "http://github.com/cmayomicrosoft/domain-specific-entities-node#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmayomsft/domain-specific-entities-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cmayomsft/domain-specific-entities-node/issues"
+  },
+  "dependencies": {
+    "conversation-processor": "^0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "rules": {
+        "interface-name": false,
+        "max-line-length": false,
+        "no-switch-case-fall-through": true,
+        "object-literal-sort-keys": false,
+        "radix": false
+    }
+}
