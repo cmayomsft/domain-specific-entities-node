@@ -1,4 +1,5 @@
-import { BasicEntity, IIntentEnricher } from "./index";
+import { IIntentEnricher } from "./core-types";
+import { BasicEntity } from "./entities";
 
 /** Utility function that takes a set of intent enrichers and will only execute them if the incoming intent matches a specific intent value/set of values. */
 export function enrichSpecificIntent<TConversationContext, TEntity extends BasicEntity>(intents: string|string[], ...enrichers: Array<IIntentEnricher<TConversationContext, TEntity>>): IIntentEnricher<TConversationContext, TEntity> {
