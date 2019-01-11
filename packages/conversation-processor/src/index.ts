@@ -1,33 +1,47 @@
-export interface Entity {
-    name: string;
-    type: string;
-    value: any;
+export interface BasicEntity {
+    readonly name: string;
 }
 
-export interface RecognizedUtterance {
+export interface SimpleEntity extends BasicEntity {
+    readonly type: "simple";
+}
+
+export interface StringEntity extends BasicEntity {
+    readonly type: "string";
+    value: string;
+}
+
+export interface NumberEntity extends BasicEntity {
+    readonly type: "number";
+    value: number;
+}
+
+export type Entity = SimpleEntity|StringEntity|NumberEntity;
+
+export interface RecognizedUtterance<TEntity extends BasicEntity> {
     utterance: string;
     intent: string;
-    entities: Entity[];
+    entities: TEntity[];
 }
 
-export interface IConversationProcessor<TConversationContext> {
-    processUtterance(context: TConversationContext, utterance: string): Promise<RecognizedUtterance|null>;
+export interface IConversationProcessor<TConversationContext, TEntity extends BasicEntity> {
+    processUtterance(context: TConversationContext, utterance: string): Promise<RecognizedUtterance<TEntity>|null>;
 }
 
-export interface IIntentRecognizer<TConversationContext> {
-    recognize(context: TConversationContext, utterance: string): Promise<RecognizedUtterance|null>;
+export interface IIntentRecognizer<TConversationContext, TEntity extends BasicEntity> {
+    recognize(context: TConversationContext, utterance: string): Promise<RecognizedUtterance<TEntity>|null>;
 }
 
-export interface IIntentEnricher<TConversationContext> {
-    enrich(context: TConversationContext, recognizedUtterance: RecognizedUtterance): Promise<void>;
+export interface IIntentEnricher<TConversationContext, TEntity extends BasicEntity> {
+    enrich(context: TConversationContext, recognizedUtterance: RecognizedUtterance<TEntity>): Promise<void>;
 }
 
 /** Creates a new conversation processor that uses the specified set of intent recognizers and enrichers.
  * @param intentRecognizers An array of intent recognizers.
  * @param intentEnrichers An array of intent enrichers.
  */
-export function createConversationProcessor<TConversationContext>(intentRecognizers: IIntentRecognizer<TConversationContext>|Array<IIntentRecognizer<TConversationContext>>, ...intentEnrichers: Array<IIntentEnricher<TConversationContext>>): IConversationProcessor<TConversationContext> {
-    let intentRecognizerSet: Array<IIntentRecognizer<TConversationContext>>;
+export function createConversationProcessor<TConversationContext, TEntity extends BasicEntity>(intentRecognizers: IIntentRecognizer<TConversationContext, TEntity>|Array<IIntentRecognizer<TConversationContext, TEntity>>, ...intentEnrichers: Array<IIntentEnricher<TConversationContext, TEntity>>): IConversationProcessor<TConversationContext, TEntity> {
+    let intentRecognizerSet: Array<IIntentRecognizer<TConversationContext, TEntity>>;
 
     // NOTE: we can improve the performance of the algorithm when only a single recognizer in the future if necessary
     if (intentRecognizers instanceof Array) {
@@ -64,7 +78,7 @@ export function createConversationProcessor<TConversationContext>(intentRecogniz
         },
     };
 
-    async function enrichRecognizedUtterance(context: TConversationContext, recognizedUtterance: RecognizedUtterance) {
+    async function enrichRecognizedUtterance(context: TConversationContext, recognizedUtterance: RecognizedUtterance<TEntity>) {
         if (intentEnrichers !== undefined
                 &&
             intentEnrichers.length > 0) {
