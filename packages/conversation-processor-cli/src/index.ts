@@ -1,27 +1,40 @@
 // tslint:disable:no-console
 
-import * as program from "commander";
+import * as yargs from "yargs";
 import { startReplLoop } from "./repl";
 import { runBatchProcessing } from "./run";
 
-export interface CpCommand {
-    config: string;
-}
+// tslint:disable-next-line:no-unused-expression
+yargs
+    .command(
+        ["repl [config]", "$0"],
+        "Starts the CLI in REPL mode.",
+        (y) => (y.positional(
+                "config",
+                {
+                    describe: "The conversation configuration file to start the REPL with.",
+                    type: "string",
+                })),
+        (argv) => startReplLoop(argv.config as string))
+    .command(
+        "run <config> <inputs> [output]",
+        "Takes a set of inputs and runs all of them through a specified configuration.",
+        (y) => (y
+                .positional(
+                    "inputs",
+                    {
+                        alias: "i",
+                        describe: "A path to a JSON file containing the inputs for the run.",
+                        type: "string",
+                    })
+                .positional(
+                    "output",
+                    {
+                        alias: "o",
+                        describe: "A path to where an output file will be written for the run. If not supplied, output will be written to the console.",
+                        type: "string",
+                    })),
+        (argv) => runBatchProcessing(argv.inputs as string, argv.output as string))
+    .argv;
 
-export type CpCliProgram = program.Command & CpCommand;
-
-const cpCliProgram = program
-    .version("0.1.0") as CpCliProgram;
-
-cpCliProgram.command("repl")
-    .description("Starts the CLI in REPL mode.")
-    .action(() => startReplLoop(cpCliProgram.opts().config));
-
-cpCliProgram.command("run")
-    .description("Takes a set of inputs and runs all of them through a specified configuration.")
-    .option("-i, --input", "A JSON file of utterances and, optionally, their expected results to test against.")
-    .action(() => runBatchProcessing(cpCliProgram));
-
-cpCliProgram.option("-c, --config [path]", "Path to the conversation configuration file to use.", void 0, "cp.config.js");
-
-cpCliProgram.parse(process.argv);
+// "-c, --config [path]", "Path to the conversation configuration file to use.", void 0, ""; )

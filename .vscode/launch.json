@@ -26,7 +26,7 @@
             "preLaunchTask": "Build All",
             "cwd": "${workspaceFolder}/packages/conversation-processor-cli",
             "program": "${workspaceFolder}/packages/conversation-processor-cli/dist/index.js",
-            "args": ["repl", "-c", "../samples/basic-configuration.js"],
+            "args": ["repl", "../samples/basic-configuration.js"],
             "skipFiles": [
                 "<node_internals>/**/*.*",
                 "${workspaceFolder}/**/node_modules/**/*.*"

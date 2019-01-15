@@ -1,7 +1,5 @@
 // tslint:disable:no-console
 
-import { CpCliProgram } from "./index";
-
-export function runBatchProcessing(cliProgram: CpCliProgram) {
+export function runBatchProcessing(inputs: string, outputs: string) {
     console.log("TODO: implement run functionality");
 }
