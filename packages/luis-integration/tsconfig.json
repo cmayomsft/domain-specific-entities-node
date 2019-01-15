@@ -8,4 +8,5 @@
         "declarationMap": true,
     },
     "include": ["./src"],
+    "references": [{ "path": "../conversation-processor" }]
 }
