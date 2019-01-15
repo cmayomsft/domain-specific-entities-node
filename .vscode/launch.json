@@ -16,6 +16,25 @@
             "smartStep": true,
             "sourceMaps": true,
             "port": 9229
+        },
+        {
+            "name": "Debug CP-CLI - REPL",
+            "type":"node",
+            "request": "launch",
+            "protocol": "inspector",
+            "preLaunchTask": "Build All",
+            "cwd": "${workspaceFolder}/packages/conversation-processor-cli",
+            "program": "${workspaceFolder}/packages/conversation-processor-cli/dist/index.js",
+            "args": ["repl"],
+            "skipFiles": [
+                "<node_internals>/**/*.*",
+                "${workspaceFolder}/**/node_modules/**/*.*"
+            ],
+            "outFiles": ["${workspaceFolder}/packages/conversation-processor-cli/dist/**/*.js"],
+            "smartStep": true,
+            "sourceMaps": true,
+            "console": "integratedTerminal",
+            "trace": true
         }
     ]
 }

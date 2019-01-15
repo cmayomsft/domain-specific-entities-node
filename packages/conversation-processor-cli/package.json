@@ -9,6 +9,9 @@
   "directories": {
     "lib": "dist"
   },
+  "bin": {
+    "cp": "dist/index.js"
+  },
   "files": [
     "dist"
   ],
@@ -20,7 +23,8 @@
     "entity",
     "cli",
     "testing",
-    "batch"
+    "batch",
+    "repl"
   ],
   "homepage": "http://github.com/cmayomicrosoft/domain-specific-entities-node#readme",
   "license": "MIT",
@@ -32,6 +36,9 @@
     "url": "https://github.com/cmayomsft/domain-specific-entities-node/issues"
   },
   "dependencies": {
-    "conversation-processor": "^0"
+    "@types/inquirer": "^0.0.43",
+    "commander": "^2.19.0",
+    "conversation-processor": "^0",
+    "inquirer": "^6.2.1"
   }
 }
