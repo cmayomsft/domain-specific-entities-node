@@ -5,7 +5,8 @@ import { BasicEntity } from "./entities";
  * @param intentRecognizers An array of intent recognizers.
  * @param intentEnrichers An array of intent enrichers.
  */
-export function createConversationProcessor<TConversationContext, TEntity extends BasicEntity>(intentRecognizers: IIntentRecognizer<TConversationContext, TEntity> | Array<IIntentRecognizer<TConversationContext, TEntity>>, ...intentEnrichers: Array<IIntentEnricher<TConversationContext, TEntity>>): IConversationProcessor<TConversationContext, TEntity> {
+export function createConversationProcessor<TConversationContext, TEntity extends BasicEntity>(
+    intentRecognizers: IIntentRecognizer<TConversationContext, TEntity> | Array<IIntentRecognizer<TConversationContext, TEntity>>, ...intentEnrichers: Array<IIntentEnricher<TConversationContext, TEntity>>): IConversationProcessor<TConversationContext, TEntity> {
     let intentRecognizerSet: Array<IIntentRecognizer<TConversationContext, TEntity>>;
     // NOTE: we can improve the performance of the algorithm when only a single recognizer in the future if necessary
     if (intentRecognizers instanceof Array) {
