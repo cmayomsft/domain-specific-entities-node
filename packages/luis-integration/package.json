@@ -1,0 +1,41 @@
+{
+  "name": "conversation-processor-luis-intent-recognizer",
+  "version": "0.0.1",
+  "author": "Drew Marsh (@drub0y)",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc --build .",
+    "test": "jest --config \"../../jest.json\""
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "description": "> TODO: description",
+  "keywords": [
+    "nlp",
+    "token",
+    "domain",
+    "entity",
+    "luis"
+  ],
+  "homepage": "https://github.com/cmayomsft/domain-specific-entities-node#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmayomsft/domain-specific-entities-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cmayomsft/domain-specific-entities-node/issues"
+  },
+  "dependencies": {
+    "@azure/cognitiveservices-luis-runtime": "^0.1.0",
+    "conversation-processor": "^0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18"
+  }
+}

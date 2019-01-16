@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "moduleResolution": "node",
         "target": "es2016",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
@@ -14,6 +15,7 @@
     "files": [],
     "references": [
         { "path": "packages/conversation-processor" },
-        { "path": "packages/conversation-processor-cli"}
+        { "path": "packages/conversation-processor-cli"},
+        { "path": "packages/luis-integration"}
     ]
 }
