@@ -1,5 +1,6 @@
 // tslint:disable:no-console
 
+import * as util from 'util';
 import { IConversationProcessor } from "conversation-processor";
 import * as inquirer from "inquirer";
 import { loadConverationProcessorFromConfiguration } from "./conversation-processor-configuration";
@@ -22,7 +23,9 @@ export async function startReplLoop(configFile?: string) {
             await processReplCommand(utterance);
         } else {
             if (conversationProcessor) {
-                console.log(await conversationProcessor.processUtterance({}, answer.UtterancePrompt));
+                const recognizedUtterance = await conversationProcessor.processUtterance({}, answer.UtterancePrompt);
+
+                console.log(util.inspect(recognizedUtterance, false, null, true));
             } else {
                 console.log("ERROR: No conversation processor currently loaded. Please use the #config command to load a configuration.");
             }
