@@ -1,22 +1,28 @@
 import { LUISRuntimeClient, LUISRuntimeModels } from "@azure/cognitiveservices-luis-runtime";
 import { BasicEntity, IIntentRecognizer } from "conversation-processor";
 
-export interface LuisEntity extends BasicEntity {
+export interface BasicLuisEntity extends BasicEntity {
+    readonly $raw: any;
+    readonly value: string;
+}
+
+export interface LuisEntity extends BasicLuisEntity {
     readonly type: "luis";
     readonly score?: number;
+    readonly resolution?: any;
 }
 
-export interface LuisCompositeEntity extends LuisEntity {
-    readonly luisType: "composite";
-    readonly children: LuisEntity[];
+export interface LuisCompositeEntity extends BasicLuisEntity {
+    readonly type: "luis.composite";
+    readonly children: CompositeEntityChildEntity[];
 }
 
-export interface LuisEntityWithResolution extends LuisEntity {
-    readonly luisType: "builtin";
-    readonly resolution: any;
+export interface CompositeEntityChildEntity {
+    readonly type: string;
+    readonly value: string;
 }
 
-export function createLuisIntentRecognizer<TConversationContext>(luisClient: LUISRuntimeClient, appId: string, luisPredictionResolveOptions?: LUISRuntimeModels.PredictionResolveOptionalParams): IIntentRecognizer<TConversationContext, LuisEntity> {
+export function createLuisIntentRecognizer<TConversationContext>(luisClient: LUISRuntimeClient, appId: string, luisPredictionResolveOptions?: LUISRuntimeModels.PredictionResolveOptionalParams): IIntentRecognizer<TConversationContext, LuisEntity|LuisCompositeEntity> {
     return {
         recognize: async (cc, utterance) => {
             const luisResult = await luisClient.prediction.resolve(appId, utterance, luisPredictionResolveOptions);
@@ -26,44 +32,51 @@ export function createLuisIntentRecognizer<TConversationContext>(luisClient: LUI
                 return null;
             }
 
+            let normalizedEntities: Array<LuisEntity|LuisCompositeEntity>;
+
+            if (luisResult.entities) {
+                normalizedEntities = luisResult.entities.map(mapEntity);
+
+                if (luisResult.compositeEntities) {
+                    normalizedEntities.push(...luisResult.compositeEntities.map(mapCompositeEntity));
+                }
+            } else {
+                normalizedEntities = [];
+            }
+
             return {
                 utterance,
                 intent: topScoringIntent.intent ? topScoringIntent.intent : "<unknown>",
-                entities: luisResult.entities ? luisResult.entities.map(mapEntity) : [],
+                entities: normalizedEntities,
             };
         },
     };
 }
 
-function mapEntity(luisEntity: LUISRuntimeModels.EntityModel): LuisEntity|LuisCompositeEntity|LuisEntityWithResolution {
-    const baseEntity: LuisEntity = {
-        name: luisEntity.entity,
+function mapEntity(luisEntity: LUISRuntimeModels.EntityModel): LuisEntity {
+    return {
+        $raw: luisEntity,
+        name: luisEntity.type,
         type: "luis",
+        value: luisEntity.entity,
         utteranceOffsets: {
             startIndex: luisEntity.startIndex,
             endIndex: luisEntity.endIndex,
         },
         score: luisEntity.score,
+        resolution: luisEntity.resolution ? (luisEntity as LUISRuntimeModels.EntityWithResolution).resolution : null,
     };
+}
 
-    switch (luisEntity.type) {
-        case "composite":
-            return {
-                ...baseEntity,
-                luisType: "composite",
-                children: [],
-            };
-
-        case "builtin":
-            return {
-                ...baseEntity,
-                luisType: "builtin",
-                resolution: (luisEntity as LUISRuntimeModels.EntityWithResolution).resolution,
-            };
-
-        default:
-            return baseEntity;
-    }
-
-
+function mapCompositeEntity(luisCompositeEntity: LUISRuntimeModels.CompositeEntityModel): LuisCompositeEntity {
+    return {
+        $raw: luisCompositeEntity,
+        name: luisCompositeEntity.parentType,
+        value: luisCompositeEntity.value,
+        type: "luis.composite",
+        children: luisCompositeEntity.children.map((c) => ({
+            type: c.type,
+            value: c.value,
+        })),
+    };
 }
