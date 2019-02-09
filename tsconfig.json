@@ -16,6 +16,7 @@
     "references": [
         { "path": "packages/conversation-processor" },
         { "path": "packages/conversation-processor-cli"},
-        { "path": "packages/luis-integration"}
+        { "path": "packages/luis-integration"},
+        { "path": "packages/tokenflow-integration" }
     ]
 }
