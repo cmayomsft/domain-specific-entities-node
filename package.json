@@ -2,18 +2,19 @@
     "name": "domain-specific-entities",
     "private": true,
     "scripts": {
+        "postinstall": "npm run bootstrap",
         "bootstrap": "lerna bootstrap --hoist",
         "build": "tsc -b",
         "lint": "lerna run --parallel lint",
         "test": "lerna run --parallel test"
     },
     "devDependencies": {
-        "@types/jest": "^23.3.10",
-        "jest": "^23.6.0",
-        "lerna": "^3.7.1",
+        "@types/jest": "^24.0.0",
+        "jest": "^24.1.0",
+        "lerna": "^3.11.0",
         "ts-jest": "^23.10.5",
-        "tslint": "^5.12.0",
-        "typescript": "^3.2.2"
+        "tslint": "^5.12.1",
+        "typescript": "^3.3.3"
     },
     "dependencies": {}
 }

@@ -1,5 +1,5 @@
 {
-  "name": "conversation-processor-luis-integration",
+  "name": "conversation-processor-tokenflow-integration",
   "version": "0.0.1",
   "author": "Drew Marsh (@drub0y)",
   "main": "lib/index.js",
@@ -32,10 +32,12 @@
     "url": "https://github.com/cmayomsft/domain-specific-entities-node/issues"
   },
   "dependencies": {
-    "@azure/cognitiveservices-luis-runtime": "^0.1.0",
-    "conversation-processor": "^0"
+    "conversation-processor": "^0",
+    "token-flow": "^0.0.26"
   },
   "devDependencies": {
-    "@types/node": "^10.12.18"
+    "@types/debug": "^4.1.0",
+    "@types/node": "^10.12.18",
+    "@types/snowball-stemmers": "^0.6.0"
   }
 }

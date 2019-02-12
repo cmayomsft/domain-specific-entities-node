@@ -10,7 +10,7 @@
     "lib": "dist"
   },
   "bin": {
-    "cp": "dist/index.js"
+    "convp": "dist/index.js"
   },
   "files": [
     "dist"
