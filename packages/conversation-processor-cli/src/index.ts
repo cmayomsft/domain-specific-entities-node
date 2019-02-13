@@ -17,7 +17,7 @@ yargs
                 })),
         (argv) => startReplLoop(argv.config as string))
     .command(
-        "run [config] [inputs] [output]",
+        "run <config> <inputs> [output]",
         "Takes a set of inputs and runs all of them through a specified configuration.",
         (y) => (y.positional(
                     "config",
@@ -38,6 +38,8 @@ yargs
                         alias: "o",
                         describe: "A path to where an output file will be written for the run. If not supplied, output will be written to the console.",
                         type: "string",
-                    })),
-        (argv) => runBatchProcessing(argv.config as string, argv.inputs as string, argv.output as string))
+                    })
+                .boolean("diff")
+                .default("diff", false)),
+        (argv) => runBatchProcessing(argv.config as string, argv.inputs as string, argv.output as string, argv.diff))
     .argv;

@@ -1,19 +1,30 @@
 [
     {
         "utterance": "let me get a hamburger meal two large cokes and a small fries with a side of ketchup",
-        "expectedResolution": {
-            "intent": "order-item"
+        "recognized": {
+            "utterance": "let me get a hamburger meal two large cokes and a small fries with a side of ketchup",
+            "intent": "order-item",
+            "entities": [
+                {
+                    "type": "number",
+                    "value": 10
+                },
+                {
+                    "type": "string",
+                    "value": "hamburger"
+                }
+            ]
         }
     },
     {
         "utterance": "i'd like a six piece chicken fingers with a kid's chocolate sundae",
-        "expectedResolution": {
+        "recognized": {
             "intent": "order-item"
         }
     },
     {
         "utterance": "that's all",
-        "expectedResolution": {
+        "recognized": {
             "intent": "complete-order"
         }
     },

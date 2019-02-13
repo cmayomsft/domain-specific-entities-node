@@ -1,17 +1,19 @@
-import { IConversationProcessor } from "conversation-processor";
-import { diff } from "deep-diff";
+import { BasicEntity, IConversationProcessor, RecognizedUtterance } from "conversation-processor";
+import { diff, Diff } from "deep-diff";
 import * as fs from "fs";
+import * as moment from "moment";
 import * as path from "path";
 import { loadConverationProcessorFromConfiguration } from "./conversation-processor-configuration";
 
 interface ProcessedTestUtteranceOutputs {
     inputUtterance: string;
-    resolutionDiff: any;
+    recognized: RecognizedUtterance<BasicEntity>|null;
+    recognizedDiff: Array<Diff<any, RecognizedUtterance<any>|null>>|undefined;
 }
 
 // tslint:disable:no-console
 
-export async function runBatchProcessing(configFile: string, inputsFilePath: string, outputsFilePath: string) {
+export async function runBatchProcessing(configFile: string, inputsFilePath: string, outputsFilePath: string|undefined, outputDiff: boolean) {
     console.log(`Loading configuration file "${configFile}" for run...`);
 
     let conversationProcessor: IConversationProcessor<any, any>;
@@ -33,25 +35,33 @@ export async function runBatchProcessing(configFile: string, inputsFilePath: str
 
     let runNumber = 0;
 
-    for await (const { utterance, expectedResolution } of testInputs) {
+    for await (const { utterance, expectedRecognition } of testInputs) {
         runNumber++;
 
         if (runNumber % 10 === 0) {
             console.log(`Processing utterance ${runNumber}...`);
         }
 
-        const resolvedUtterance = await conversationProcessor.processUtterance(null, utterance);
+        const recognizedUtterance = await conversationProcessor.processUtterance(null, utterance);
+        let expectedVersusActualResolutionDiff;
 
-        const expectedVersusActualResolutionDiff = diff(expectedResolution, resolvedUtterance);
+        // Only perform the diff if the option was specified
+        if (outputDiff) {
+            expectedVersusActualResolutionDiff = diff(expectedRecognition, recognizedUtterance);
+        }
 
-        results.push({ inputUtterance: utterance, resolutionDiff: expectedVersusActualResolutionDiff });
+        results.push({ inputUtterance: utterance, recognized: recognizedUtterance, recognizedDiff: expectedVersusActualResolutionDiff });
     }
 
     console.log(`Run completed! ${runNumber} utterance(s) proccessed.`);
 
-    console.log(`Writing ${results.length} result(s) to "${outputsFilePath}"...`);
+    if (outputsFilePath) {
+        console.log(`Writing ${results.length} result(s)...`);
 
-    await writeOutputs(outputsFilePath, results);
+        outputsFilePath = await writeOutputs(outputsFilePath, results);
+
+        console.log(`${runNumber} result(s) writtent to "${outputsFilePath}".`);
+    }
 }
 
 // tslint:enable:no-console
@@ -75,17 +85,23 @@ async function* loadTestInputs(inputsFilePath: string) {
     }
 
     for (const input of loadedInputs) {
-        const { utterance, expectedResolution } = input;
+        const expectedRecognition = input.recognized;
+        let utterance = input.utterance as string;
 
-        yield { utterance, expectedResolution };
+        if (!utterance) {
+            utterance = expectedRecognition.utterance;
+        }
+
+        yield { utterance, expectedRecognition };
     }
 }
 
 async function writeOutputs(outputsFilePath: string, outputs: ProcessedTestUtteranceOutputs[]) {
     // Make sure the output file's directory actually exists first (writeFile will not create the dir)
     ensureOutputFileDirectoryExists();
+    normalizeOutputsFileName();
 
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
         fs.writeFile(
             outputsFilePath,
             JSON.stringify(outputs, null, 4),
@@ -96,7 +112,7 @@ async function writeOutputs(outputsFilePath: string, outputs: ProcessedTestUtter
                 if (error) {
                     reject(error);
                 } else {
-                    resolve();
+                    resolve(outputsFilePath);
                 }
             });
         });
@@ -111,5 +127,25 @@ async function writeOutputs(outputsFilePath: string, outputs: ProcessedTestUtter
                 throw error;
             }
         }
+    }
+
+    function normalizeOutputsFileName() {
+        const outputsFileDirectory = path.dirname(outputsFilePath);
+        let outputsFileName = path.basename(outputsFilePath);
+
+        if (outputsFileName.lastIndexOf("<timestamp>") !== -1) {
+            outputsFileName = outputsFileName.replace("<timestamp>", moment().utc().format("YYYY-MM-DD.HH-mm-ss"));
+        } else {
+            const versionOffset = outputsFileName.lastIndexOf("<version>");
+
+            if (versionOffset !== -1) {
+                const baseOutputsFileName = outputsFileName.substring(0, versionOffset);
+                const currentFileCount = fs.readdirSync(outputsFileDirectory, { withFileTypes: true }).filter((f) => f.name.startsWith(baseOutputsFileName)).length;
+
+                outputsFileName = outputsFileName.replace("<version>", (currentFileCount + 1).toString());
+            }
+        }
+
+        outputsFilePath = path.join(outputsFileDirectory, outputsFileName);
     }
 }
