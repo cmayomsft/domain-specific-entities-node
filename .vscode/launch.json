@@ -46,7 +46,7 @@
             "preLaunchTask": "Build All",
             "cwd": "${workspaceFolder}/packages/conversation-processor-cli",
             "program": "${workspaceFolder}/packages/conversation-processor-cli/dist/index.js",
-            "args": ["run", "../samples/menu-ordering-configuration.js", "./samples/sample-menu-ordering-bulk-test.json", "./test-output/sample-menu-ordering-bulk-test.results.json", "--diff"],
+            "args": ["run", "../samples/menu-ordering-configuration.js", "./samples/sample-menu-ordering-bulk-test.json", "./test-output/sample-menu-ordering-bulk-test.results.<timestamp>.json", "--diff"],
             "skipFiles": [
                 "<node_internals>/**/*.*",
                 "${workspaceFolder}/**/node_modules/**/*.*"
