@@ -3,3 +3,4 @@ lerna-debug.log
 lib
 dist
 coverage
+test-output

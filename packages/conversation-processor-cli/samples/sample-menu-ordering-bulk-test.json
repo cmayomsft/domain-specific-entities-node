@@ -1,0 +1,32 @@
+[
+    {
+        "utterance": "let me get a hamburger meal two large cokes and a small fries with a side of ketchup",
+        "expectedResolution": {
+            "intent": "order-item"
+        }
+    },
+    {
+        "utterance": "i'd like a six piece chicken fingers with a kid's chocolate sundae",
+        "expectedResolution": {
+            "intent": "order-item"
+        }
+    },
+    {
+        "utterance": "that's all",
+        "expectedResolution": {
+            "intent": "complete-order"
+        }
+    },
+    {
+        "utterance": "forget it",
+        "expectedResolution": {
+            "intent": "cancel-order"
+        }
+    },
+    {
+        "utterance": "what time do you start serving breakfast?",
+        "expectedResolution": {
+            "intent": "unknown"
+        }
+    }
+]
