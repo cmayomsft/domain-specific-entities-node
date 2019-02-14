@@ -4,7 +4,7 @@ module.exports = {
             let intent = "unknown";
             let entities = [];
 
-            if (/(let me get|I would like|may I please have)/i.test(utterance)) {
+            if (/(let me get|I would like|may I please have|I'd like)/i.test(utterance)) {
                 intent = "order-item";
                 
                 entities.push({ type:"number", value: 10 })
