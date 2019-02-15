@@ -1,5 +1,6 @@
 import { IIntentEnricher, IIntentRecognizer } from "conversation-processor";
 import { createConversationProcessor } from "conversation-processor";
+import * as path from "path";
 
 export interface ConversationProcessorConfiguration {
     readonly recognizers: Array<IIntentRecognizer<any, any>>;
@@ -10,7 +11,7 @@ export interface ConversationProcessorConfiguration {
 
 export async function loadConverationProcessorFromConfiguration(configFile: string) {
     // Make sure to delete it from the require cache first in case it's already loaded
-    const fullConfigFilePath = require.resolve(configFile);
+    const fullConfigFilePath = path.resolve(configFile);
 
     delete require.cache[fullConfigFilePath];
 
