@@ -1,0 +1,738 @@
+[
+    {
+        "text": "can i get a cod filet medium french fries and a sockeye sandwich",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 23,
+                "productCode": 290
+            },            
+            {
+                "entity": "Product",
+                "startPos": 22,
+                "endPos": 40,
+                "productCode": 401
+            },
+            {
+                "entity": "Product",
+                "startPos": 48,
+                "endPos": 63,
+                "productCode": 201
+            }
+        ]
+    },
+    {
+        "text": "can i get a cod filet and a coke",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 20,
+                "productCode": 290
+            },
+            {
+                "entity": "Product",
+                "startPos": 36,
+                "endPos": 39,
+                "productCode": 1001
+            }
+        ]
+    },    
+    {
+        "text": "can i get two medium french fries and two medium coke",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 10,
+                "endPos": 12
+            },
+            {
+                "entity": "Product",
+                "startPos": 14,
+                "endPos": 32,
+                "productCode": 401
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 10,
+                "endPos": 12
+            },
+            {
+                "entity": "Product",
+                "startPos": 42,
+                "endPos": 52,
+                "productCode": 1001
+            }
+        ]
+    },   
+    {
+        "text": "can i get two dakota burgers with coke",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 10,
+                "endPos": 12
+            },
+            {
+                "entity": "Product",
+                "startPos": 14,
+                "endPos": 27,
+                "productCode": 4
+            },
+            {
+                "entity": "Product",
+                "startPos": 34,
+                "endPos": 37,
+                "productCode": 1001
+            }
+        ]
+    },
+    {
+        "text": "can i get a small coffee with two sugar and two cream",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 23,
+                "productCode": 1100
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 30,
+                "endPos": 32
+            },
+            {
+                "entity": "Product",
+                "startPos": 34,
+                "endPos": 38,
+                "productCode": 1190
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 44,
+                "endPos": 46
+            },
+            {
+                "entity": "Product",
+                "startPos": 48,
+                "endPos": 52,
+                "productCode": 1194
+            }
+        ]
+    },
+    {
+        "text": "can i get a three cod filet and coke",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 12,
+                "endPos": 16
+            },
+            {
+                "entity": "Product",
+                "startPos": 18,
+                "endPos": 31,
+                "productCode": 290
+            },
+            {
+                "entity": "Product",
+                "startPos": 32,
+                "endPos": 35,
+                "productCode": 1001
+            }
+        ]
+    },
+    {
+        "text": "can i get three dakota burgers and two coke",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 10,
+                "endPos": 14
+            },
+            {
+                "entity": "Product",
+                "startPos": 16,
+                "endPos": 29,
+                "productCode": 4
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 35,
+                "endPos": 37
+            },
+            {
+                "entity": "Product",
+                "startPos": 39,
+                "endPos": 42,
+                "productCode": 1001
+            }
+        ]
+    },
+    {
+        "text": "can i get a surf n turf with a sweet tea",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 22,
+                "productCode": 6000
+            },
+            {
+                "entity": "Product",
+                "startPos": 31,
+                "endPos": 39,
+                "productCode": 1074
+            }
+        ]
+    },
+    {
+        "text": "can i get a chicken breast with a coke",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 25,
+                "productCode": 190
+            },
+            {
+                "entity": "Product",
+                "startPos": 34,
+                "endPos": 37,
+                "productCode": 1001
+            }
+        ]
+    },
+    {
+        "text": "can i get a chicago dog with a coffee",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 22,
+                "productCode": 20
+            },
+            {
+                "entity": "Product",
+                "startPos": 31,
+                "endPos": 36,
+                "productCode": 1101
+            }
+        ]
+    },
+    {
+        "text": "can i get two big apple burger with coffee",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 10,
+                "endPos": 12
+            },
+            {
+                "entity": "Product",
+                "startPos": 14,
+                "endPos": 29,
+                "productCode": 3
+            },
+            {
+                "entity": "Product",
+                "startPos": 36,
+                "endPos": 41,
+                "productCode": 1101
+            }
+        ]
+    },
+    {
+        "text": "can i get a dakota burger please",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 24,
+                "productCode": 4
+            }
+        ]
+    },
+    {
+        "text": "can i get two dakota burger please",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 10,
+                "endPos": 12
+            },
+            {
+                "entity": "Product",
+                "startPos": 14,
+                "endPos": 26,
+                "productCode": 4
+            }
+        ]
+    },
+    {
+        "text": "hi can i get three dakota burger a diet coke and two cheeseburger please",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 13,
+                "endPos": 17
+            },
+            {
+                "entity": "Product",
+                "startPos": 19,
+                "endPos": 31,
+                "productCode": 4
+            },
+            {
+                "entity": "Product",
+                "startPos": 35,
+                "endPos": 43,
+                "productCode": 1004
+            }, 
+            {
+                "entity": "builtin.number",
+                "startPos": 49,
+                "endPos": 51
+            },
+            {
+                "entity": "Product",
+                "startPos": 53,
+                "endPos": 64,
+                "productCode": 2
+            }
+        ]
+    },
+    {
+        "text": "can i get a diet coke and a iced tea",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 20,
+                "productCode": 1004
+            },
+            {
+                "entity": "Product",
+                "startPos": 28,
+                "endPos": 35,
+                "productCode": 1074
+            }
+        ]
+    },
+    {
+        "text": "i want three cheeseburger",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 7,
+                "endPos": 11
+            },
+            {
+                "entity": "Product",
+                "startPos": 13,
+                "endPos": 24,
+                "productCode": 2
+            }
+        ]
+    },
+    {
+        "text": "i want four cheeseburger",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 7,
+                "endPos": 10
+            },
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 23,
+                "productCode": 2
+            }
+        ]
+    },
+    {
+        "text": "i want six cheeseburger",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 7,
+                "endPos": 9
+            },
+            {
+                "entity": "Product",
+                "startPos": 11,
+                "endPos": 22,
+                "productCode": 2
+            }
+        ]
+    },
+    {
+        "text": "three cheeseburger",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 0,
+                "endPos": 4
+            },
+            {
+                "entity": "Product",
+                "startPos": 6,
+                "endPos": 17,
+                "productCode": 2
+            }
+        ]
+    },
+    {
+        "text": "four cheeseburger",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 0,
+                "endPos": 3
+            },
+            {
+                "entity": "Product",
+                "startPos": 5,
+                "endPos": 16,
+                "productCode": 2
+            }
+        ]
+    },
+    {
+        "text": "can i get a Grilled Pet Chicken Sandwich with barbecue sauce",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 36,
+                "productCode": 4774
+            },
+            {
+                "entity": "Product",
+                "startPos": 43,
+                "endPos": 61,
+                "productCode": 9077
+            }
+        ]
+    },
+    {
+        "text": "can i have a dakota burger",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 13,
+                "endPos": 24,
+                "productCode": 4
+            }
+        ]
+    },
+    {
+        "text": "dakota burger",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 0,
+                "endPos": 11,
+                "productCode": 4
+            }
+        ]
+    },
+    {
+        "text": "let me get a surf n turf",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 13,
+                "endPos": 22,
+                "productCode": 6000
+            }
+        ]
+    },
+    {
+        "text": "can i have a surf n turf with a medium coffee",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 13,
+                "endPos": 22,
+                "productCode": 6000
+            },
+            {
+                "entity": "Product",
+                "startPos": 31,
+                "endPos": 43,
+                "productCode": 1101
+            }
+        ]
+    },
+    {
+        "text": "i'd like the surf n turf with a coffee",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 13,
+                "endPos": 22,
+                "productCode": 6000
+            },
+            {
+                "entity": "Product",
+                "startPos": 31,
+                "endPos": 36,
+                "productCode": 1101
+            }
+        ]
+    },
+    {
+        "text": "give me a surf turf combo and a medium diet coke",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 10,
+                "endPos": 25,
+                "productCode": 8944
+            },
+            {
+                "entity": "Product",
+                "startPos": 34,
+                "endPos": 43,
+                "productCode": 35
+            },
+            {
+                "entity": "Product",
+                "startPos": 51,
+                "endPos": 66,
+                "productCode": 1004
+            }
+        ]
+    },
+    {
+        "text": "can i get a surf turf combo meal",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 38,
+                "productCode": 8944
+            }
+        ]
+    },
+    {
+        "text": "set up a cod filet",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 7,
+                "endPos": 24,
+                "productCode": 290
+            }
+        ]
+    },
+    {
+        "text": "can i get a cod filet and a diet coke please",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 28,
+                "productCode": 290
+            },
+            {
+                "entity": "Product",
+                "startPos": 36,
+                "endPos": 44,
+                "productCode": 1004
+            }
+        ]
+    },
+    {
+        "text": "i'd like a dakota burger and a beef patty and three surf turf meals",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 11,
+                "endPos": 17,
+                "productCode": 4
+            },
+            {
+                "entity": "Product",
+                "startPos": 25,
+                "endPos": 39,
+                "productCode": 6
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 45,
+                "endPos": 49
+            },
+            {
+                "entity": "Product",
+                "startPos": 51,
+                "endPos": 65,
+                "productCode": 8944
+            }
+        ]
+    },
+    {
+        "text": "can i get a three dakota burgers and a beef patty meal please",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 12,
+                "endPos": 16
+            },
+            {
+                "entity": "Product",
+                "startPos": 18,
+                "endPos": 25,
+                "productCode": 4
+            },
+            {
+                "entity": "Product",
+                "startPos": 33,
+                "endPos": 52,
+                "productCode": 190
+            }
+        ]
+    },
+    {
+        "text": "can i get a surf n turf meal please and a coke",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 31,
+                "productCode": 190
+            },
+            {
+                "entity": "Product",
+                "startPos": 46,
+                "endPos": 49,
+                "productCode": 1001
+            }
+        ]
+    },
+    {
+        "text": "can i get a beef patty",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 42,
+                "productCode": 4562
+            }
+        ]
+    },
+    {
+        "text": "can i get the cheeseburger",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 14,
+                "endPos": 43,
+                "productCode": 2
+            }
+        ]
+    },
+    {
+        "text": "can i get a seattle dog and a large coffee with two milk",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 28,
+                "productCode": 252
+            },
+            {
+                "entity": "Product",
+                "startPos": 36,
+                "endPos": 47,
+                "productCode": 473
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 54,
+                "endPos": 56
+            },
+            {
+                "entity": "Product",
+                "startPos": 58,
+                "endPos": 61,
+                "productCode": 66
+            }
+        ]
+    }
+]
