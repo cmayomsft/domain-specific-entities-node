@@ -9,7 +9,7 @@ export interface IIntentRecognizer<TConversationContext, TEntity extends BasicEn
 }
 
 export interface IIntentEnricher<TConversationContext, TEntity extends BasicEntity> {
-    enrich(context: TConversationContext, recognizedUtterance: RecognizedUtterance<TEntity>): Promise<void>;
+    enrich(context: TConversationContext, recognizedUtterance: RecognizedUtterance<TEntity>): Promise<RecognizedUtterance<TEntity>>;
 }
 
 export interface RecognizedUtterance<TEntity extends BasicEntity> {

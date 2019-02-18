@@ -41,7 +41,7 @@ describe("createConversationProcessor tests", () => {
    test("single recognizer, single enricher", () => {
         const conversationProcessor = createConversationProcessor(
             [ { recognize: async (c, u) => null } ],
-            { enrich: (c, ru) => Promise.resolve() });
+            { enrich: (c, ru) => Promise.resolve(ru) });
 
         expect(conversationProcessor).not.toBeNull();
     });
@@ -49,8 +49,8 @@ describe("createConversationProcessor tests", () => {
    test("single recognizer, multiple enrichers", () => {
         const conversationProcessor = createConversationProcessor(
             [ { recognize: async (c, u) => null } ],
-            { enrich: (c, ru) => Promise.resolve() },
-            { enrich: (c, ru) => Promise.resolve() });
+            { enrich: (c, ru) => Promise.resolve(ru) },
+            { enrich: (c, ru) => Promise.resolve(ru) });
 
         expect(conversationProcessor).not.toBeNull();
     });
@@ -61,8 +61,8 @@ describe("createConversationProcessor tests", () => {
                 { recognize: async (c, u) => null },
                 { recognize: async (c, u) => null },
             ],
-            { enrich: (c, ru) => Promise.resolve() },
-            { enrich: (c, ru) => Promise.resolve() });
+            { enrich: (c, ru) => Promise.resolve(ru) },
+            { enrich: (c, ru) => Promise.resolve(ru) });
 
         expect(conversationProcessor).not.toBeNull();
     });
@@ -99,6 +99,8 @@ describe("createConversationProcessor tests", () => {
                     } else if (entity.type === "string") {
                         console.log(entity.value);
                     }
+
+                    return ru;
                 },
             });
 
