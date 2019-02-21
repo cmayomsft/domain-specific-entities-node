@@ -1,15 +1,17 @@
-import { BasicEntity, IIntentEnricher } from "conversation-processor";
+import { Entity, IIntentEnricher } from "conversation-processor";
 import { CompositeRecognizer, Recognizer, WORD } from "token-flow";
 import { EntityToken, TokenFlowEntity } from "./types";
 import { isStringArray, loadTokenFileIntoPatternRecognizer } from "./utilities";
 
-export type EntityWordSelector<TEntity extends BasicEntity> = (entity: TEntity) => string|undefined;
+export type EntityWordSelector<TEntity extends Entity> = (entity: TEntity) => string|undefined;
 
 export interface EntitySourcedTokenFlowEntity extends TokenFlowEntity {
-    $sourceEntity: BasicEntity;
+    $sourceEntity: Entity;
 }
 
-export function createTokenFlowEntityEnricher<TConversationContext, TEntity extends BasicEntity>(entitySelector: EntityWordSelector<TEntity>, ...recognizers: string[] | Recognizer[]): IIntentEnricher<TConversationContext, TEntity | EntitySourcedTokenFlowEntity> {
+export function createTokenFlowEntityEnricher<TConversationContext, TEntity extends Entity>(
+    entitySelector: EntityWordSelector<TEntity>,
+    ...recognizers: string[] | Recognizer[]): IIntentEnricher<TConversationContext, TEntity, TEntity|EntitySourcedTokenFlowEntity> {
     if (recognizers.length === 0) {
         throw new Error("Expected at least one recognizer file/instance to be specified.");
     }

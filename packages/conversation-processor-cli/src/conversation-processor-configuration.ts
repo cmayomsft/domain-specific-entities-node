@@ -1,21 +1,20 @@
-import { IIntentEnricher, IIntentRecognizer } from "conversation-processor";
-import { createConversationProcessor } from "conversation-processor";
+import { createEnricherPipeline, createIntentResolver, createRecognizerChain, Entity, IIntentEnricher, IIntentRecognizer } from "conversation-processor";
 import * as path from "path";
 
-export interface ConversationProcessorConfiguration {
-    readonly recognizers: Array<IIntentRecognizer<any, any>>;
-    readonly enrichers: Array<IIntentEnricher<any, any>>;
+export interface IntentResolverConfiguration {
+    readonly recognizers: Array<IIntentRecognizer<any, Entity>>;
+    readonly enrichers: Array<IIntentEnricher<any, Entity, Entity>>;
 }
 
 // tslint:disable:no-console
 
-export async function loadConverationProcessorFromConfiguration(configFile: string) {
+export async function loadIntentResolverFromConfiguration(configFile: string) {
     // Make sure to delete it from the require cache first in case it's already loaded
     const fullConfigFilePath = path.resolve(configFile);
 
     delete require.cache[fullConfigFilePath];
 
-    const config = await require(fullConfigFilePath) as Partial<ConversationProcessorConfiguration>;
+    const config = await require(fullConfigFilePath) as Partial<IntentResolverConfiguration>;
 
     if (!config.recognizers
             ||
@@ -23,5 +22,5 @@ export async function loadConverationProcessorFromConfiguration(configFile: stri
         throw new Error("No intent recognizers are configured.");
     }
 
-    return createConversationProcessor(config.recognizers, ...(config.enrichers ? config.enrichers : []));
+    return createIntentResolver(createRecognizerChain(config.recognizers), config.enrichers ? createEnricherPipeline(config.enrichers) : undefined);
 }

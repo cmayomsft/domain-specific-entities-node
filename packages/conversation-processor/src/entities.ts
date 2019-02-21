@@ -1,4 +1,5 @@
-export interface BasicEntity {
+export interface Entity {
+    readonly type: string;
     readonly name: string;
     readonly utteranceOffsets?: {
         startIndex: number;
@@ -6,18 +7,18 @@ export interface BasicEntity {
     };
 }
 
-export interface SimpleEntity extends BasicEntity {
+export interface SimpleEntity extends Entity {
     readonly type: "simple";
 }
 
-export interface StringEntity extends BasicEntity {
+export interface StringEntity extends Entity {
     readonly type: "string";
     value: string;
 }
 
-export interface NumberEntity extends BasicEntity {
+export interface NumberEntity extends Entity {
     readonly type: "number";
     value: number;
 }
 
-export type Entity = SimpleEntity | StringEntity | NumberEntity;
+export type BasicEntity = SimpleEntity | StringEntity | NumberEntity;

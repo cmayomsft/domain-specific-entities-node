@@ -1,10 +1,10 @@
-import { BasicEntity, IIntentEnricher } from "conversation-processor";
+import { Entity, IIntentEnricher } from "conversation-processor";
 import { CompositeRecognizer, Recognizer, WORD } from "token-flow";
 import { EntityToken, TokenFlowEntity } from "./types";
 import { isStringArray, loadTokenFileIntoPatternRecognizer } from "./utilities";
 
-export function createTokenFlowFullUtteranceEnricher<TConversationContext, TEntity extends BasicEntity>(
-    ...recognizers: string[] | Recognizer[]): IIntentEnricher<TConversationContext, TEntity | TokenFlowEntity> {
+export function createTokenFlowFullUtteranceEnricher<TConversationContext, TEntity extends Entity>(
+    ...recognizers: string[] | Recognizer[]): IIntentEnricher<TConversationContext, TEntity, TEntity|TokenFlowEntity> {
     if (recognizers.length === 0) {
         throw new Error("Expected at least one recognizer file/instance to be specified.");
     }

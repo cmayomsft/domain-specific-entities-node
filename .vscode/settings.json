@@ -1,5 +1,6 @@
 {
     "jest.pathToConfig": "jest.json",
     "jest.showCoverageOnLoad": true,
-    "prettier.tslintIntegration": true
+    "prettier.tslintIntegration": true,
+    "jestTestExplorer.pathToJestConfig": "jest.json"
 }
