@@ -39,14 +39,33 @@
         }
         ,
         {
-            "name": "Debug CP-CLI - Fast Food Run",
+            "name": "Debug CP-CLI - Run - Fast Food",
             "type":"node",
             "request": "launch",
             "protocol": "inspector",
             "preLaunchTask": "Build All",
             "cwd": "${workspaceFolder}/packages/conversation-processor-cli",
             "program": "${workspaceFolder}/packages/conversation-processor-cli/dist/index.js",
-            "args": ["run", "./samples/menu-ordering-configuration.js", "./samples/sample-menu-ordering-bulk-test.json", "./test-output/sample-menu-ordering-bulk-test.results.<timestamp>.json", "--diff"],
+            "args": ["run", "./samples/menu-ordering-configuration.js", "./samples/sample-menu-ordering-bulk-test.json", "./test-output/sample-menu-ordering-run.results.<timestamp>.json"],
+            "skipFiles": [
+                "<node_internals>/**/*.*",
+                "${workspaceFolder}/**/node_modules/**/*.*"
+            ],
+            "outFiles": ["${workspaceFolder}/packages/conversation-processor-cli/dist/**/*.js"],
+            "smartStep": true,
+            "sourceMaps": true,
+            "console": "integratedTerminal",
+            "trace": true
+        },
+        {
+            "name": "Debug CP-CLI - Test - Fast Food",
+            "type":"node",
+            "request": "launch",
+            "protocol": "inspector",
+            "preLaunchTask": "Build All",
+            "cwd": "${workspaceFolder}/packages/conversation-processor-cli",
+            "program": "${workspaceFolder}/packages/conversation-processor-cli/dist/index.js",
+            "args": ["test", "./samples/menu-ordering-configuration.js", "./samples/sample-menu-ordering-bulk-test.json", "./test-output/sample-menu-ordering-bulk-test.results.<timestamp>.json", "--diff"],
             "skipFiles": [
                 "<node_internals>/**/*.*",
                 "${workspaceFolder}/**/node_modules/**/*.*"

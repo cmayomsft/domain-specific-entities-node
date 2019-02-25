@@ -1,8 +1,10 @@
 // tslint:disable:no-console
 
 import * as yargs from "yargs";
-import { startReplLoop } from "./repl";
-import { runBatchProcessing } from "./run";
+import { startReplLoop } from "./commands/repl";
+import { executeRunCommand } from "./commands/run";
+import { executeTestCommand } from "./commands/test";
+
 
 // tslint:disable-next-line:no-unused-expression
 yargs
@@ -38,8 +40,32 @@ yargs
                         alias: "o",
                         describe: "A path to where an output file will be written for the run. If not supplied, output will be written to the console.",
                         type: "string",
-                    })
-                .boolean("diff")
-                .default("diff", false)),
-        (argv) => runBatchProcessing(argv.config as string, argv.inputs as string, argv.output as string, argv.diff))
+                    })),
+        (argv) => executeRunCommand(argv.config as string, argv.inputs as string, argv.output as string))
+        .command(
+            "test <config> <inputs> [output]",
+            "Takes a set of inputs and runs all of them through a specified configuration.",
+            (y) => (y.positional(
+                        "config",
+                        {
+                            describe: "The conversation configuration file to use for the run.",
+                            type: "string",
+                        })
+                    .positional(
+                        "inputs",
+                        {
+                            alias: "i",
+                            describe: "A path to a JSON file containing the inputs for the run.",
+                            type: "string",
+                        })
+                    .positional(
+                        "output",
+                        {
+                            alias: "o",
+                            describe: "A path to where an output file will be written for the run. If not supplied, output will be written to the console.",
+                            type: "string",
+                        })
+                    .boolean("diff")
+                    .default("diff", false)),
+            (argv) => executeTestCommand(argv.config as string, argv.inputs as string, argv.output as string, argv.diff))
     .argv;
