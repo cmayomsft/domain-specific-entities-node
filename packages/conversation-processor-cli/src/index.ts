@@ -20,7 +20,7 @@ yargs
         (argv) => startReplLoop(argv.config as string))
     .command(
         "run <config> <inputs> [output]",
-        "Takes a set of inputs and runs all of them through a specified configuration.",
+        "Takes a set of inputs and runs all of them through a specified configuration. The output format for this command is the same as the input file format. This command can be used to generate input files for use with the test command as well.",
         (y) => (y.positional(
                     "config",
                     {
@@ -43,8 +43,8 @@ yargs
                     })),
         (argv) => executeRunCommand(argv.config as string, argv.inputs as string, argv.output as string))
         .command(
-            "test <config> <inputs> [output]",
-            "Takes a set of inputs and runs all of them through a specified configuration.",
+            "test <config> <inputs> [output] [--diff=false]",
+            "Takes a set of inputs and runs all of them through a specified configuration. This command includes additional output details such as execution timings as well as recognition diffs when the --diff switch is specified.",
             (y) => (y.positional(
                         "config",
                         {
@@ -68,4 +68,5 @@ yargs
                     .boolean("diff")
                     .default("diff", false)),
             (argv) => executeTestCommand(argv.config as string, argv.inputs as string, argv.output as string, argv.diff))
+    .wrap(yargs.terminalWidth())
     .argv;
