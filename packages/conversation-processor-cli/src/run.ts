@@ -1,15 +1,15 @@
-import { BasicEntity, IConversationProcessor, RecognizedUtterance } from "conversation-processor";
+import { Entity, IIntentResolver, RecognizedIntent } from "conversation-processor";
 import { diff, Diff } from "deep-diff";
 import * as fs from "fs";
 import * as moment from "moment";
 import * as path from "path";
-import { loadConverationProcessorFromConfiguration } from "./conversation-processor-configuration";
+import { loadIntentResolverFromConfiguration } from "./conversation-processor-configuration";
 
 interface ProcessedTestUtteranceOutputs {
     inputUtterance: string;
     executionDuration: number;
-    recognized: RecognizedUtterance<BasicEntity>|null;
-    recognizedDiff: Array<Diff<any, RecognizedUtterance<any>|null>>|undefined;
+    recognized: RecognizedIntent<Entity>|null;
+    recognizedDiff: Array<Diff<any, RecognizedIntent<any>|null>>|undefined;
 }
 
 interface RunTimings {
@@ -29,10 +29,10 @@ interface RunInfo {
 export async function runBatchProcessing(configFile: string, inputsFilePath: string, outputsFilePath: string|undefined, outputDiff: boolean) {
     console.log(`Loading configuration file "${configFile}" for run...`);
 
-    let conversationProcessor: IConversationProcessor<any, any>;
+    let conversationProcessor: IIntentResolver<any, any>;
 
     try {
-        conversationProcessor = await loadConverationProcessorFromConfiguration(configFile);
+        conversationProcessor = await loadIntentResolverFromConfiguration(configFile);
     } catch (error) {
         console.error("ERROR: Could not load conversation processor from specified configuration file.", error);
 
@@ -61,20 +61,20 @@ export async function runBatchProcessing(configFile: string, inputsFilePath: str
         }
 
         const executionStart = moment();
-        const recognizedUtterance = await conversationProcessor.processUtterance(null, utterance);
+        const recognizedIntent = await conversationProcessor.processUtterance(null, utterance);
         const executionEnd = moment();
 
         let expectedVersusActualResolutionDiff;
 
         // Only perform the diff if the option was specified
         if (outputDiff) {
-            expectedVersusActualResolutionDiff = diff(expectedRecognition, recognizedUtterance);
+            expectedVersusActualResolutionDiff = diff(expectedRecognition, recognizedIntent);
         }
 
         results.push({
             inputUtterance: utterance,
             executionDuration: executionEnd.diff(executionStart),
-            recognized: recognizedUtterance,
+            recognized: recognizedIntent,
             recognizedDiff: expectedVersusActualResolutionDiff,
         });
     }

@@ -1,11 +1,11 @@
 // tslint:disable:no-console
 
-import * as util from 'util';
-import { IConversationProcessor } from "conversation-processor";
+import { IIntentResolver } from "conversation-processor";
 import * as inquirer from "inquirer";
-import { loadConverationProcessorFromConfiguration } from "./conversation-processor-configuration";
+import * as util from "util";
+import { loadIntentResolverFromConfiguration } from "./conversation-processor-configuration";
 
-let conversationProcessor: IConversationProcessor<any, any>|undefined;
+let intentResolver: IIntentResolver<any, any>|undefined;
 let currentConfigFile: string|undefined;
 
 export async function startReplLoop(configFile?: string) {
@@ -22,8 +22,8 @@ export async function startReplLoop(configFile?: string) {
         if (utterance.startsWith("#")) {
             await processReplCommand(utterance);
         } else {
-            if (conversationProcessor) {
-                const recognizedUtterance = await conversationProcessor.processUtterance({}, answer.UtterancePrompt);
+            if (intentResolver) {
+                const recognizedUtterance = await intentResolver.processUtterance({}, answer.UtterancePrompt);
 
                 console.log(util.inspect(recognizedUtterance, false, null, true));
             } else {
@@ -75,7 +75,7 @@ async function processReplReloadCommand() {
     console.log(`Reloading configuration from ${currentConfigFile}...`);
 
     try {
-        conversationProcessor = await loadConverationProcessorFromConfiguration(currentConfigFile);
+        intentResolver = await loadIntentResolverFromConfiguration(currentConfigFile);
     } catch (error) {
         console.error("Failed to reload configuration: ", error);
 
@@ -95,7 +95,7 @@ async function processReplConfigurationCommand(configFile: string|null) {
     console.log(`Loading conversation configuration from "${configFile}"...`);
 
     try {
-        conversationProcessor = await loadConverationProcessorFromConfiguration(configFile);
+        intentResolver = await loadIntentResolverFromConfiguration(configFile);
     } catch (error) {
         console.error("ERROR: Could not load conversation processor from specified configuration file.", error);
 

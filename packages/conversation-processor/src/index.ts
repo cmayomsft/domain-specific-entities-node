@@ -1,3 +1,5 @@
 export * from "./core-types";
-export * from "./create-conversation-processor";
+export * from "./create-intent-resolver";
 export * from "./entities";
+export * from "./utilities";
+
