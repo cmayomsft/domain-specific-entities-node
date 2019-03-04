@@ -3,7 +3,7 @@
 import { IIntentResolver } from "conversation-processor";
 import * as inquirer from "inquirer";
 import * as util from "util";
-import { loadIntentResolverFromConfiguration } from "./conversation-processor-configuration";
+import { loadIntentResolverFromConfiguration } from "../conversation-processor-configuration";
 
 let intentResolver: IIntentResolver<any, any>|undefined;
 let currentConfigFile: string|undefined;
