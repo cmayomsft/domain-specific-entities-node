@@ -9,7 +9,7 @@ export interface TokenFlowEntity extends Entity {
     type: "token-flow";
     $raw: any;
     name: string;
-    pid: PID;
+    pid: number;
 }
 
 export interface EntityToken extends CompositeToken {
@@ -23,10 +23,9 @@ export function isEntityToken(token: Token): token is EntityToken {
 }
 
 export interface TokenFlowEnrichedEntity extends Entity {
-    readonly pid: PID;
-    readonly $tokenFlowEntity: TokenFlowEntity;
+    readonly entityToken: EntityToken;
 }
 
 export function isTokenFlowEnrichedEntity(entity: Entity): entity is TokenFlowEnrichedEntity {
-    return (entity as TokenFlowEnrichedEntity).$tokenFlowEntity !== undefined;
+    return (entity as TokenFlowEnrichedEntity).entityToken !== undefined;
 }

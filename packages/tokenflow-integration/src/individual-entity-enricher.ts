@@ -1,12 +1,17 @@
 import * as flatMap from "array.prototype.flatmap";
 import { Entity, IIntentEnricher } from "conversation-processor";
 import { CompositeRecognizer, Recognizer, WORD } from "token-flow";
-import { isEntityToken, TokenFlowEnrichedEntity } from "./types";
+import { EntityToken, isEntityToken, TokenFlowEnrichedEntity } from "./types";
 import { isStringArray, loadTokenFileIntoPatternRecognizer } from "./utilities";
 
 flatMap.shim();
 
 export type EntityWordSelector<TEntity extends Entity> = (entity: TEntity) => string|string[]|undefined;
+
+// TODO: finish this utility method
+// export function splitEntityWords<TEntity extends Entity>(entityValueSelector: (entity: TEntity) => string): EntityWordSelector<TEntity> {
+//     return (entity: TEntity) => entityValueSelector(entity).split(' ');
+// }
 
 export function createTokenFlowEntityEnricher<TConversationContext, TEntity extends Entity>(
     entityWordSelector: EntityWordSelector<TEntity>,
@@ -25,50 +30,56 @@ export function createTokenFlowEntityEnricher<TConversationContext, TEntity exte
 
     return {
         enrich: async (_, ri) => {
-            // Map out the existing entities and apply the entity word selector
-            const originalEntitiesWithSelectedWords = ri.entities
-                .map((e) => ({ Entity: e, SelectedWords: entityWordSelector(e as TEntity) }));
+            // Map the existing entities, applying the entity word selector, into WORD tokens
+            const entityWordTokens = ri.entities
+                .map((e) => ({ Entity: e, SelectedWords: entityWordSelector(e as TEntity) }))
+                .flatMap((it) => {
+                    const selectedWords = it.SelectedWords;
 
-            // Convert any/all selected words into WORD tokens for TokenFlow
-            const selectedWordTokens = originalEntitiesWithSelectedWords
-                .flatMap((ew) => ew.SelectedWords ? ew.SelectedWords : [])
-                .map((w) => ({ type: WORD, text: w }));
+                    if (selectedWords === undefined) {
+                        return [];
+                    }
 
-            // If the selector didn't provide any words for processing, then we can just return the original RecognizedIntent
-            if (selectedWordTokens.length === 0) {
-                return ri;
-            }
+                    if (typeof selectedWords === "string") {
+                        return [ { type: WORD, text: it.SelectedWords, $dse_sourceEntity: it.Entity } ];
+                    }
+
+                    return selectedWords.map((sw) => ({ type: WORD, text: sw, $dse_sourceEntity: it.Entity }));
+                });
 
             // Run the selected word tokens through TokenFlow
-            const tokens = tokenFlowRecognizer.apply(selectedWordTokens);
+            const tokens = tokenFlowRecognizer.apply(entityWordTokens);
 
-            // Map the original entities through, marrying up any ENTITY tokens from TokenFlow via type intersection
-            let nextMappedTokenIndex = 0;
-            const finalMappedEntities = originalEntitiesWithSelectedWords.map((oewsw, i) => {
-                const originalEntity = originalEntitiesWithSelectedWords[i].Entity;
+            const entityTokensByEntity = new Map<object, EntityToken>();
 
-                // If the entity selector originally produced words, then check for TokenFlow results
-                if (oewsw.SelectedWords) {
-                    const token = tokens[nextMappedTokenIndex++];
+            // Create a map of all ENTITY tokens to their source entities
+            tokens
+                .filter(isEntityToken)
+                .forEach((et) => {
+                    entityTokensByEntity.set((et.children[0] as any).$dse_sourceEntity, et);
 
-                    // If the TokenFlow entity produced an EntityToken then we want to intersect those details with the original entity
-                    if (isEntityToken(token)) {
-                        return {
-                            ...originalEntity,
-                            pid: token.pid,
-                            $tokenFlowEntity: token,
-                        };
-                    }
+                    et.children.forEach((c) => delete (c as any).$dse_sourceEntity);
+                });
+
+            const finalMappedEntities = ri.entities.map((e) => {
+                const entityToken = entityTokensByEntity.get(e);
+
+                // If an ENTITY token was found for this entity, return the entity intersected with the TokenFlow details
+                if (entityToken) {
+                    return {
+                        ...e,
+                        entityToken,
+                    };
                 }
 
-                // No matching EntityToken for this entity, just use the original entity
-                return originalEntity;
+                // No matching ENTITY token for this entity, just return the original entity
+                return e;
             });
 
             return {
                 utterance: ri.utterance,
                 intent: ri.intent,
-                entities: [...finalMappedEntities],
+                entities: finalMappedEntities,
             };
         },
     };
