@@ -5,7 +5,7 @@ describe("Type inference tests", () => {
         const processor = createIntentResolver(
             createRecognizerChain(
                 createRegexRecognizer(/foo/g),
-                createLuisRecognizer(),
+                createTestNlpRecognizer(),
             ),
             // createEnricher1(),
             createEnricherPipeline(
@@ -14,7 +14,7 @@ describe("Type inference tests", () => {
                 enrichSpecificIntent("special-intent-only", createEnricher3()),
             ));
 
-        const ru = await processor.processUtterance({ contextProp: 123 }, "what's can you do?");
+        const ru = await processor.processUtterance({ contextProp: 123 }, "what can you do?");
 
         if (ru === null) {
             expect(ru).not.toBeNull();
@@ -28,6 +28,7 @@ describe("Type inference tests", () => {
             }
 
             if (isEnriched3(e)) {
+                e.enrichedProp2;
                 e.enrichedProp3;
             }
 
@@ -83,13 +84,13 @@ interface TestNlpEntity extends Entity {
     readonly $rawNlpResult: any;
 }
 
-function createLuisRecognizer<TConversationContext>(): IIntentRecognizer<TConversationContext, TestNlpEntity> {
+function createTestNlpRecognizer<TConversationContext>(): IIntentRecognizer<TConversationContext, TestNlpEntity> {
     return {
         recognize: async (c, u) => {
             return {
                 utterance: u,
-                intent: "some-luis-determined-intent",
-                entities: [ {type: "nlp", name: "first-entity", $rawNlpResult: {} }, { type: "nlp", name: "second-entity", $rawNlpResult: {} }],
+                intent: "some-nlp-determined-intent",
+                entities: [ {type: "nlp", name: "first-entity", $rawNlpResult: { someRawNlpProperty: "raw" } }, { type: "nlp", name: "second-entity", $rawNlpResult: {} }],
             };
         },
     };

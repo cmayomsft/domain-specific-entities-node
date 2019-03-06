@@ -1,6 +1,6 @@
 [
     {
-        "text": "can i get a cod filet medium french fries and a sockeye sandwich",
+        "utterance": "can i get a cod filet medium french fries and a sockeye sandwich",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -25,7 +25,7 @@
         ]
     },
     {
-        "text": "can i get a cod filet and a coke",
+        "utterance": "can i get a cod filet and a coke",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -44,7 +44,7 @@
         ]
     },    
     {
-        "text": "can i get two medium french fries and two medium coke",
+        "utterance": "can i get two medium french fries and two medium coke",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -73,7 +73,7 @@
         ]
     },   
     {
-        "text": "can i get two dakota burgers with coke",
+        "utterance": "can i get two dakota burgers with coke",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -97,7 +97,7 @@
         ]
     },
     {
-        "text": "can i get a small coffee with two sugar and two cream",
+        "utterance": "can i get a small coffee with two sugar and two cream",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -132,7 +132,7 @@
         ]
     },
     {
-        "text": "can i get a three cod filet and coke",
+        "utterance": "can i get a three cod filet and coke",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -156,7 +156,7 @@
         ]
     },
     {
-        "text": "can i get three dakota burgers and two coke",
+        "utterance": "can i get three dakota burgers and two coke",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -185,7 +185,7 @@
         ]
     },
     {
-        "text": "can i get a surf n turf with a sweet tea",
+        "utterance": "can i get a surf n turf with a sweet tea",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -204,7 +204,7 @@
         ]
     },
     {
-        "text": "can i get a chicken breast with a coke",
+        "utterance": "can i get a chicken breast with a coke",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -223,7 +223,7 @@
         ]
     },
     {
-        "text": "can i get a chicago dog with a coffee",
+        "utterance": "can i get a chicago dog with a coffee",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -242,7 +242,7 @@
         ]
     },
     {
-        "text": "can i get two big apple burger with coffee",
+        "utterance": "can i get two big apple burger with coffee",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -266,7 +266,7 @@
         ]
     },
     {
-        "text": "can i get a dakota burger please",
+        "utterance": "can i get a dakota burger please",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -279,7 +279,7 @@
         ]
     },
     {
-        "text": "can i get two dakota burger please",
+        "utterance": "can i get two dakota burger please",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -297,7 +297,7 @@
         ]
     },
     {
-        "text": "hi can i get three dakota burger a diet coke and two cheeseburger please",
+        "utterance": "hi can i get three dakota burger a diet coke and two cheeseburger please",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -332,7 +332,7 @@
         ]
     },
     {
-        "text": "can i get a diet coke and a iced tea",
+        "utterance": "can i get a diet coke and a iced tea",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -351,7 +351,7 @@
         ]
     },
     {
-        "text": "i want three cheeseburger",
+        "utterance": "i want three cheeseburger",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -369,7 +369,7 @@
         ]
     },
     {
-        "text": "i want four cheeseburger",
+        "utterance": "i want four cheeseburger",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -387,7 +387,7 @@
         ]
     },
     {
-        "text": "i want six cheeseburger",
+        "utterance": "i want six cheeseburger",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -405,7 +405,7 @@
         ]
     },
     {
-        "text": "three cheeseburger",
+        "utterance": "three cheeseburger",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -423,7 +423,7 @@
         ]
     },
     {
-        "text": "four cheeseburger",
+        "utterance": "four cheeseburger",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -441,7 +441,7 @@
         ]
     },
     {
-        "text": "can i get a Grilled Pet Chicken Sandwich with barbecue sauce",
+        "utterance": "can i get a Grilled Pet Chicken Sandwich with barbecue sauce",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -460,7 +460,7 @@
         ]
     },
     {
-        "text": "can i have a dakota burger",
+        "utterance": "can i have a dakota burger",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -473,7 +473,7 @@
         ]
     },
     {
-        "text": "dakota burger",
+        "utterance": "dakota burger",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -486,7 +486,7 @@
         ]
     },
     {
-        "text": "let me get a surf n turf",
+        "utterance": "let me get a surf n turf",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -499,7 +499,7 @@
         ]
     },
     {
-        "text": "can i have a surf n turf with a medium coffee",
+        "utterance": "can i have a surf n turf with a medium coffee",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -518,7 +518,7 @@
         ]
     },
     {
-        "text": "i'd like the surf n turf with a coffee",
+        "utterance": "i'd like the surf n turf with a coffee",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -537,7 +537,7 @@
         ]
     },
     {
-        "text": "give me a surf turf combo and a medium diet coke",
+        "utterance": "give me a surf turf combo and a medium diet coke",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -562,7 +562,7 @@
         ]
     },
     {
-        "text": "can i get a surf turf combo meal",
+        "utterance": "can i get a surf turf combo meal",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -575,7 +575,7 @@
         ]
     },
     {
-        "text": "set up a cod filet",
+        "utterance": "set up a cod filet",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -588,7 +588,7 @@
         ]
     },
     {
-        "text": "can i get a cod filet and a diet coke please",
+        "utterance": "can i get a cod filet and a diet coke please",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -607,7 +607,7 @@
         ]
     },
     {
-        "text": "i'd like a dakota burger and a beef patty and three surf turf meals",
+        "utterance": "i'd like a dakota burger and a beef patty and three surf turf meals",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -637,7 +637,7 @@
         ]
     },
     {
-        "text": "can i get a three dakota burgers and a beef patty meal please",
+        "utterance": "can i get a three dakota burgers and a beef patty meal please",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -661,7 +661,7 @@
         ]
     },
     {
-        "text": "can i get a surf n turf meal please and a coke",
+        "utterance": "can i get a surf n turf meal please and a coke",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -680,7 +680,7 @@
         ]
     },
     {
-        "text": "can i get a beef patty",
+        "utterance": "can i get a beef patty",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -693,7 +693,7 @@
         ]
     },
     {
-        "text": "can i get the cheeseburger",
+        "utterance": "can i get the cheeseburger",
         "intent": "AddToOrder",
         "entities": 
         [
@@ -706,7 +706,7 @@
         ]
     },
     {
-        "text": "can i get a seattle dog and a large coffee with two milk",
+        "utterance": "can i get a seattle dog and a large coffee with two milk",
         "intent": "AddToOrder",
         "entities": 
         [
