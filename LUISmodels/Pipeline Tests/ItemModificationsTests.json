@@ -1,0 +1,1054 @@
+[
+    {
+        "text": "can i get two medium dakota burger meal one with coke and one with a iced tea and an extra medium iced tea",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 10,
+                "endPos": 12
+            },
+            {
+                "entity": "Product",
+                "startPos": 14,
+                "endPos": 32,
+                "productCode": 8936
+            },
+            {
+                "entity": "Product",
+                "startPos": 43,
+                "endPos": 46,
+                "productCode": 521
+            },
+            {
+                "entity": "Product",
+                "startPos": 63,
+                "endPos": 68,
+                "productCode": 721
+            },
+            {
+                "entity": "ExtraItem",
+                "startPos": 77,
+                "endPos": 95
+            },
+            {
+                "entity": "Product",
+                "startPos": 83,
+                "endPos": 95,
+                "productCode": 721
+            }
+        ]
+    },
+    {
+        "text": "can i get a hamburger two medium french fries one no salt and a beef patty with cheese add mayonnaise",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 20,
+                "productCode": 1
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 22,
+                "endPos": 24
+            },
+            {
+                "entity": "Product",
+                "startPos": 26,
+                "endPos": 44,
+                "productCode": 8932
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 46,
+                "endPos": 48
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 50,
+                "endPos": 56
+            },            
+            {
+                "entity": "Product",
+                "startPos": 53,
+                "endPos": 56,
+                "productCode": 911
+            },            
+            {
+                "entity": "Product",
+                "startPos": 64,
+                "endPos": 90,
+                "productCode": 7
+            },
+            {
+                "entity": "AddItem",
+                "startPos": 92,
+                "endPos": 105
+            },            
+            {
+                "entity": "Product",
+                "startPos": 96,
+                "endPos": 105,
+                "productCode": 918
+            }
+        ]
+    },
+    {
+        "text": "can i get a hamburger two medium french fries one no salt one extra salt three beef patty with cheese one with mayonnaise and the other two no pickle",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 20,
+                "productCode": 1
+            },            
+            {
+                "entity": "builtin.number",
+                "startPos": 22,
+                "endPos": 24
+            },
+            {
+                "entity": "Product",
+                "startPos": 26,
+                "endPos": 44,
+                "productCode": 8932
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 46,
+                "endPos": 48
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 50,
+                "endPos": 56
+            },
+            {
+                "entity": "Product",
+                "startPos": 53,
+                "endPos": 56,
+                "productCode": 911
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 58,
+                "endPos": 60
+            },
+            {
+                "entity": "ExtraItem",
+                "startPos": 62,
+                "endPos": 71
+            },            
+            {
+                "entity": "Product",
+                "startPos": 68,
+                "endPos": 71,
+                "productCode": 911
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 73,
+                "endPos": 77
+            },
+            {
+                "entity": "Product",
+                "startPos": 79,
+                "endPos": 105,
+                "productCode": 7
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 107,
+                "endPos": 109
+            },
+            {
+                "entity": "Product",
+                "startPos": 116,
+                "endPos": 125,
+                "productCode": 918
+            },
+            {
+                "entity": "builtin.number",
+                "startPos": 141,
+                "endPos": 143
+            },         
+            {
+                "entity": "RemoveItem",
+                "startPos": 145,
+                "endPos": 153
+            },
+            {
+                "entity": "Product",
+                "startPos": 148,
+                "endPos": 153,
+                "productCode": 914
+            }
+        ]
+    },
+    {
+        "text": "can i get a dakota burger meal with no pickle and a iced tea",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 23,
+                "productCode": 8936
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 30,
+                "endPos": 38
+            },   
+            {
+                "entity": "Product",
+                "startPos": 33,
+                "endPos": 38,
+                "productCode": 914
+            },
+            {
+                "entity": "Product",
+                "startPos": 46,
+                "endPos": 51,
+                "productCode": 721
+            }
+        ]
+    },
+    {
+        "text": "can i get a cod filet meal with tomato and a coke extra ice",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 28,
+                "productCode": 8944
+            },
+            {
+                "entity": "Product",
+                "startPos": 35,
+                "endPos": 40,
+                "productCode": 3908
+            },   
+            {
+                "entity": "Product",
+                "startPos": 48,
+                "endPos": 51,
+                "productCode": 521
+            },
+            {
+                "entity": "ExtraItem",
+                "startPos": 53,
+                "endPos": 61
+            },
+            {
+                "entity": "Product",
+                "startPos": 59,
+                "endPos": 61,
+                "productCode": 973
+            }
+        ]
+    },
+    {
+        "text": "can i get a seattle dog with a coke and fries with extra salt",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 23,
+                "productCode": 8944
+            },
+            {
+                "entity": "Product",
+                "startPos": 32,
+                "endPos": 35,
+                "productCode": 521
+            },
+            {
+                "entity": "Product",
+                "startPos": 41,
+                "endPos": 45,
+                "productCode": 8932
+            },            
+            {
+                "entity": "ExtraItem",
+                "startPos": 52,
+                "endPos": 61
+            },
+            {
+                "entity": "Product",
+                "startPos": 58,
+                "endPos": 61,
+                "productCode": 911
+            }
+        ]
+    },
+    {
+        "text": "can i have a burger with bacon",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 13,
+                "endPos": 18,
+                "productCode": 1
+            },
+            {
+                "entity": "Product",
+                "startPos": 25,
+                "endPos": 29,
+                "resolution": {
+                    "values": [
+                        9184,
+                        6020,
+                        6166,
+                        9045,
+                        5683
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "text": "can i get a down easter with no cheese and a fried petaluma chicken with no lettuce",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 23,
+                "productCode": 5926
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 30,
+                "endPos": 38
+            },
+            {
+                "entity": "Product",
+                "startPos": 33,
+                "endPos": 38,
+                "productCode": 148
+            },
+            {
+                "entity": "Product",
+                "startPos": 46,
+                "endPos": 54,
+                "productCode": 4314
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 61,
+                "endPos": 70
+            },
+            {
+                "entity": "Product",
+                "startPos": 64,
+                "endPos": 70,
+                "productCode": 3909
+            }
+        ]
+    },
+    {
+        "text": "can i get a filet-o-fish with no cheese",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 23,
+                "productCode": 5926
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 30,
+                "endPos": 38
+            },
+            {
+                "entity": "Product",
+                "startPos": 33,
+                "endPos": 38,
+                "productCode": 148
+            }
+        ]
+    },
+    {
+        "text": "i got a down east fish sandwich with no american cheese and a fried petaluma chicken with no shredded lettuce",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 8,
+                "endPos": 19,
+                "productCode": 5926
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 26,
+                "endPos": 43
+            },
+            {
+                "entity": "Product",
+                "startPos": 29,
+                "endPos": 43,
+                "productCode": 148
+            },
+            {
+                "entity": "Product",
+                "startPos": 51,
+                "endPos": 59,
+                "productCode": 4314
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 66,
+                "endPos": 84
+            },
+            {
+                "entity": "Product",
+                "startPos": 78,
+                "endPos": 84,
+                "productCode": 3909
+            }
+        ]
+    },
+    {
+        "text": "dakota burger with no shredded lettuce and no pickle please and also a fried petaluma chicken with cheese extra cheese please",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 0,
+                "endPos": 6,
+                "productCode": 5
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 13,
+                "endPos": 31
+            },
+            {
+                "entity": "Product",
+                "startPos": 16,
+                "endPos": 31,
+                "productCode": 3909
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 37,
+                "endPos": 45
+            },
+            {
+                "entity": "Product",
+                "startPos": 40,
+                "endPos": 45,
+                "productCode": 914
+            },
+            {
+                "entity": "Product",
+                "startPos": 65,
+                "endPos": 73,
+                "productCode": 4314
+            },
+            {
+                "entity": "Product",
+                "startPos": 80,
+                "endPos": 85,
+                "productCode": 148
+            },
+            {
+                "entity": "ExtraItem",
+                "startPos": 87,
+                "endPos": 98
+            },
+            {
+                "entity": "Product",
+                "startPos": 93,
+                "endPos": 98,
+                "productCode": 148
+            }
+        ]
+    },
+    {
+        "text": "dakota burger with no shredded lettuce and no pickle please add pickle and shredded lettuce",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 0,
+                "endPos": 6,
+                "productCode": 148
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 13,
+                "endPos": 31
+            },
+            {
+                "entity": "Product",
+                "startPos": 16,
+                "endPos": 31,
+                "productCode": 148
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 37,
+                "endPos": 45
+            },
+            {
+                "entity": "Product",
+                "startPos": 40,
+                "endPos": 45,
+                "productCode": 148
+            },
+            {
+                "entity": "ExtraItem",
+                "startPos": 54,
+                "endPos": 63
+            },
+            {
+                "entity": "Product",
+                "startPos": 58,
+                "endPos": 63,
+                "productCode": 148
+            },
+            {
+                "entity": "Product",
+                "startPos": 69,
+                "endPos": 84,
+                "productCode": 148
+            }
+        ]
+    },
+    {
+        "text": "dakota burger with no shredded lettuce and no pickle please add pickle",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 0,
+                "endPos": 6,
+                "productCode": 5
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 13,
+                "endPos": 31
+            },
+            {
+                "entity": "Product",
+                "startPos": 16,
+                "endPos": 31,
+                "productCode": 3909
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 37,
+                "endPos": 45
+            },
+            {
+                "entity": "Product",
+                "startPos": 40,
+                "endPos": 45,
+                "productCode": 914
+            },
+            {
+                "entity": "ExtraItem",
+                "startPos": 54,
+                "endPos": 63
+            },
+            {
+                "entity": "Product",
+                "startPos": 58,
+                "endPos": 63,
+                "productCode": 914
+            }
+        ]
+    },
+    {
+        "text": "i got a down east fish sandwich with no american cheese and a fried petaluma chicken with no shredded lettuce",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 8,
+                "endPos": 19,
+                "productCode": 5926
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 26,
+                "endPos": 43
+            },
+            {
+                "entity": "Product",
+                "startPos": 29,
+                "endPos": 43,
+                "productCode": 148
+            },
+            {
+                "entity": "Product",
+                "startPos": 51,
+                "endPos": 59,
+                "productCode": 4314
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 66,
+                "endPos": 84
+            },
+            {
+                "entity": "Product",
+                "startPos": 69,
+                "endPos": 84,
+                "productCode": 3909
+            }
+        ]
+    },
+    {
+        "text": "can i get three fish filet and ice latte and now no ice on a latte",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "builtin.number",
+                "startPos": 10,
+                "endPos": 14
+            },
+            {
+                "entity": "Product",
+                "startPos": 16,
+                "endPos": 25,
+                "productCode": 5926
+            },
+            {
+                "entity": "Product",
+                "startPos": 31,
+                "endPos": 39,
+                "productCode": 7606
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 49,
+                "endPos": 54
+            },
+            {
+                "entity": "Product",
+                "startPos": 52,
+                "endPos": 54,
+                "productCode": 973
+            },
+            {
+                "entity": "Product",
+                "startPos": 61,
+                "endPos": 65,
+                "productCode": 2698
+            }
+        ]
+    },
+    {
+        "text": "a beef patty and a beef patty with cheese and a fish filet",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 2,
+                "endPos": 16,
+                "productCode": 6
+            },
+            {
+                "entity": "Product",
+                "startPos": 24,
+                "endPos": 50,
+                "productCode": 7
+            },
+            {
+                "entity": "Product",
+                "startPos": 58,
+                "endPos": 72,
+                "productCode": 8944
+            }
+        ]
+    },
+    {
+        "text": "can i get a beef patty with cheese",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 43,
+                "productCode": 8941
+            }
+        ]
+    },
+    {
+        "text": "can i have a dakota burger diet coke a half dozen wings with ranch that's all",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 13,
+                "endPos": 30,
+                "productCode": 8936
+            },
+            {
+                "entity": "Product",
+                "startPos": 32,
+                "endPos": 40,
+                "productCode": 652
+            },
+            {
+                "entity": "Product",
+                "startPos": 44,
+                "endPos": 53,
+                "productCode": 8759
+            },
+            {
+                "entity": "Product",
+                "startPos": 60,
+                "endPos": 64,
+                "productCode": 930
+            },
+            {
+                "entity": "CompletedOrder",
+                "startPos": 66,
+                "endPos": 74
+            }
+        ]
+    },
+    {
+        "text": "twelve piece chicken wings with barbecue",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 0,
+                "endPos": 17,
+                "productCode": 8946
+            },
+            {
+                "entity": "Product",
+                "startPos": 29,
+                "endPos": 36,
+                "productCode": 900
+            }
+        ]
+    },
+    {
+        "text": "let me get a dakota burger with no pickles and extra fries",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 13,
+                "endPos": 19,
+                "productCode": 5
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 26,
+                "endPos": 34
+            },
+            {
+                "entity": "Product",
+                "startPos": 29,
+                "endPos": 34,
+                "productCode": 914
+            },
+            {
+                "entity": "ExtraItem",
+                "startPos": 40,
+                "endPos": 50
+            },
+            {
+                "entity": "Product",
+                "startPos": 46,
+                "endPos": 50,
+                "productCode": 8932
+            }
+        ]
+    },
+    {
+        "text": "let me have a bacon egg and cheese biscuit meal with tomatoes and a polish sausage with swiss cheese",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 14,
+                "endPos": 46,
+                "productCode": 250
+            },
+            {
+                "entity": "Product",
+                "startPos": 53,
+                "endPos": 58,
+                "productCode": 3908
+            },
+            {
+                "entity": "Product",
+                "startPos": 66,
+                "endPos": 85,
+                "productCode": 83
+            },
+            {
+                "entity": "Product",
+                "startPos": 92,
+                "endPos": 103,
+                "productCode": 9149
+            }
+        ]
+    },
+    {
+        "text": "can i get a cod filet combo with no american cheese",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 29,
+                "productCode": 8944
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 36,
+                "endPos": 53
+            },
+            {
+                "entity": "Product",
+                "startPos": 39,
+                "endPos": 53,
+                "productCode": 148
+            }
+        ]
+    },
+    {
+        "text": "can i get a dakota burger meal with a coke and can i get no pickle on the sandwich please",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 23,
+                "productCode": 8936
+            },
+            {
+                "entity": "Product",
+                "startPos": 32,
+                "endPos": 35,
+                "productCode": 521
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 51,
+                "endPos": 75
+            },
+            {
+                "entity": "Product",
+                "startPos": 54,
+                "endPos": 59,
+                "productCode": 914
+            }
+        ]
+    },
+    {
+        "text": "Can I get a dakota burger without sauce",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 18,
+                "productCode": 5
+            }
+            {
+                "entity": "RemoveItem",
+                "startPos": 20,
+                "endPos": 32
+            },
+            {
+                "entity": "Product",
+                "startPos": 28,
+                "endPos": 32,
+                "productCode": 9049
+            }
+        ]
+    },
+    {
+        "text": "Can I get a beef patty without onion",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 26,
+                "productCode": 6
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 28,
+                "endPos": 40
+            },
+            {
+                "entity": "Product",
+                "startPos": 36,
+                "endPos": 40,
+                "resolution": {
+                    "values": [
+                        3885,
+                        913
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "text": "Can I get a fried petaluma chicken no lettuce",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 20,
+                "productCode": 4314
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 22,
+                "endPos": 31
+            },
+            {
+                "entity": "Product",
+                "startPos": 25,
+                "endPos": 31,
+                "productCode": 3909
+            }
+        ]
+    },
+    {
+        "text": "give me a number seven with a coffee no pickle with that",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 10,
+                "endPos": 21,
+                "productCode": 8944
+            },
+            {
+                "entity": "Product",
+                "startPos": 30,
+                "endPos": 35,
+                "productCode": 321
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 37,
+                "endPos": 45
+            },
+            {
+                "entity": "Product",
+                "startPos": 40,
+                "endPos": 45,
+                "productCode": 914
+            }
+        ]
+    },
+    {
+        "text": "french fries with extra salt",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 0,
+                "endPos": 11,
+                "productCode": 8932
+            },
+            {
+                "entity": "ExtraItem",
+                "startPos": 18,
+                "endPos": 27
+            },
+            {
+                "entity": "Product",
+                "startPos": 24,
+                "endPos": 27,
+                "productCode": 911
+            }
+        ]
+    },
+    {
+        "text": "can i get a dakota burgers and a diet coke can i get no pickle on the sandwich",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 19,
+                "productCode": 5
+            },
+            {
+                "entity": "Product",
+                "startPos": 27,
+                "endPos": 35,
+                "productCode": 652
+            },
+            {
+                "entity": "RemoveItem",
+                "startPos": 47,
+                "endPos": 55
+            },
+            {
+                "entity": "Product",
+                "startPos": 50,
+                "endPos": 55,
+                "productCode": 914
+            }
+        ]
+    },
+    {
+        "text": "can i get a beef patty with cheese",
+        "intent": "AddToOrder",
+        "entities": 
+        [
+            {
+                "entity": "Product",
+                "startPos": 12,
+                "endPos": 54,
+                "productCode": 5198
+            }
+        ]
+    }
+]
