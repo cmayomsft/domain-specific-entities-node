@@ -1,0 +1,88 @@
+> # Intent definitions
+
+## AddToOrder
+- can i have a {Item=fried chicken} with a {Item=coke}
+- can i have two {Item=dakota} a {Item=diet coke} and three {Item=hamburgers}
+- can i please have three medium {Item=french fries} and two {Item=coke}
+- get me an {Item=iced tea} and a {Item=coke}
+- get me four {Item=dakota burgers} and a {Item=beef patty} please
+- give me a {Item=big apple} and a large {Item=coffee} with two {Item=milk}
+- give me a {Item=cod filet} please and a medium {Item=diet coke}
+- give me a {Item=dakota} with {Item=coke} please
+- give me a {Item=fish patty} small {Item=fries} and an {Item=angus patty}
+- give me a {Item=seattle dog} with an {Item=iced tea}
+- give me a {Item=surf n turf} combo meal
+- give me a {Item=surf n turf} meal please
+- give me a {Item=surf n turf} with a large {Item=unsweetened tea}
+- i want a {Item=dakota burger}
+- i want four {Item=hot dogs}
+- i'd like a {Item=cod filet} and a {Item=coffee}
+- i'd like three {Item=big apple} with {Item=coke}
+- i'd like to order a {Item=grilled pet chicken sandwich} with {Item=swiss cheese}
+- set me up with a {Item=cod filet sandwich}
+- three {Item=hot dogs}
+- we'd like a {Item=surf n turf} combo and a large {Item=coke}
+- yeah i'd like a medium {Item=coffee} with two {Item=sugars} please
+
+
+## None
+- do you think we can get there in time
+- hey can i call you back
+- what is your favorite flavor of {Item=burger}
+- what time is your meeting again
+
+
+
+> # Entity definitions
+
+$Item:simple
+
+
+> # PREBUILT Entity definitions
+
+$PREBUILT:number
+
+
+> # Phrase list definitions
+
+$MenuItem:phraseList
+- hamburger,beefburger,fish filet,strawberry milkshake,chocolate flavor milkshake,strawberry flavor milkshake,vanilla milkshake,milkshake,coffee,hashbrowns,coke,diet coke,fanta,lemonade,french fries,cheese,bacon,burger,fries,chocolate,water,sprite,cheeseburger,ice cream,mcmuffin,double cheeseburger,hot fudge sundae,egg sandwich,breakfast burrito,sausage mcmuffin,bacon biscuit,hash browns,steak biscuit,breakfast sandwich,chicken sandwich,bacon cheeseburger,sausage sandwich,cheese burger,onion rings,double burger,mayo,ketchup,mustard,lettuce,mayonnaise,tomato,dressing,pickles,salt,onion,tomatoes,swiss cheese,american cheese,tartar sauce,chocolate latte,ice mocha shake,root beer,creams,ginger ale,milk,chicken,onions,pizza,eggs,cheddar,salad,fish,swiss cheese slice,sliced red onion,dijon mustard,teriyaki sauce,barbecue sauce,pickle,relish,cream cheese,jalapenos,jalapeÃ±os,mozzarella,avocado,capers,sour cream,jalepenos,cheddar cheese,surf n turf,iced tea,unsweetened iced tea,unsweet iced tea,orange juice,hot chocolate,cappuccino,tea,bottled water,green tea,dakota,cappucino,juice,dakota burger,grilled pet chicken sandwich,grilled pet chicken,fried pet chicken,fried pet chicken sandwich,angus,angus patty,sugar,cream
+
+> # List entities
+
+$meal:Meal=
+- meal
+- combo
+- combo meal
+- extra value
+- extra value meal
+- combos
+- comboi meals
+- extra values
+- extra value meals
+
+
+
+$size:small=
+- small
+- Small
+- smaller
+- tall
+
+$size:medium=
+- medium
+- grand
+- grande
+- Medium
+
+$size:large=
+- large
+- venti
+- Large
+
+$size:extra large=
+- extra large
+- trenta
+
+
+

@@ -1,415 +1,415 @@
 [
-    {
-      "text": "can i have a fried chicken with a coke",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 13,
-          "endPos": 25
-        },
-        {
-          "entity": "Item",
-          "startPos": 34,
-          "endPos": 37
-        }
-      ]
-    },
-    {
-      "text": "can i have two dakota a diet coke and three hamburgers",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 15,
-          "endPos": 20
-        },
-        {
-          "entity": "Item",
-          "startPos": 24,
-          "endPos": 32
-        },
-        {
-          "entity": "Item",
-          "startPos": 44,
-          "endPos": 53
-        }
-      ]
-    },
-    {
-      "text": "can i please have three medium french fries and two coke",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "size",
-          "startPos": 24,
-          "endPos": 29
-        },  
-        {
-          "entity": "Item",
-          "startPos": 31,
-          "endPos": 42
-        },
-        {
-          "entity": "Item",
-          "startPos": 52,
-          "endPos": 55
-        }
-      ]
-    },
-    {
-      "text": "do you think we can get there in time",
-      "intent": "None",
-      "entities": []
-    },
-    {
-      "text": "get me an iced tea and a coke",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 10,
-          "endPos": 17
-        },
-        {
-          "entity": "Item",
-          "startPos": 25,
-          "endPos": 28
-        }
-      ]
-    },
-    {
-      "text": "get me four dakota burgers and a beef patty please",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 12,
-          "endPos": 25
-        },
-        {
-          "entity": "Item",
-          "startPos": 33,
-          "endPos": 42
-        }
-      ]
-    },
-    {
-      "text": "give me a big apple and a large coffee with two milk",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 10,
-          "endPos": 18
-        },
-        {
-          "entity": "size",
-          "startPos": 26,
-          "endPos": 30
-        },  
-        {
-          "entity": "Item",
-          "startPos": 32,
-          "endPos": 37
-        },
-        {
-          "entity": "Item",
-          "startPos": 48,
-          "endPos": 51
-        }
-      ]
-    },
-    {
-      "text": "give me a cod filet please and a medium diet coke",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 10,
-          "endPos": 18
-        },
-        {
-          "entity": "size",
-          "startPos": 33,
-          "endPos": 38
-        },  
-        {
-          "entity": "Item",
-          "startPos": 40,
-          "endPos": 48
-        }
-      ]
-    },
-    {
-      "text": "give me a dakota with coke please",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 10,
-          "endPos": 15
-        },
-        {
-          "entity": "Item",
-          "startPos": 22,
-          "endPos": 25
-        }
-      ]
-    },
-    {
-      "text": "give me a fish patty small fries and an angus patty",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 10,
-          "endPos": 19
-        },
-        {
-          "entity": "size",
-          "startPos": 21,
-          "endPos": 25
-        },          
-        {
-          "entity": "Item",
-          "startPos": 27,
-          "endPos": 31
-        },
-        {
-          "entity": "Item",
-          "startPos": 40,
-          "endPos": 50
-        }
-      ]
-    },
-    {
-      "text": "give me a seattle dog with an iced tea",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 10,
-          "endPos": 20
-        },
-        {
-          "entity": "Item",
-          "startPos": 30,
-          "endPos": 37
-        }
-      ]
-    },
-    {
-      "text": "give me a surf n turf combo meal",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 10,
-          "endPos": 20
-        },        
-        {
-          "entity": "meal",
-          "startPos": 22,
-          "endPos": 31
-        },        
-        {
-          "entity": "meal",
-          "startPos": 28,
-          "endPos": 31
-        }
-      ]
-    },
-    {
-      "text": "give me a surf n turf meal please",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 10,
-          "endPos": 20
-        },
-        {
-          "entity": "meal",
-          "startPos": 22,
-          "endPos": 25
-        }
-      ]
-    },
-    {
-      "text": "give me a surf n turf with a large unsweetened tea",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 10,
-          "endPos": 20
-        },
-        {
-          "entity": "size",
-          "startPos": 29,
-          "endPos": 34
-        },  
-        {
-          "entity": "Item",
-          "startPos": 35,
-          "endPos": 49
-        }
-      ]
-    },
-    {
-      "text": "hey can i call you back",
-      "intent": "None",
-      "entities": []
-    },
-    {
-      "text": "i want a dakota burger",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 9,
-          "endPos": 21
-        }
-      ]
-    },
-    {
-      "text": "i want four hot dogs",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 12,
-          "endPos": 19
-        }
-      ]
-    },
-    {
-      "text": "i'd like a cod filet and a coffee",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 11,
-          "endPos": 19
-        },
-        {
-          "entity": "Item",
-          "startPos": 27,
-          "endPos": 32
-        }
-      ]
-    },
-    {
-      "text": "i'd like three big apple with coke",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 15,
-          "endPos": 23
-        },
-        {
-          "entity": "Item",
-          "startPos": 30,
-          "endPos": 33
-        }
-      ]
-    },
-    {
-      "text": "i'd like to order a grilled pet chicken sandwich with swiss cheese",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 20,
-          "endPos": 47
-        },
-        {
-          "entity": "Item",
-          "startPos": 54,
-          "endPos": 65
-        }
-      ]
-    },
-    {
-      "text": "set me up with a cod filet sandwich",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 17,
-          "endPos": 34
-        }
-      ]
-    },
-    {
-      "text": "three hot dogs",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 6,
-          "endPos": 13
-        }
-      ]
-    },
-    {
-      "text": "we'd like a surf n turf combo and a large coke",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 12,
-          "endPos": 22
-        },
-        {
-          "entity": "size",
-          "startPos": 36,
-          "endPos": 40
-        },  
-        {
-          "entity": "Item",
-          "startPos": 42,
-          "endPos": 45
-        }
-      ]
-    },
-    {
-      "text": "what is your favorite flavor of burger",
-      "intent": "None",
-      "entities": [
-        {
-          "entity": "Item",
-          "startPos": 32,
-          "endPos": 37
-        }
-      ]
-    },
-    {
-      "text": "what time is your meeting again",
-      "intent": "None",
-      "entities": []
-    },
-    {
-      "text": "yeah i'd like a medium coffee with two sugars please",
-      "intent": "AddToOrder",
-      "entities": [
-        {
-          "entity": "size",
-          "startPos": 16,
-          "endPos": 21
-        },        
-        {
-          "entity": "Item",
-          "startPos": 23,
-          "endPos": 28
-        },
-        {
-          "entity": "Item",
-          "startPos": 39,
-          "endPos": 44
-        }
-      ]
-    }
-  ]
+  {
+    "text": "can i have a fried chicken with a coke",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 13,
+        "endPos": 25
+      },
+      {
+        "entity": "Item",
+        "startPos": 34,
+        "endPos": 37
+      }
+    ]
+  },
+  {
+    "text": "can i have two dakota a diet coke and three hamburgers",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 15,
+        "endPos": 20
+      },
+      {
+        "entity": "Item",
+        "startPos": 24,
+        "endPos": 32
+      },
+      {
+        "entity": "Item",
+        "startPos": 44,
+        "endPos": 53
+      }
+    ]
+  },
+  {
+    "text": "can i please have three medium french fries and two coke",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "size",
+        "startPos": 24,
+        "endPos": 29
+      },        
+      {
+        "entity": "Item",
+        "startPos": 31,
+        "endPos": 42
+      },
+      {
+        "entity": "Item",
+        "startPos": 52,
+        "endPos": 55
+      }
+    ]
+  },
+  {
+    "text": "get me an iced tea and a coke",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 10,
+        "endPos": 17
+      },
+      {
+        "entity": "Item",
+        "startPos": 25,
+        "endPos": 28
+      }
+    ]
+  },
+  {
+    "text": "get me four dakota burgers and a beef patty please",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 12,
+        "endPos": 25
+      },
+      {
+        "entity": "Item",
+        "startPos": 33,
+        "endPos": 42
+      }
+    ]
+  },
+  {
+    "text": "give me a big apple and a large coffee with two milk",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 10,
+        "endPos": 18
+      },
+      {
+        "entity": "size",
+        "startPos": 26,
+        "endPos": 30
+      },
+      {
+        "entity": "Item",
+        "startPos": 32,
+        "endPos": 37
+      },
+      {
+        "entity": "Item",
+        "startPos": 48,
+        "endPos": 51
+      }
+    ]
+  },
+  {
+    "text": "give me a cod filet please and a medium diet coke",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 10,
+        "endPos": 18
+      },
+      {
+        "entity": "size",
+        "startPos": 33,
+        "endPos": 38
+      },
+      {
+        "entity": "Item",
+        "startPos": 40,
+        "endPos": 48
+      }
+    ]
+  },
+  {
+    "text": "give me a dakota with coke please",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 10,
+        "endPos": 15
+      },
+      {
+        "entity": "Item",
+        "startPos": 22,
+        "endPos": 25
+      }
+    ]
+  },
+  {
+    "text": "give me a fish patty small fries and an angus patty",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 10,
+        "endPos": 19
+      },
+      {
+        "entity": "size",
+        "startPos": 21,
+        "endPos": 25
+      },
+      {
+        "entity": "Item",
+        "startPos": 27,
+        "endPos": 31
+      },
+      {
+        "entity": "Item",
+        "startPos": 40,
+        "endPos": 50
+      }
+    ]
+  },
+  {
+    "text": "give me a seattle dog with an iced tea",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 10,
+        "endPos": 20
+      },
+      {
+        "entity": "Item",
+        "startPos": 30,
+        "endPos": 37
+      }
+    ]
+  },
+  {
+    "text": "give me a surf n turf combo meal",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 10,
+        "endPos": 20
+      },
+      {
+        "entity": "meal",
+        "startPos": 22,
+        "endPos": 31
+      },
+      {
+        "entity": "meal",
+        "startPos": 28,
+        "endPos": 31
+      }
+    ]
+  },
+  {
+    "text": "give me a surf n turf meal please",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 10,
+        "endPos": 20
+      },
+      {
+        "entity": "meal",
+        "startPos": 22,
+        "endPos": 25
+      }
+    ]
+  },
+  {
+    "text": "give me a surf n turf with a large unsweetened tea",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 10,
+        "endPos": 20
+      },
+      {
+        "entity": "size",
+        "startPos": 29,
+        "endPos": 33
+      },
+      {
+        "entity": "Item",
+        "startPos": 35,
+        "endPos": 49
+      }
+    ]
+  },
+  {
+    "text": "i want a dakota burger",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 9,
+        "endPos": 21
+      }
+    ]
+  },
+  {
+    "text": "i want four hot dogs",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 12,
+        "endPos": 19
+      }
+    ]
+  },
+  {
+    "text": "i'd like a cod filet and a coffee",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 11,
+        "endPos": 19
+      },
+      {
+        "entity": "Item",
+        "startPos": 27,
+        "endPos": 32
+      }
+    ]
+  },
+  {
+    "text": "i'd like three big apple with coke",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 15,
+        "endPos": 23
+      },
+      {
+        "entity": "Item",
+        "startPos": 30,
+        "endPos": 33
+      }
+    ]
+  },
+  {
+    "text": "i'd like to order a grilled pet chicken sandwich with swiss cheese",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 20,
+        "endPos": 47
+      },
+      {
+        "entity": "Item",
+        "startPos": 54,
+        "endPos": 65
+      }
+    ]
+  },
+  {
+    "text": "set me up with a cod filet sandwich",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 17,
+        "endPos": 34
+      }
+    ]
+  },
+  {
+    "text": "three hot dogs",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 6,
+        "endPos": 13
+      }
+    ]
+  },
+  {
+    "text": "we'd like a surf n turf combo and a large coke",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 12,
+        "endPos": 22
+      },        
+      {
+        "entity": "meal",
+        "startPos": 24,
+        "endPos": 28
+      },
+      {
+        "entity": "size",
+        "startPos": 36,
+        "endPos": 40
+      },
+      {
+        "entity": "Item",
+        "startPos": 42,
+        "endPos": 45
+      }
+    ]
+  },
+  {
+    "text": "yeah i'd like a medium coffee with two sugars please",
+    "intent": "AddToOrder",
+    "entities": [
+      {
+        "entity": "size",
+        "startPos": 16,
+        "endPos": 21
+      },       
+      {
+        "entity": "Item",
+        "startPos": 23,
+        "endPos": 28
+      },
+      {
+        "entity": "Item",
+        "startPos": 39,
+        "endPos": 44
+      }
+    ]
+  },
+  {
+    "text": "do you think we can get there in time",
+    "intent": "None",
+    "entities": []
+  },
+  {
+    "text": "hey can i call you back",
+    "intent": "None",
+    "entities": []
+  },
+  {
+    "text": "what is your favorite flavor of burger",
+    "intent": "None",
+    "entities": [
+      {
+        "entity": "Item",
+        "startPos": 32,
+        "endPos": 37
+      }
+    ]
+  }
+]
