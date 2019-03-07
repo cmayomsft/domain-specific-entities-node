@@ -1,8 +1,9 @@
 import { Entity, IIntentResolver, RecognizedIntent } from "conversation-processor";
 import { diff, Diff } from "deep-diff";
 import * as moment from "moment";
-import { loadIntentResolverFromConfiguration } from "../conversation-processor-configuration";
+import { default as createThrottle } from "p-throttle";
 import { loadInputs, writeOutputs } from "../file-utilities";
+import { loadIntentResolverFromConfiguration } from "../intent-resolver-configuration";
 
 interface ProcessedTestUtteranceOutputs {
     inputUtterance: string;
@@ -25,7 +26,7 @@ interface RunInfo {
 
 // tslint:disable:no-console
 
-export async function executeTestCommand(configFile: string, inputsFilePath: string, outputsFilePath: string|undefined, outputDiff: boolean) {
+export async function executeTestCommand(configFile: string, inputsFilePath: string, outputsFilePath: string|undefined, options: { outputDiff: boolean, maxUtterancesPerSecond: number }) {
     console.log(`Loading configuration file "${configFile}" for run...`);
 
     let conversationProcessor: IIntentResolver<any, any>;
@@ -42,6 +43,20 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
 
     const testInputs = await loadInputs(inputsFilePath);
     const results = new Array<ProcessedTestUtteranceOutputs>();
+    const utteranceProcessingThrottler = createThrottle(
+        async (utterance: string) => {
+            const executionStart = moment();
+            const recognizedIntent = await conversationProcessor.processUtterance(null, utterance);
+            const executionEnd = moment();
+
+            return {
+                executionStart,
+                executionEnd,
+                recognizedIntent,
+            };
+        },
+        options.maxUtterancesPerSecond,
+        1000);
 
     console.log(`Beginning processing of test utterances...`);
 
@@ -59,21 +74,19 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
             console.log(`Processing utterance ${runNumber}...`);
         }
 
-        const executionStart = moment();
-        const recognizedIntent = await conversationProcessor.processUtterance(null, utterance);
-        const executionEnd = moment();
+        const utteranceProcessingResult = await utteranceProcessingThrottler(utterance)
 
         let expectedVersusActualResolutionDiff;
 
         // Only perform the diff if the option was specified
-        if (outputDiff) {
-            expectedVersusActualResolutionDiff = diff(expectedRecognition, recognizedIntent);
+        if (options.outputDiff) {
+            expectedVersusActualResolutionDiff = diff(expectedRecognition, utteranceProcessingResult.recognizedIntent);
         }
 
         results.push({
             inputUtterance: utterance,
-            executionDuration: executionEnd.diff(executionStart),
-            recognized: recognizedIntent,
+            executionDuration: utteranceProcessingResult.executionEnd.diff(utteranceProcessingResult.executionStart),
+            recognized: utteranceProcessingResult.recognizedIntent,
             recognizedDiff: expectedVersusActualResolutionDiff,
         });
     }

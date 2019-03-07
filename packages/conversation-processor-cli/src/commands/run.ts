@@ -1,6 +1,7 @@
 import { Entity, IIntentResolver, RecognizedIntent } from "conversation-processor";
-import { loadIntentResolverFromConfiguration } from "../conversation-processor-configuration";
+import { default as createThrottle } from "p-throttle";
 import { loadInputs, writeOutputs } from "../file-utilities";
+import { loadIntentResolverFromConfiguration } from "../intent-resolver-configuration";
 
 interface ProcessedRunUtteranceOutput {
     inputUtterance: string;
@@ -9,7 +10,7 @@ interface ProcessedRunUtteranceOutput {
 
 // tslint:disable:no-console
 
-export async function executeRunCommand(configFile: string, inputsFilePath: string, outputsFilePath: string|undefined) {
+export async function executeRunCommand(configFile: string, inputsFilePath: string, outputsFilePath: string|undefined, options: { maxUtterancesPerSecond: number }) {
     console.log(`Loading configuration file "${configFile}" for run...`);
 
     let conversationProcessor: IIntentResolver<any, any>;
@@ -26,6 +27,10 @@ export async function executeRunCommand(configFile: string, inputsFilePath: stri
 
     const inputs = await loadInputs(inputsFilePath);
     const results = new Array<ProcessedRunUtteranceOutput>();
+    const utteranceProcessingThrottler = createThrottle(
+        async (utterance: string) => await conversationProcessor.processUtterance(null, utterance),
+        options.maxUtterancesPerSecond,
+        1000);
 
     console.log(`Beginning processing of test utterances...`);
 
@@ -38,7 +43,7 @@ export async function executeRunCommand(configFile: string, inputsFilePath: stri
             console.log(`Processing utterance ${runNumber}...`);
         }
 
-        const recognizedIntent = await conversationProcessor.processUtterance(null, utterance);
+        const recognizedIntent = await utteranceProcessingThrottler(utterance);
 
         results.push({
             inputUtterance: utterance,
