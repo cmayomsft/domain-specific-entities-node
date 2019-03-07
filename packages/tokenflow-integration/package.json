@@ -32,10 +32,12 @@
     "url": "https://github.com/cmayomsft/domain-specific-entities-node/issues"
   },
   "dependencies": {
+    "array.prototype.flatmap": "^1.2.1",
     "conversation-processor": "^0",
     "token-flow": "^0.0.26"
   },
   "devDependencies": {
+    "@types/array.prototype.flatmap": "^1.2.0",
     "@types/debug": "^4.1.0",
     "@types/node": "^10.12.18",
     "@types/snowball-stemmers": "^0.6.0"
