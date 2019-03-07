@@ -6,8 +6,6 @@ export interface IntentResolverConfiguration {
     readonly enrichers: Array<IIntentEnricher<any, Entity, Entity>>;
 }
 
-// tslint:disable:no-console
-
 export async function loadIntentResolverFromConfiguration(configFile: string) {
     // Make sure to delete it from the require cache first in case it's already loaded
     const fullConfigFilePath = path.resolve(configFile);
