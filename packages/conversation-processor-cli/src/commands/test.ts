@@ -3,7 +3,7 @@ import { diff, Diff } from "deep-diff";
 import * as moment from "moment";
 import { default as createThrottle } from "p-throttle";
 import { loadInputs, writeOutputs } from "../file-utilities";
-import { loadIntentResolverFromConfiguration } from "../intent-resolver-configuration";
+import { createIntentResolverFromConfiguration, loadIntentResolverConfiguration } from "../intent-resolver-configuration";
 
 interface ProcessedTestUtteranceOutputs {
     inputUtterance: string;
@@ -22,6 +22,7 @@ interface RunInfo {
     inputsFilePath: string;
     timings: RunTimings;
     outputs?: ProcessedTestUtteranceOutputs[];
+    testCounts: { executed: number, failed: number };
 }
 
 // tslint:disable:no-console
@@ -29,10 +30,11 @@ interface RunInfo {
 export async function executeTestCommand(configFile: string, inputsFilePath: string, outputsFilePath: string|undefined, options: { outputDiff: boolean, maxUtterancesPerSecond: number }) {
     console.log(`Loading configuration file "${configFile}" for run...`);
 
+    const config = await loadIntentResolverConfiguration(configFile);
     let conversationProcessor: IIntentResolver<any, any>;
 
     try {
-        conversationProcessor = await loadIntentResolverFromConfiguration(configFile);
+        conversationProcessor = await createIntentResolverFromConfiguration(config);
     } catch (error) {
         console.error("ERROR: Could not load conversation processor from specified configuration file.", error);
 
@@ -63,29 +65,29 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
     const runInfo: RunInfo = {
         inputsFilePath,
         timings: { startDate: moment().utc().toDate() },
+        testCounts: { executed: 0, failed: 0 },
     };
 
-    let runNumber = 0;
-
     for await (const { utterance, expectedRecognition } of testInputs) {
-        runNumber++;
-
-        if (runNumber % 10 === 0) {
-            console.log(`Processing utterance ${runNumber}...`);
+        if (runInfo.testCounts.executed % 10 === 0) {
+            console.log(`Processing utterance ${runInfo.testCounts.executed}...`);
         }
 
         const utteranceProcessingResult = await utteranceProcessingThrottler(utterance);
+
+        runInfo.testCounts.executed++;
 
         let expectedVersusActualResolutionDiff;
 
         // Only perform the diff if the option was specified
         if (options.outputDiff) {
-            expectedVersusActualResolutionDiff = diff(expectedRecognition, utteranceProcessingResult.recognizedIntent);
+            expectedVersusActualResolutionDiff = diff(expectedRecognition, utteranceProcessingResult.recognizedIntent, config.diffFilter);
         }
 
         if (expectedVersusActualResolutionDiff) {
-            const diffTypes = calculateDiffTypeCounts(expectedVersusActualResolutionDiff);
+            runInfo.testCounts.failed++;
 
+            const diffTypes = calculateDiffTypeCounts(expectedVersusActualResolutionDiff);
             console.error(`❌ [ ${buildDiffTypeDisplayString(diffTypes)} ] - ${utterance}`);
         } else {
             console.info(`✔ - ${utterance}`);
@@ -103,14 +105,23 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
     runInfo.timings.duration = moment(runInfo.timings.endDate!).diff(runInfo.timings.startDate);
     runInfo.outputs = results;
 
-    console.log(`Run completed! ${runNumber} utterance(s) proccessed.`);
+    console.log("");
+    console.log("Run completed!");
+    console.log(`${runInfo.testCounts.executed} utterance(s) proccessed.`);
+
+    if (runInfo.testCounts.failed > 0) {
+        console.warn(`${runInfo.testCounts.failed} failure(s); success rate = ${(100 - ((runInfo.testCounts.failed / runInfo.testCounts.executed) * 100)).toPrecision(2)}%.`);
+    } else {
+        console.log("No failures.");
+    }
 
     if (outputsFilePath) {
+        console.log("");
         console.log(`Writing ${results.length} result(s)...`);
 
         outputsFilePath = await writeOutputs(runInfo, outputsFilePath);
 
-        console.log(`${runNumber} result(s) written to "${outputsFilePath}".`);
+        console.log(`${runInfo.testCounts.executed} result(s) written to "${outputsFilePath}".`);
     }
 
     function calculateDiffTypeCounts(diffs: Array<Diff<any, RecognizedIntent<any> | null>>) {
@@ -132,6 +143,12 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
     }
 
     function buildDiffTypeDisplayString(diffCounts: Map<string, number>) {
-        return "+-~TODO";
+        let display = "";
+
+        diffCounts.forEach((count, type) => {
+            display += `${type}=${count};`;
+        });
+
+        return display;
     }
 }

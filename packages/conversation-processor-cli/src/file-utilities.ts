@@ -1,3 +1,4 @@
+import { RecognizedIntent } from "conversation-processor";
 import * as fs from "fs";
 import * as moment from "moment";
 import * as path from "path";
@@ -21,7 +22,7 @@ export async function* loadInputs(inputsFilePath: string) {
     }
 
     for (const input of loadedInputs) {
-        const expectedRecognition = input.recognized;
+        const expectedRecognition = input.recognized as RecognizedIntent<any>;
         let utterance = input.utterance as string;
 
         if (!utterance) {
