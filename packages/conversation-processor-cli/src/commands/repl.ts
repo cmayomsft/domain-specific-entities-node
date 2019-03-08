@@ -29,6 +29,7 @@ export async function startReplLoop(configFile?: string) {
                 console.log(util.inspect(
                     recognizedUtterance, {
                         colors: true,
+                        depth: 10,
                     }));
             } else {
                 console.error(chalk.redBright("ERROR: No conversation processor currently loaded. Please use the #config command to load a configuration."));
