@@ -74,13 +74,21 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
             console.log(`Processing utterance ${runNumber}...`);
         }
 
-        const utteranceProcessingResult = await utteranceProcessingThrottler(utterance)
+        const utteranceProcessingResult = await utteranceProcessingThrottler(utterance);
 
         let expectedVersusActualResolutionDiff;
 
         // Only perform the diff if the option was specified
         if (options.outputDiff) {
             expectedVersusActualResolutionDiff = diff(expectedRecognition, utteranceProcessingResult.recognizedIntent);
+        }
+
+        if (expectedVersusActualResolutionDiff) {
+            const diffTypes = calculateDiffTypeCounts(expectedVersusActualResolutionDiff);
+
+            console.error(`❌ [ ${buildDiffTypeDisplayString(diffTypes)} ] - ${utterance}`);
+        } else {
+            console.info(`✔ - ${utterance}`);
         }
 
         results.push({
@@ -103,5 +111,27 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
         outputsFilePath = await writeOutputs(runInfo, outputsFilePath);
 
         console.log(`${runNumber} result(s) written to "${outputsFilePath}".`);
+    }
+
+    function calculateDiffTypeCounts(diffs: Array<Diff<any, RecognizedIntent<any> | null>>) {
+        const diffTypeCounts = new Map<string, number>();
+
+        diffs.forEach((d) => {
+            let countForDiffType = diffTypeCounts.get(d.kind);
+
+            if (!countForDiffType) {
+                countForDiffType = 0;
+            }
+
+            countForDiffType++;
+
+            diffTypeCounts.set(d.kind, countForDiffType);
+        });
+
+        return diffTypeCounts;
+    }
+
+    function buildDiffTypeDisplayString(diffCounts: Map<string, number>) {
+        return "+-~TODO";
     }
 }

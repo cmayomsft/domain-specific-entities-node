@@ -32,7 +32,7 @@ export async function executeRunCommand(configFile: string, inputsFilePath: stri
         options.maxUtterancesPerSecond,
         1000);
 
-    console.log(`Beginning processing of test utterances...`);
+    console.log(`Beginning processing of utterances...`);
 
     let runNumber = 0;
 
