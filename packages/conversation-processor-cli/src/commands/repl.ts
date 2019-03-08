@@ -1,5 +1,6 @@
 // tslint:disable:no-console
 
+import chalk from "chalk";
 import { IIntentResolver } from "conversation-processor";
 import * as inquirer from "inquirer";
 import * as util from "util";
@@ -16,7 +17,7 @@ export async function startReplLoop(configFile?: string) {
     }
 
     do {
-        const answer = await inquirer.prompt([{ name: "UtterancePrompt", type: "input", message: " ", prefix: ">" }]) as any;
+        const answer = await inquirer.prompt([{ name: "UtterancePrompt", type: "input", message: " ", prefix: chalk.gray(">") }]) as any;
         const utterance = answer.UtterancePrompt as string;
 
         if (utterance.startsWith("#")) {
@@ -25,9 +26,12 @@ export async function startReplLoop(configFile?: string) {
             if (intentResolver) {
                 const recognizedUtterance = await intentResolver.processUtterance({}, answer.UtterancePrompt);
 
-                console.log(util.inspect(recognizedUtterance, false, null, true));
+                console.log(util.inspect(
+                    recognizedUtterance, {
+                        colors: true,
+                    }));
             } else {
-                console.log("ERROR: No conversation processor currently loaded. Please use the #config command to load a configuration.");
+                console.error(chalk.redBright("ERROR: No conversation processor currently loaded. Please use the #config command to load a configuration."));
             }
         }
     } while (true);
@@ -55,6 +59,11 @@ async function processReplCommand(commandInput: string) {
 
         case "config":
             await processReplConfigurationCommand(commandParameters);
+
+            break;
+
+        case "help":
+            await showReplCommandHelp();
 
             break;
 
@@ -103,4 +112,10 @@ async function processReplConfigurationCommand(configFile: string|null) {
     }
 
     currentConfigFile = configFile;
+}
+
+function showReplCommandHelp() {
+    console.log(chalk.bold("Available commands:"));
+    console.log(`\t${chalk.bold(chalk.blue("reload"))} - reloads the current configuration file`);
+    console.log(`\t${chalk.bold(chalk.blue("config"))} ${chalk.gray("<path>")} - loads the configuration file from the specified path`);
 }

@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { Entity, IIntentResolver, RecognizedIntent } from "conversation-processor";
 import { diff, Diff } from "deep-diff";
 import * as moment from "moment";
@@ -28,7 +29,7 @@ interface RunInfo {
 // tslint:disable:no-console
 
 export async function executeTestCommand(configFile: string, inputsFilePath: string, outputsFilePath: string|undefined, options: { outputDiff: boolean, maxUtterancesPerSecond: number }) {
-    console.log(`Loading configuration file "${configFile}" for run...`);
+    console.log(`Loading configuration file "${configFile}"...`);
 
     const config = await loadIntentResolverConfiguration(configFile);
     let conversationProcessor: IIntentResolver<any, any>;
@@ -36,12 +37,12 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
     try {
         conversationProcessor = await createIntentResolverFromConfiguration(config);
     } catch (error) {
-        console.error("ERROR: Could not load conversation processor from specified configuration file.", error);
+        console.error(chalk.red("ERROR: Could not load conversation processor from specified configuration file."), error);
 
         return;
     }
 
-    console.log(`Loading inputs from "${inputsFilePath}"...`);
+    console.log(`Loading inputs from "${chalk.blueBright(inputsFilePath)}"...`);
 
     const testInputs = await loadInputs(inputsFilePath);
     const results = new Array<ProcessedTestUtteranceOutputs>();
@@ -60,7 +61,7 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
         options.maxUtterancesPerSecond,
         1000);
 
-    console.log(`Beginning processing of test utterances...`);
+    console.log("Beginning processing of test utterances...");
 
     const runInfo: RunInfo = {
         inputsFilePath,
@@ -69,10 +70,6 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
     };
 
     for await (const { utterance, expectedRecognition } of testInputs) {
-        if (runInfo.testCounts.executed % 10 === 0) {
-            console.log(`Processing utterance ${runInfo.testCounts.executed}...`);
-        }
-
         const utteranceProcessingResult = await utteranceProcessingThrottler(utterance);
 
         runInfo.testCounts.executed++;
@@ -88,9 +85,9 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
             runInfo.testCounts.failed++;
 
             const diffTypes = calculateDiffTypeCounts(expectedVersusActualResolutionDiff);
-            console.error(`❌ [ ${buildDiffTypeDisplayString(diffTypes)} ] - ${utterance}`);
+            console.error(`${chalk.red("❌")} ${utterance} ${chalk.gray(`[ ${buildDiffTypeDisplayString(diffTypes)} ]`)}`);
         } else {
-            console.info(`✔ - ${utterance}`);
+            console.info(`${chalk.green("✔")} ${utterance}`);
         }
 
         results.push({
@@ -106,23 +103,29 @@ export async function executeTestCommand(configFile: string, inputsFilePath: str
     runInfo.outputs = results;
 
     console.log("");
-    console.log("Run completed!");
-    console.log(`${runInfo.testCounts.executed} utterance(s) proccessed.`);
+    console.log(`${runInfo.testCounts.executed} utterance(s) proccessed:`);
 
     if (runInfo.testCounts.failed > 0) {
-        console.warn(`${runInfo.testCounts.failed} failure(s); success rate = ${(100 - ((runInfo.testCounts.failed / runInfo.testCounts.executed) * 100)).toPrecision(2)}%.`);
+        const successRate = (100 - ((runInfo.testCounts.failed / runInfo.testCounts.executed) * 100));
+
+        const chalkColorizer = successRate < 80 ? chalk.redBright : chalk.yellowBright;
+        const successRateDisplay = chalkColorizer(successRate.toPrecision(2));
+
+        console.log(`\t${runInfo.testCounts.failed} failure(s); success rate = ${successRateDisplay}%`);
     } else {
-        console.log("No failures.");
+        console.log(`\tNo failures; success rate = ${chalk.greenBright("100%")}`);
     }
 
     if (outputsFilePath) {
         console.log("");
-        console.log(`Writing ${results.length} result(s)...`);
+        console.log(`Writing result(s)...`);
 
         outputsFilePath = await writeOutputs(runInfo, outputsFilePath);
 
-        console.log(`${runInfo.testCounts.executed} result(s) written to "${outputsFilePath}".`);
+        console.log(`${runInfo.testCounts.executed} result(s) written to "${chalk.blueBright(outputsFilePath)}".`);
     }
+
+    console.log("Run completed!");
 
     function calculateDiffTypeCounts(diffs: Array<Diff<any, RecognizedIntent<any> | null>>) {
         const diffTypeCounts = new Map<string, number>();
