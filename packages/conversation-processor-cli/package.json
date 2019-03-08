@@ -4,7 +4,8 @@
   "author": "Drew Marsh (@drub0y)",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --build ."
+    "build": "tsc --build .",
+    "test": "jest --config \"../../jest.json\" --rootDir . --passWithNoTests"
   },
   "directories": {
     "lib": "dist"
