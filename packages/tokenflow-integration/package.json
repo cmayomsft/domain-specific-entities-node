@@ -6,7 +6,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "tsc --build .",
-    "test": "jest --config \"../../jest.json\""
+    "test": "jest --config \"../../jest.json\" --rootDir . --passWithNoTests"
   },
   "directories": {
     "lib": "lib"

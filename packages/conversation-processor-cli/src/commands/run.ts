@@ -1,4 +1,6 @@
+import chalk from "chalk";
 import { Entity, IIntentResolver, RecognizedIntent } from "conversation-processor";
+import * as moment from "moment";
 import { default as createThrottle } from "p-throttle";
 import { loadInputs, writeOutputs } from "../file-utilities";
 import { loadIntentResolverFromConfiguration } from "../intent-resolver-configuration";
@@ -11,37 +13,38 @@ interface ProcessedRunUtteranceOutput {
 // tslint:disable:no-console
 
 export async function executeRunCommand(configFile: string, inputsFilePath: string, outputsFilePath: string|undefined, options: { maxUtterancesPerSecond: number }) {
-    console.log(`Loading configuration file "${configFile}" for run...`);
+    console.log(`Loading configuration file "${chalk.blueBright(configFile)}"...`);
 
     let conversationProcessor: IIntentResolver<any, any>;
 
     try {
         conversationProcessor = await loadIntentResolverFromConfiguration(configFile);
     } catch (error) {
-        console.error("ERROR: Could not load conversation processor from specified configuration file.", error);
+        console.error(chalk.red("ERROR: Could not load conversation processor from specified configuration file."), error);
 
         return;
     }
 
-    console.log(`Loading inputs from "${inputsFilePath}"...`);
+    console.log(`Loading inputs from "${chalk.blueBright(inputsFilePath)}"...`);
 
     const inputs = await loadInputs(inputsFilePath);
     const results = new Array<ProcessedRunUtteranceOutput>();
     const utteranceProcessingThrottler = createThrottle(
-        async (utterance: string) => await conversationProcessor.processUtterance(null, utterance),
+        async (utterance: string) => {
+            console.log(`${chalk.gray(">")} ${utterance}`);
+
+            return await conversationProcessor.processUtterance(null, utterance);
+        },
         options.maxUtterancesPerSecond,
         1000);
 
-    console.log(`Beginning processing of test utterances...`);
+    console.log(`Beginning processing of utterances...`);
+    const runStart = moment();
 
     let runNumber = 0;
 
     for await (const { utterance } of inputs) {
         runNumber++;
-
-        if (runNumber % 10 === 0) {
-            console.log(`Processing utterance ${runNumber}...`);
-        }
 
         const recognizedIntent = await utteranceProcessingThrottler(utterance);
 
@@ -51,13 +54,13 @@ export async function executeRunCommand(configFile: string, inputsFilePath: stri
         });
     }
 
-    console.log(`Run completed! ${runNumber} utterance(s) proccessed.`);
+    console.log(`Run completed! ${runNumber} utterance(s) proccessed in ${moment.duration(moment().diff(runStart))}.`);
 
     if (outputsFilePath) {
-        console.log(`Writing ${results.length} result(s)...`);
+        console.log(`Writing result(s)...`);
 
         outputsFilePath = await writeOutputs(results, outputsFilePath);
 
-        console.log(`${runNumber} result(s) written to "${outputsFilePath}".`);
+        console.log(`${runNumber} result(s) written to "${chalk.blueBright(outputsFilePath)}".`);
     }
 }
