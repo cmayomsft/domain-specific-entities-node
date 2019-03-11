@@ -2,8 +2,9 @@
 
 import chalk from "chalk";
 import { IIntentResolver } from "conversation-processor";
-import * as inquirer from "inquirer";
+import * as repl from "repl";
 import * as util from "util";
+import { Context } from "vm";
 import { loadIntentResolverFromConfiguration } from "../intent-resolver-configuration";
 
 let intentResolver: IIntentResolver<any, any>|undefined;
@@ -16,78 +17,60 @@ export async function startReplLoop(configFile?: string) {
         processReplConfigurationCommand(configFile);
     }
 
-    do {
-        const answer = await inquirer.prompt([{ name: "UtterancePrompt", type: "input", message: " ", prefix: chalk.gray(">") }]) as any;
-        const utterance = answer.UtterancePrompt as string;
-
-        if (utterance.startsWith("#")) {
-            await processReplCommand(utterance);
-        } else {
+    const replServer = repl.start({
+        eval: async (cmd: string, context: Context, file: string, callback: (err: Error | null, result: any) => void) => {
             if (intentResolver) {
-                const recognizedUtterance = await intentResolver.processUtterance({}, answer.UtterancePrompt);
+                try {
+                    const recognizedUtterance = await intentResolver.processUtterance({}, cmd);
 
-                console.log(util.inspect(
-                    recognizedUtterance, {
-                        colors: true,
-                        depth: 10,
-                    }));
+                    console.log(util.inspect(
+                        recognizedUtterance, {
+                            colors: true,
+                            depth: 10,
+                        }));
+
+                    callback(null, undefined);
+                } catch (error) {
+                    callback(new repl.Recoverable(error), undefined);
+                }
             } else {
-                console.error(chalk.redBright("ERROR: No conversation processor currently loaded. Please use the #config command to load a configuration."));
+                console.error(chalk`{redBright ERROR: No configuration is currently loaded. Please use the {gray .config} command to load a specific configuration.}`);
             }
-        }
-    } while (true);
-}
+        },
+        writer: (text) => {
+            if (text) {
+                return text;
+            }
+        },
+        useColors: true,
+        prompt: chalk`intent {green.bold >} `,
+        ignoreUndefined: true,
+    });
 
-async function processReplCommand(commandInput: string) {
-    const commandSeparatorIndex = commandInput.indexOf(" ", 1);
+    replServer.defineCommand("config", {
+        action: processReplConfigurationCommand,
+        help: "Loads the specified configuration file.",
+    });
 
-    let command: string;
-    let commandParameters: string|null;
-
-    if (commandSeparatorIndex !== -1) {
-        command = commandInput.substring(1, commandSeparatorIndex);
-        commandParameters = commandInput.substring(commandSeparatorIndex + 1);
-    } else {
-        command = commandInput.substring(1);
-        commandParameters = null;
-    }
-
-    switch (command) {
-        case "reload":
-            await processReplReloadCommand();
-
-            break;
-
-        case "config":
-            await processReplConfigurationCommand(commandParameters);
-
-            break;
-
-        case "help":
-            await showReplCommandHelp();
-
-            break;
-
-        default:
-            console.warn(`${command} is not recognized as a known REPL command.`);
-
-            break;
-    }
+    replServer.defineCommand("reload", {
+        action: processReplReloadCommand,
+        help: "Reloads the current configuration file.",
+    });
 }
 
 async function processReplReloadCommand() {
     if (!currentConfigFile) {
-        console.error("ERROR: No configuration is currently loaded; use #config to load one.");
+        console.error(chalk`{redBright ERROR: No configuration is currently loaded; use {gray .config} to load one.}`);
 
         return;
     }
 
-    console.log(`Reloading configuration from ${currentConfigFile}...`);
+    console.log(chalk`Reloading configuration from {blueBright ${currentConfigFile}}...`);
 
     try {
         intentResolver = await loadIntentResolverFromConfiguration(currentConfigFile);
     } catch (error) {
-        console.error("Failed to reload configuration: ", error);
+        console.error(chalk`{redBright Failed to reload configuration: }`, error);
 
         return;
     }
@@ -97,26 +80,20 @@ async function processReplReloadCommand() {
 
 async function processReplConfigurationCommand(configFile: string|null) {
     if (!configFile) {
-        console.error("No configuration file specified.");
+        console.error(chalk`{redBright No configuration file specified.}`);
 
         return;
     }
 
-    console.log(`Loading conversation configuration from "${configFile}"...`);
+    console.log(chalk`Loading conversation configuration from "{blueBright ${configFile}}"...`);
 
     try {
         intentResolver = await loadIntentResolverFromConfiguration(configFile);
     } catch (error) {
-        console.error("ERROR: Could not load conversation processor from specified configuration file.", error);
+        console.error(chalk`{redBright ERROR: Could not load conversation processor from specified configuration file.}`, error);
 
         return;
     }
 
     currentConfigFile = configFile;
-}
-
-function showReplCommandHelp() {
-    console.log(chalk.bold("Available commands:"));
-    console.log(`\t${chalk.bold(chalk.blue("reload"))} - reloads the current configuration file`);
-    console.log(`\t${chalk.bold(chalk.blue("config"))} ${chalk.gray("<path>")} - loads the configuration file from the specified path`);
 }
