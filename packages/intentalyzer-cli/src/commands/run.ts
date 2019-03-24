@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { Entity, IIntentResolver, RecognizedIntent } from "conversation-processor";
+import { Entity, IIntentResolver, RecognizedIntent } from "intentalyzer";
 import * as moment from "moment";
 import { default as createThrottle } from "p-throttle";
 import { loadInputs, writeOutputs } from "../file-utilities";

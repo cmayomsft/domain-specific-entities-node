@@ -1,5 +1,5 @@
 {
-  "name": "conversation-processor-tokenflow-integration",
+  "name": "intentalyzer-tokenflow-integration",
   "version": "0.0.1",
   "author": "Drew Marsh (@drub0y)",
   "main": "lib/index.js",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "array.prototype.flatmap": "^1.2.1",
-    "conversation-processor": "^0",
+    "intentalyzer": "^0",
     "token-flow": "^0.0.26"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 
 import chalk from "chalk";
-import { IIntentResolver } from "conversation-processor";
+import { IIntentResolver } from "intentalyzer";
 import * as repl from "repl";
 import * as util from "util";
 import { Context } from "vm";

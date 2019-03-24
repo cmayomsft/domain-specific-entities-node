@@ -1,5 +1,5 @@
 {
-  "name": "conversation-processor-luis-integration",
+  "name": "intentalyzer-luis-integration",
   "version": "0.0.1",
   "author": "Drew Marsh (@drub0y)",
   "main": "lib/index.js",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@azure/cognitiveservices-luis-runtime": "^0.1.0",
-    "conversation-processor": "^0"
+    "intentalyzer": "^0"
   },
   "devDependencies": {
     "@types/node": "^10.12.18"

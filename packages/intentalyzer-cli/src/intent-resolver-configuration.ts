@@ -1,5 +1,5 @@
-import { createEnricherPipeline, createIntentResolver, createRecognizerChain, Entity, IIntentEnricher, IIntentRecognizer } from "conversation-processor";
 import { PreFilterFunction } from "deep-diff";
+import { createEnricherPipeline, createIntentResolver, createRecognizerChain, Entity, IIntentEnricher, IIntentRecognizer } from "intentalyzer";
 import * as path from "path";
 
 export interface IntentResolverConfiguration {

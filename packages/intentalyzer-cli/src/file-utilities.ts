@@ -1,5 +1,5 @@
-import { RecognizedIntent } from "conversation-processor";
 import * as fs from "fs";
+import { RecognizedIntent } from "intentalyzer";
 import * as moment from "moment";
 import * as path from "path";
 

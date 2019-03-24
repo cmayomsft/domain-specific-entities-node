@@ -1,4 +1,4 @@
-import { Entity, IIntentEnricher } from "conversation-processor";
+import { Entity, IIntentEnricher } from "intentalyzer";
 import { CompositeRecognizer, Recognizer, WORD } from "token-flow";
 import { EntityToken, TokenFlowEntity } from "./types";
 import { isStringArray, loadTokenFileIntoPatternRecognizer } from "./utilities";

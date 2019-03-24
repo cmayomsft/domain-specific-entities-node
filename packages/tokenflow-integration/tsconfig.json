@@ -11,5 +11,5 @@
         ]
     },
     "include": ["./src"],
-    "references": [{ "path": "../conversation-processor" }]
+    "references": [{ "path": "../intentalyzer" }]
 }
