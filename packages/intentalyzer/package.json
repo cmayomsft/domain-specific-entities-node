@@ -1,5 +1,5 @@
 {
-  "name": "conversation-processor",
+  "name": "intentalyzer",
   "version": "0.0.1",
   "author": "Drew Marsh (@drub0y)",
   "main": "lib/index.js",

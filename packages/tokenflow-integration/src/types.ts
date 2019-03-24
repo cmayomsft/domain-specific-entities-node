@@ -1,4 +1,4 @@
-import { Entity } from "conversation-processor";
+import { Entity } from "intentalyzer";
 import { CompositeToken, PID, Token } from "token-flow";
 
 export const ENTITY: unique symbol = Symbol("ENTITY");

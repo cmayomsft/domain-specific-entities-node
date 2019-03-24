@@ -14,8 +14,8 @@
     },
     "files": [],
     "references": [
-        { "path": "packages/conversation-processor" },
-        { "path": "packages/conversation-processor-cli"},
+        { "path": "packages/intentalyzer" },
+        { "path": "packages/intentalyzer-cli"},
         { "path": "packages/luis-integration"},
         { "path": "packages/tokenflow-integration" }
     ]

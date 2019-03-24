@@ -1,5 +1,5 @@
 import { LUISRuntimeClient, LUISRuntimeModels } from "@azure/cognitiveservices-luis-runtime";
-import { Entity, IIntentRecognizer } from "conversation-processor";
+import { Entity, IIntentRecognizer } from "intentalyzer";
 
 export interface BasicLuisEntity extends Entity {
     readonly $raw: any;
