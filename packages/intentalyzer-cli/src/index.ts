@@ -5,6 +5,8 @@ import { startReplLoop } from "./commands/repl";
 import { executeRunCommand } from "./commands/run";
 import { executeTestCommand } from "./commands/test";
 
+export * from "./intent-resolver-configuration";
+
 // tslint:disable-next-line:no-unused-expression
 yargs
     .command(

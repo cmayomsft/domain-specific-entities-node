@@ -1,11 +1,13 @@
 import { PreFilterFunction } from "deep-diff";
-import { createEnricherPipeline, createIntentResolver, createRecognizerChain, Entity, IIntentEnricher, IIntentRecognizer } from "intentalyzer";
+import { createEnricherPipeline, createIntentResolver, createRecognizerChain, Entity, IIntentEnricher, IIntentRecognizer, IIntentResolver } from "intentalyzer";
 import * as path from "path";
 
 export interface IntentResolverConfiguration {
     readonly diffFilter?: PreFilterFunction;
-    readonly recognizers: Array<IIntentRecognizer<any, Entity>>;
-    readonly enrichers: Array<IIntentEnricher<any, Entity, Entity>>;
+    readonly resolver: {
+        readonly recognizers?: Array<IIntentRecognizer<any, Entity>>;
+        readonly enrichers?: Array<IIntentEnricher<any, Entity, Entity>>;
+    } | (() => Promise<IIntentResolver<any, Entity>>);
 }
 
 export async function loadIntentResolverConfiguration(configFile: string) {
@@ -18,13 +20,21 @@ export async function loadIntentResolverConfiguration(configFile: string) {
 }
 
 export async function createIntentResolverFromConfiguration(configuration: Partial<IntentResolverConfiguration>) {
-    if (!configuration.recognizers
-            ||
-        configuration.recognizers.length === 0) {
-        throw new Error("No recognizer has been configured.");
+    const resolver = configuration.resolver;
+
+    if (!resolver) {
+        throw new Error("No resolver has been configured.");
     }
 
-    return createIntentResolver(createRecognizerChain(configuration.recognizers), configuration.enrichers ? createEnricherPipeline(configuration.enrichers) : undefined);
+    if (typeof resolver === "function") {
+        return await resolver();
+    }
+
+    if (!resolver.recognizers || resolver.recognizers.length === 0) {
+        throw new Error("No recognizers configured for the resolver.");
+    }
+
+    return createIntentResolver(createRecognizerChain(resolver.recognizers), resolver.enrichers ? createEnricherPipeline(resolver.enrichers) : undefined);
 }
 
 export async function loadIntentResolverFromConfiguration(configFile: string) {
