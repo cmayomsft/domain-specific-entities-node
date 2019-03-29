@@ -11,7 +11,7 @@
     "lib": "dist"
   },
   "bin": {
-    "convp": "dist/index.js"
+    "intentalyzer": "dist/index.js"
   },
   "files": [
     "dist"
