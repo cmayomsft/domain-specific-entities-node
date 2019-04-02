@@ -15,7 +15,8 @@
     "intentalyzer": "./bin/intentalyzer"
   },
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
   "description": "> TODO: description",
   "keywords": [
