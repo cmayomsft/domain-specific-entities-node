@@ -8,10 +8,11 @@
     "test": "jest --config \"../../jest.json\" --rootDir . --passWithNoTests"
   },
   "directories": {
-    "lib": "dist"
+    "lib": "dist",
+    "bin": "bin"
   },
   "bin": {
-    "intentalyzer": "dist/index.js"
+    "intentalyzer": "./bin/intentalyzer"
   },
   "files": [
     "dist"
