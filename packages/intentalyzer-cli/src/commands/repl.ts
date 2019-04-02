@@ -43,7 +43,7 @@ export async function startReplLoop(configFile?: string) {
             }
         },
         useColors: true,
-        prompt: chalk`intent {green.bold >} `,
+        prompt: chalk`intentalyzer {green.bold >} `,
         ignoreUndefined: true,
     });
 
