@@ -10,7 +10,8 @@
         "strictNullChecks": true,
         "noImplicitAny": true,
         "noUnusedLocals": true,
-        "noImplicitReturns": true
+        "noImplicitReturns": true,
+        "incremental": true
     },
     "files": [],
     "references": [

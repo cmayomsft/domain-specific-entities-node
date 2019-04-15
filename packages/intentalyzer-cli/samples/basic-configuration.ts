@@ -1,29 +1,31 @@
-module.exports = {
+import { IntentResolverConfiguration } from "../src/intent-resolver-configuration";
+
+export = {
     resolver: {
         recognizers: [
             {
-                recognize: function(context, utterance) {
-                    return Promise.resolve({
-                        utterance: utterance,
+                recognize: async (context, utterance) => {
+                    return {
+                        utterance,
                         intent: "configured-intent",
                         entities: [],
-                    });
+                    };
                 },
             },
         ],
         enrichers: [
             {
-                enrich: function(context, recognizedUtterance) {
-                    return { 
-                        ...recognizedUtterance, 
+                enrich: async (context, recognizedUtterance) => {
+                    return {
+                        ...recognizedUtterance,
                         entities: [...recognizedUtterance.entities, {
                             name: "enrichedEntity",
                             type: "string",
                             value: `hello ${Date.now()}`,
-                        } ]
+                        } ],
                     };
                 },
             },
         ],
     },
-};
+} as IntentResolverConfiguration;

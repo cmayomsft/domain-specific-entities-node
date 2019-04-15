@@ -4,3 +4,4 @@ lib
 dist
 coverage
 test-output
+*.tsbuildinfo

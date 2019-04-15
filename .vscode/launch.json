@@ -26,7 +26,8 @@
             "preLaunchTask": "Build All",
             "cwd": "${workspaceFolder}/packages/intentalyzer-cli",
             "program": "${workspaceFolder}/packages/intentalyzer-cli/dist/index.js",
-            "args": ["repl", "./samples/basic-configuration.js"],
+            "args": ["repl", "./samples/basic-configuration.ts"],
+            "runtimeArgs": [ "-r", "ts-node/register" ],
             "skipFiles": [
                 "<node_internals>/**/*.*",
                 "${workspaceFolder}/**/node_modules/**/*.*"
