@@ -10,6 +10,7 @@ export interface LuisEntity extends BasicLuisEntity {
     readonly type: "luis";
     readonly score?: number;
     readonly resolution?: any;
+    readonly role?: string;
 }
 
 export interface LuisCompositeEntity extends BasicLuisEntity {
@@ -65,6 +66,7 @@ function mapEntity(luisEntity: LUISRuntimeModels.EntityModel): LuisEntity {
         },
         score: luisEntity.score,
         resolution: luisEntity.resolution ? (luisEntity as LUISRuntimeModels.EntityWithResolution).resolution : null,
+        role: luisEntity.role as string,
     };
 }
 
