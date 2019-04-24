@@ -13,7 +13,7 @@ export interface IIntentEnricher<TConversationContext, TEntity extends Entity, T
 }
 
 export interface RecognizedIntent<TEntity extends Entity> {
-    utterance: string;
-    intent: string;
-    entities: TEntity[];
+    readonly utterance: string;
+    readonly intent: string;
+    readonly entities: TEntity[];
 }
