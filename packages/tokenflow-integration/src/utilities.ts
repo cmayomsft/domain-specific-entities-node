@@ -1,8 +1,13 @@
+import { default as debug } from "debug";
 import * as fs from "fs";
 import { itemMapFromYamlString, PatternRecognizer, PID, Token, Tokenizer } from "token-flow";
 import { ENTITY, EntityToken } from "./types";
 
+const utilitiesDebugLogger = debug("intentalyzer:integration:token-flow:utilities");
+
 export function loadTokenFileIntoPatternRecognizer(fileName: string) {
+    utilitiesDebugLogger("Loading item map from file '%s' into PatternRecognizer...", fileName);
+
     const itemMap = itemMapFromYamlString(fs.readFileSync(fileName, "utf8"));
 
     return new PatternRecognizer(itemMap, (pid: PID, children: Token[]): EntityToken => {
