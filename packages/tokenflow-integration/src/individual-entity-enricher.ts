@@ -1,9 +1,9 @@
 import * as flatMap from "array.prototype.flatmap";
 import { default as debug } from "debug";
 import { Entity, IIntentEnricher } from "intentalyzer";
-import { CompositeRecognizer, Recognizer, WORD } from "token-flow";
+import { Recognizer, WORD } from "token-flow";
 import { EntityToken, isEntityToken, TokenFlowEnrichedEntity } from "./types";
-import { isStringArray, loadTokenFileIntoPatternRecognizer } from "./utilities";
+import { composeRecognizerArray, isStringArray, loadTokenFileIntoPatternRecognizer } from "./utilities";
 
 flatMap.shim();
 
@@ -33,17 +33,7 @@ export function createTokenFlowEntityEnricher<TConversationContext, TEntity exte
         recognizers = recognizers.map(loadTokenFileIntoPatternRecognizer);
     }
 
-    let tokenFlowRecognizer: Recognizer;
-
-    if (recognizers.length === 1) {
-        tokenFlowRecognizer = recognizers[0];
-    } else {
-        debugLogger("Creating CompositeRecognizer around %i recognizers...", recognizers.length);
-
-        tokenFlowRecognizer = new CompositeRecognizer(
-            recognizers,
-            /* debugMode: */ false);
-    }
+    const tokenFlowRecognizer = composeRecognizerArray(recognizers);
 
     return {
         enrich: async (_, ri) => {
@@ -84,7 +74,7 @@ export function createTokenFlowEntityEnricher<TConversationContext, TEntity exte
 
             const entityTokensByEntity = new Map<TEntity, EntityToken>();
 
-            debugLogger("Mapping %i tokens back to their original entities...", tokens.length);
+            debugLogger("Mapping %i ENTITY tokens back to their original entities...", tokens.length);
 
             // Create a map of all ENTITY tokens to their source entities
             tokens
