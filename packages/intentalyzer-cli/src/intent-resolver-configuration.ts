@@ -1,12 +1,12 @@
 import { PreFilterFunction } from "deep-diff";
-import { createEnricherPipeline, createIntentResolver, createRecognizerChain, Entity, IIntentEnricher, IIntentRecognizer, IIntentResolver } from "intentalyzer";
+import { createIntentResolver, createRecognizerChain, createTransformPipeline, Entity, IIntentRecognizer, IIntentResolver, IIntentTransform } from "intentalyzer";
 import * as path from "path";
 
 export interface IntentResolverConfiguration {
     readonly diffFilter?: PreFilterFunction;
     readonly resolver: {
         readonly recognizers?: Array<IIntentRecognizer<any, Entity>>;
-        readonly enrichers?: Array<IIntentEnricher<any, Entity, Entity>>;
+        readonly transforms?: Array<IIntentTransform<any, Entity, Entity>>;
     } | (() => Promise<IIntentResolver<any, Entity>>);
 }
 
@@ -34,7 +34,7 @@ export async function createIntentResolverFromConfiguration(configuration: Parti
         throw new Error("No recognizers configured for the resolver.");
     }
 
-    return createIntentResolver(createRecognizerChain(resolver.recognizers), resolver.enrichers ? createEnricherPipeline(resolver.enrichers) : undefined);
+    return createIntentResolver(createRecognizerChain(resolver.recognizers), resolver.transforms ? createTransformPipeline(resolver.transforms) : undefined);
 }
 
 export async function loadIntentResolverFromConfiguration(configFile: string) {

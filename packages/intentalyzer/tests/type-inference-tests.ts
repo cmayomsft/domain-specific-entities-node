@@ -1,17 +1,17 @@
-import { createEnricherPipeline, createIntentResolver, createRecognizerChain, enrichSpecificIntent, Entity, IIntentEnricher, IIntentRecognizer } from "../src/index";
+import { createIntentResolver, createRecognizerChain, createTransformPipeline, Entity, IIntentRecognizer, IIntentTransform, transformSpecificIntent } from "../src/index";
 
 describe("Type inference tests", () => {
-    test("Chained recognizers and enrichers", async () => {
+    test("Chained recognizers and transforms", async () => {
         const processor = createIntentResolver(
             createRecognizerChain(
                 createRegexRecognizer(/foo/g),
                 createTestNlpRecognizer(),
             ),
-            // createEnricher1(),
-            createEnricherPipeline(
-                createEnricher1(),
-                createEnricher2(),
-                enrichSpecificIntent("special-intent-only", createEnricher3()),
+            // createtransformer1(),
+            createTransformPipeline(
+                createTransformer1(),
+                createTransformer2(),
+                transformSpecificIntent("special-intent-only", createtransformer3()),
             ));
 
         const ru = await processor.processUtterance({ contextProp: 123 }, "what can you do?");
@@ -23,13 +23,13 @@ describe("Type inference tests", () => {
         }
 
         for (const e of ru.entities) {
-            if (isEnriched2(e)) {
-                e.enrichedProp2;
+            if (isTransformed2(e)) {
+                e.transformedProp2;
             }
 
-            if (isEnriched3(e)) {
-                e.enrichedProp2;
-                e.enrichedProp3;
+            if (isTransformed3(e)) {
+                e.transformedProp2;
+                e.transformedProp3;
             }
 
             switch (e.type) {
@@ -43,8 +43,8 @@ describe("Type inference tests", () => {
 
                     break;
 
-                case "test-enriched-entity-1":
-                    e.enrichedProp1;
+                case "test-transformed-entity-1":
+                    e.transformedProp1;
 
                     break;
 
@@ -96,55 +96,55 @@ function createTestNlpRecognizer<TConversationContext>(): IIntentRecognizer<TCon
     };
 }
 
-interface EnrichedEntity1 extends Entity {
-    readonly type: "test-enriched-entity-1";
-    readonly enrichedProp1: string;
+interface TransformedEntity1 extends Entity {
+    readonly type: "test-transformed-entity-1";
+    readonly transformedProp1: string;
 }
 
-interface EnrichedEntity2 extends Entity {
-    readonly enrichedProp2: string;
+interface TransformedEntity2 extends Entity {
+    readonly transformedProp2: string;
 }
 
-function createEnricher1<TConversationContext, TEntity extends Entity>(): IIntentEnricher<TConversationContext, TEntity, TEntity|EnrichedEntity1> {
+function createTransformer1<TConversationContext, TEntity extends Entity>(): IIntentTransform<TConversationContext, TEntity, TEntity|TransformedEntity1> {
     return {
-        enrich: async (c, ru) => {
+        apply: async (c, ru) => {
             return {
                 utterance: ru.utterance,
                 intent: ru.intent,
-                entities: [...ru.entities, { type: "test-enriched-entity-1", name: "1", enrichedProp1: "prop1" }],
+                entities: [...ru.entities, { type: "test-transformed-entity-1", name: "1", transformedProp1: "prop1" }],
             };
         },
     };
 }
 
-function createEnricher2<TConversationContext, TEntity extends Entity>(): IIntentEnricher<TConversationContext, TEntity, TEntity & EnrichedEntity2> {
+function createTransformer2<TConversationContext, TEntity extends Entity>(): IIntentTransform<TConversationContext, TEntity, TEntity & TransformedEntity2> {
     return {
-        enrich: async (c, ru) => {
+        apply: async (c, ru) => {
             return {
                 utterance: ru.utterance,
                 intent: ru.intent,
-                entities: ru.entities.map((e) => ({ ...e, enrichedProp2: "prop2" })),
+                entities: ru.entities.map((e) => ({ ...e, transformedProp2: "prop2" })),
             };
         },
     };
 }
 
-function isEnriched2(entity: Entity): entity is EnrichedEntity2 {
-    return (entity as EnrichedEntity2).enrichedProp2 !== undefined;
+function isTransformed2(entity: Entity): entity is TransformedEntity2 {
+    return (entity as TransformedEntity2).transformedProp2 !== undefined;
 }
 
-function createEnricher3<TConversationContext, TEntity extends Entity>(): IIntentEnricher<TConversationContext, TEntity, TEntity & { enrichedProp3: string }> {
+function createtransformer3<TConversationContext, TEntity extends Entity>(): IIntentTransform<TConversationContext, TEntity, TEntity & { transformedProp3: string }> {
     return {
-        enrich: async (c, ru) => {
+        apply: async (c, ru) => {
             return {
                 utterance: ru.utterance,
                 intent: ru.intent,
-                entities: ru.entities.map((e) => ({ ...e, enrichedProp3: "prop3" })),
+                entities: ru.entities.map((e) => ({ ...e, transformedProp3: "prop3" })),
             };
         },
     };
 }
 
-function isEnriched3(entity: Entity): entity is Entity & { enrichedProp3: string } {
-    return (entity as unknown as { enrichedProp3: string }).enrichedProp3 !== undefined;
+function isTransformed3(entity: Entity): entity is Entity & { transformedProp3: string } {
+    return (entity as unknown as { transformedProp3: string }).transformedProp3 !== undefined;
 }

@@ -1,3 +1,4 @@
+export * from "./full-utterance-transformer";
+export * from "./individual-entity-transformer";
 export * from "./types";
-export * from "./full-utterance-enricher";
-export * from "./individual-entity-enricher";
+

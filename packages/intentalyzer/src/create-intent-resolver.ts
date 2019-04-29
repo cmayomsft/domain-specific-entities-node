@@ -1,25 +1,25 @@
 import { default as debug } from "debug";
-import { IIntentEnricher, IIntentRecognizer, IIntentResolver } from "./core-types";
+import { IIntentRecognizer, IIntentResolver, IIntentTransform } from "./core-types";
 import { Entity, SimpleEntity } from "./entities";
 
 const debugLogger = debug("intentalyzer:intent-resolver");
 
 export function createIntentResolver<TEntity extends Entity = SimpleEntity>(
     recognizer: IIntentRecognizer<any, TEntity>,
-    enricher?: IIntentEnricher<any, TEntity, TEntity>): IIntentResolver<any, TEntity>;
+    transformer?: IIntentTransform<any, TEntity, TEntity>): IIntentResolver<any, TEntity>;
 
 export function createIntentResolver<TConversationContext, TEntity extends Entity = SimpleEntity>(
         recognizer: IIntentRecognizer<TConversationContext, TEntity>,
-        enricher?: IIntentEnricher<TConversationContext, TEntity, TEntity>): IIntentResolver<TConversationContext, TEntity>;
+        transformer?: IIntentTransform<TConversationContext, TEntity, TEntity>): IIntentResolver<TConversationContext, TEntity>;
 
 /**
- * Creates a new intent resolver that uses the specified set of intent recognizers and enrichers.
+ * Creates a new intent resolver that uses the specified set of intent recognizers and transforms.
  * @param recognizer The recognizer to use to identify the intent.
- * @param enricher An optional enricher that should be used to enrich the recognized intent.
+ * @param transformer An optional transformer that should be used to transform the recognized intent.
  */
-export function createIntentResolver<TConversationContext, TRecognizedEntity extends Entity, TEnrichedEntity extends Entity>(
+export function createIntentResolver<TConversationContext, TRecognizedEntity extends Entity, TTransformedEntity extends Entity>(
     recognizer: IIntentRecognizer<TConversationContext, TRecognizedEntity>,
-    enricher?: IIntentEnricher<TConversationContext, TRecognizedEntity, TEnrichedEntity>): IIntentResolver<TConversationContext, TRecognizedEntity|TEnrichedEntity> {
+    transformer?: IIntentTransform<TConversationContext, TRecognizedEntity, TTransformedEntity>): IIntentResolver<TConversationContext, TRecognizedEntity|TTransformedEntity> {
     return {
         processUtterance: async (c, u) => {
             debugLogger("Processing utterance: %s", u);
@@ -35,17 +35,17 @@ export function createIntentResolver<TConversationContext, TRecognizedEntity ext
 
             debugLogger("Recognized intent: %o", recognizedIntent);
 
-            if (!enricher) {
-                debugLogger("No enricher configured, just returning originally recognized intent.");
+            if (!transformer) {
+                debugLogger("No transformer configured, just returning originally recognized intent.");
 
                 return recognizedIntent;
             }
 
-            const enrichedRecognizedIntent = await enricher.enrich(c, recognizedIntent);
+            const transformedRecognizedIntent = await transformer.apply(c, recognizedIntent);
 
-            debugLogger("Final, enriched recognized intent: %o", enrichedRecognizedIntent);
+            debugLogger("Final, transformed recognized intent: %o", transformedRecognizedIntent);
 
-            return enrichedRecognizedIntent;
+            return transformedRecognizedIntent;
         },
     };
 }

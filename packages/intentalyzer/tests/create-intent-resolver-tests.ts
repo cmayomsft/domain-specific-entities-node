@@ -13,16 +13,16 @@ interface FancyTestEntity extends Entity {
 type TestEntity = BasicEntity | FancyTestEntity;
 
 describe("createIntentResolver tests", () => {
-   test("recognizer, no enricher", () => {
+   test("recognizer, no transformer", () => {
         const intentResolver = createIntentResolver({ recognize: async (c, u) => null });
 
         expect(intentResolver).not.toBeNull();
     });
 
-   test("recognizer and enricher", () => {
+   test("recognizer and transformer", () => {
         const intentResolver = createIntentResolver(
             { recognize: async (c, u) => null },
-            { enrich: (c, ru) => Promise.resolve(ru) });
+            { apply: (c, ru) => Promise.resolve(ru) });
 
         expect(intentResolver).not.toBeNull();
     });
@@ -50,7 +50,7 @@ describe("createIntentResolver tests", () => {
                 },
             },
             {
-                enrich: async (c, ru) => {
+                apply: async (c, ru) => {
                     const entity = ru.entities[0];
 
                     // This logic demonstrates type guards work correctly for custom entity type

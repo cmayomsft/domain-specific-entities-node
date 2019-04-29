@@ -11,13 +11,13 @@ module.exports = {
                 },
             },
         ],
-        enrichers: [
+        transforms: [
             {
-                enrich: function(context, recognizedUtterance) {
+                apply: function(context, recognizedUtterance) {
                     return { 
                         ...recognizedUtterance, 
                         entities: [...recognizedUtterance.entities, {
-                            name: "enrichedEntity",
+                            name: "transformedEntity",
                             type: "string",
                             value: `hello ${Date.now()}`,
                         } ]

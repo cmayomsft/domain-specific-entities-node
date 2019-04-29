@@ -16,14 +16,14 @@ module.exports = {
                 },
             },
         ],
-        enrichers: [
+        transforms: [
             {
-                enrich: function(context, recognizedUtterance) {
+                apply: function(context, recognizedUtterance) {
                     return {
                         ...recognizedUtterance,
                         entities: [
                             ...recognizedUtterance.entities.map(e => {
-                                e.enrichedProp = "enriched value";
+                                e.transformedProp = "transformed value";
         
                                 return e;
                             }),
