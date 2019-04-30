@@ -6,10 +6,12 @@
         "bootstrap": "lerna bootstrap --hoist",
         "build": "tsc -b",
         "lint": "lerna run --parallel lint",
-        "test": "lerna run --parallel test"
+        "test": "lerna run --parallel test",
+        "clean": "lerna run --parallel clean"
     },
     "devDependencies": {
         "@types/jest": "^24.0.11",
+        "del-cli": "^1.1.0",
         "jest": "^24.7.1",
         "lerna": "^3.13.2",
         "ts-jest": "^24.0.2",
