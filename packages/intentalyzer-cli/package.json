@@ -1,11 +1,12 @@
 {
   "name": "intentalyzer-cli",
-  "version": "0.1.0-beta.1",
+  "version": "0.0.1-dev",
   "author": "Drew Marsh (@drub0y)",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --build .",
-    "test": "jest --config \"../../jest.json\" --rootDir . --passWithNoTests"
+    "test": "jest --config \"../../jest.json\" --rootDir . --passWithNoTests",
+    "clean": "del-cli dist tsconfig.tsbuildinfo"
   },
   "directories": {
     "lib": "dist",
@@ -41,7 +42,7 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "deep-diff": "^1.0.2",
-    "intentalyzer": "^0.1.0-beta.1",
+    "intentalyzer": "0.0.1-dev",
     "moment": "^2.24.0",
     "p-throttle": "^3.0.0",
     "yargs": "^12.0.5"

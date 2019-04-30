@@ -1,12 +1,13 @@
 {
   "name": "intentalyzer-luis-integration",
-  "version": "0.1.0-beta.1",
+  "version": "0.0.1-dev",
   "author": "Drew Marsh (@drub0y)",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "tsc --build .",
-    "test": "jest --config \"../../jest.json\" --rootDir . --passWithNoTests"
+    "test": "jest --config \"../../jest.json\" --rootDir . --passWithNoTests",
+    "clean": "rimraf lib tsconfig.tsbuildinfo"
   },
   "directories": {
     "lib": "lib"
@@ -33,7 +34,7 @@
   },
   "dependencies": {
     "@azure/cognitiveservices-luis-runtime": "^0.1.0",
-    "intentalyzer": "^0.1.0-beta.1"
+    "intentalyzer": "0.0.1-dev"
   },
   "devDependencies": {
     "@types/node": "^10.12.18"
