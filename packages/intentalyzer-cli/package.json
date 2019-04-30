@@ -1,6 +1,6 @@
 {
   "name": "intentalyzer-cli",
-  "version": "0.0.5-alpha.0",
+  "version": "0.1.0-beta.0",
   "author": "Drew Marsh (@drub0y)",
   "main": "dist/index.js",
   "scripts": {
@@ -41,7 +41,7 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "deep-diff": "^1.0.2",
-    "intentalyzer": "^0.0.2-alpha.0",
+    "intentalyzer": "^0.1.0-beta.0",
     "moment": "^2.24.0",
     "p-throttle": "^3.0.0",
     "yargs": "^12.0.5"
