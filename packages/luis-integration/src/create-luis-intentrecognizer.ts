@@ -1,26 +1,53 @@
 import { LUISRuntimeClient, LUISRuntimeModels } from "@azure/cognitiveservices-luis-runtime";
+import { default as debug } from "debug";
 import { IIntentRecognizer } from "intentalyzer";
 import { BasicLuisEntity, LuisCompositeEntity, LuisEntity } from "./types";
 
+const debugLogger = debug("intentalyzer:integration:luis:intent-recognizer");
+
 export function createLuisIntentRecognizer<TConversationContext>(luisClient: LUISRuntimeClient, appId: string, luisPredictionResolveOptions?: LUISRuntimeModels.PredictionResolveOptionalParams): IIntentRecognizer<TConversationContext, BasicLuisEntity> {
+    debugLogger("Creating a LUIS intent recognizer for app '%s' with options: %O", appId, luisPredictionResolveOptions);
+
     return {
         recognize: async (cc, utterance) => {
+            debugLogger("Recognize called for utterance: %s", utterance);
+
+            debugLogger("Calling LUIS...");
+
             const luisResult = await luisClient.prediction.resolve(appId, utterance, luisPredictionResolveOptions);
+
+            debugLogger("LUIS returned a result: %O", luisResult);
+
             const topScoringIntent = luisResult.topScoringIntent;
 
             if (!topScoringIntent) {
+                debugLogger("LUIS didn't recognize any intent.");
+
                 return null;
             }
 
+            debugLogger("Top scoring intent was '%s' with a score of %f.", topScoringIntent.intent, topScoringIntent.score);
+
+            const entities = luisResult.entities;
             let normalizedEntities: BasicLuisEntity[];
 
-            if (luisResult.entities) {
-                normalizedEntities = luisResult.entities.map(mapEntity);
+            if (entities) {
+                debugLogger("Mapping %i entities...", entities.length);
 
-                if (luisResult.compositeEntities) {
-                    normalizedEntities.push(...luisResult.compositeEntities.map(mapCompositeEntity));
+                normalizedEntities = entities.map(mapEntity);
+
+                const compositeEntities = luisResult.compositeEntities;
+
+                if (compositeEntities) {
+                    debugLogger("Mapping %i composite entities...", compositeEntities.length);
+
+                    normalizedEntities.push(...compositeEntities.map(mapCompositeEntity));
+                } else {
+                    debugLogger("No composite entities to map.");
                 }
             } else {
+                debugLogger("No entities to map.");
+
                 normalizedEntities = [];
             }
 

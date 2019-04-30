@@ -1,5 +1,8 @@
-import { IIntentEnricher, IIntentRecognizer, IIntentResolver, RecognizedIntent } from "./core-types";
+import { default as debug } from "debug";
+import { IIntentEnricher, IIntentRecognizer, IIntentResolver } from "./core-types";
 import { Entity, SimpleEntity } from "./entities";
+
+const debugLogger = debug("intentalyzer:intent-resolver");
 
 export function createIntentResolver<TEntity extends Entity = SimpleEntity>(
     recognizer: IIntentRecognizer<any, TEntity>,
@@ -9,7 +12,8 @@ export function createIntentResolver<TConversationContext, TEntity extends Entit
         recognizer: IIntentRecognizer<TConversationContext, TEntity>,
         enricher?: IIntentEnricher<TConversationContext, TEntity, TEntity>): IIntentResolver<TConversationContext, TEntity>;
 
-/** Creates a new intent resolver that uses the specified set of intent recognizers and enrichers.
+/**
+ * Creates a new intent resolver that uses the specified set of intent recognizers and enrichers.
  * @param recognizer The recognizer to use to identify the intent.
  * @param enricher An optional enricher that should be used to enrich the recognized intent.
  */
@@ -18,14 +22,30 @@ export function createIntentResolver<TConversationContext, TRecognizedEntity ext
     enricher?: IIntentEnricher<TConversationContext, TRecognizedEntity, TEnrichedEntity>): IIntentResolver<TConversationContext, TRecognizedEntity|TEnrichedEntity> {
     return {
         processUtterance: async (c, u) => {
-            const recognizedUtterance: RecognizedIntent<TRecognizedEntity>|null = await recognizer.recognize(c, u);
+            debugLogger("Processing utterance: %s", u);
 
-            // If there was no  result from the reognizer or there is no enricher, just return the result as is
-            if (recognizedUtterance === null || !enricher) {
-                return recognizedUtterance;
+            const recognizedIntent = await recognizer.recognize(c, u);
+
+            // If there was no result from the reognizer, return null
+            if (recognizedIntent === null) {
+                debugLogger("Processing utterance: %s", null);
+
+                return null;
             }
 
-            return await enricher.enrich(c, recognizedUtterance);
+            debugLogger("Recognized intent: %o", recognizedIntent);
+
+            if (!enricher) {
+                debugLogger("No enricher configured, just returning originally recognized intent.");
+
+                return recognizedIntent;
+            }
+
+            const enrichedRecognizedIntent = await enricher.enrich(c, recognizedIntent);
+
+            debugLogger("Final, enriched recognized intent: %o", enrichedRecognizedIntent);
+
+            return enrichedRecognizedIntent;
         },
     };
 }

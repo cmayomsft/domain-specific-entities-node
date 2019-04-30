@@ -13,12 +13,12 @@ export interface SimpleEntity extends Entity {
 
 export interface StringEntity extends Entity {
     readonly type: "string";
-    value: string;
+    readonly value: string;
 }
 
 export interface NumberEntity extends Entity {
     readonly type: "number";
-    value: number;
+    readonly value: number;
 }
 
 export type BasicEntity = SimpleEntity | StringEntity | NumberEntity;
