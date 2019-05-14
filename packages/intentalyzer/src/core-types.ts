@@ -8,8 +8,8 @@ export interface IIntentRecognizer<TConversationContext, TEntity extends Entity>
     recognize(context: TConversationContext, utterance: string): Promise<RecognizedIntent<TEntity> | null>;
 }
 
-export interface IIntentEnricher<TConversationContext, TEntity extends Entity, TEnrichedEntity extends Entity> {
-    enrich(context: TConversationContext, recognizedUtterance: RecognizedIntent<TEntity>): Promise<RecognizedIntent<TEnrichedEntity>>;
+export interface IIntentTransform<TConversationContext, TEntity extends Entity, TTransformedEntity extends Entity> {
+    apply(context: TConversationContext, recognizedUtterance: RecognizedIntent<TEntity>): Promise<RecognizedIntent<TTransformedEntity>>;
 }
 
 export interface RecognizedIntent<TEntity extends Entity> {

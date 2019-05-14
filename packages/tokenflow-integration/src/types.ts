@@ -22,10 +22,10 @@ export function isEntityToken(token: Token): token is EntityToken {
     return token.type === ENTITY;
 }
 
-export interface TokenFlowEnrichedEntity extends Entity {
+export interface TokenFlowTransformedEntity extends Entity {
     readonly entityToken: EntityToken;
 }
 
-export function isTokenFlowEnrichedEntity(entity: Entity): entity is TokenFlowEnrichedEntity {
-    return (entity as TokenFlowEnrichedEntity).entityToken !== undefined;
+export function isTokenFlowTransformedEntity(entity: Entity): entity is TokenFlowTransformedEntity {
+    return (entity as TokenFlowTransformedEntity).entityToken !== undefined;
 }

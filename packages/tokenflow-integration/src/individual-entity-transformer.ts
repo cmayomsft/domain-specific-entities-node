@@ -1,14 +1,14 @@
 import * as flatMap from "array.prototype.flatmap";
 import { default as debug } from "debug";
-import { Entity, IIntentEnricher } from "intentalyzer";
+import { Entity, IIntentTransform } from "intentalyzer";
 import { Recognizer, WORD } from "token-flow";
-import { EntityToken, isEntityToken, TokenFlowEnrichedEntity } from "./types";
+import { EntityToken, isEntityToken, TokenFlowTransformedEntity } from "./types";
 import { composeRecognizerArray, isStringArray, loadTokenFileIntoPatternRecognizer } from "./utilities";
 
 flatMap.shim();
 
-const debugLogger = debug("intentalyzer:integration:token-flow:enrichers:entity-enricher");
-const wordMappingDebugLogger = debug("intentalyzer:integration:token-flow:enrichers:entity-enricher:word-mapping");
+const debugLogger = debug("intentalyzer:integration:token-flow:transformers:entity-transformer");
+const wordMappingDebugLogger = debug("intentalyzer:integration:token-flow:transformers:entity-transformer:word-mapping");
 
 export type EntityWordSelector<TEntity extends Entity> = (entity: TEntity) => string|string[]|undefined;
 
@@ -17,11 +17,11 @@ export type EntityWordSelector<TEntity extends Entity> = (entity: TEntity) => st
 //     return (entity: TEntity) => entityValueSelector(entity).split(' ');
 // }
 
-export function createTokenFlowEntityEnricher<TConversationContext, TEntity extends Entity>(
+export function createTokenFlowEntityTransform<TConversationContext, TEntity extends Entity>(
     entityWordSelector: EntityWordSelector<TEntity>,
-    ...recognizers: string[] | Recognizer[]): IIntentEnricher<TConversationContext, TEntity, TEntity|TEntity & TokenFlowEnrichedEntity> {
+    ...recognizers: string[] | Recognizer[]): IIntentTransform<TConversationContext, TEntity, TEntity|TEntity & TokenFlowTransformedEntity> {
 
-    debugLogger("Creating a new token-flow entity enricher...");
+    debugLogger("Creating a new token-flow entity transform...");
 
     if (recognizers.length === 0) {
         throw new Error("Expected at least one recognizer file/instance to be specified.");
@@ -36,7 +36,7 @@ export function createTokenFlowEntityEnricher<TConversationContext, TEntity exte
     const tokenFlowRecognizer = composeRecognizerArray(recognizers);
 
     return {
-        enrich: async (_, ri) => {
+        apply: async (_, ri) => {
             const entities = ri.entities;
 
             debugLogger("Processing RecognizedIntent with %i entities...", entities.length);
@@ -86,18 +86,18 @@ export function createTokenFlowEntityEnricher<TConversationContext, TEntity exte
                     et.children.forEach((c) => delete (c as any).$dse_sourceEntity);
                 });
 
-            debugLogger("Enriching the original entities with any corresponding ENTITY token from token-flow...")
+            debugLogger("Transforming the original entities with any corresponding ENTITY token from token-flow...")
 
-            let numberOfEntitiesEnriched = 0;
+            let numberOfEntitiesTransformed = 0;
 
             const finalMappedEntities = entities.map((e) => {
                 const entityToken = entityTokensByEntity.get(e);
 
                 // If an ENTITY token was found for this entity, return the entity intersected with the TokenFlow details
                 if (entityToken) {
-                    debugLogger("Enriching entity with name '%s' with ENTITY token: %O", e.name, entityToken);
+                    debugLogger("Transforming entity with name '%s' with ENTITY token: %O", e.name, entityToken);
 
-                    numberOfEntitiesEnriched++;
+                    numberOfEntitiesTransformed++;
 
                     return {
                         ...e,
@@ -105,13 +105,13 @@ export function createTokenFlowEntityEnricher<TConversationContext, TEntity exte
                     };
                 }
 
-                debugLogger("Entity with name '%s' did not resolve to an ENTITY token and will not be enriched.", e.name);
+                debugLogger("Entity with name '%s' did not resolve to an ENTITY token and will not be transformed.", e.name);
 
                 // No matching ENTITY token for this entity, just return the original entity
                 return e;
             });
 
-            debugLogger("%i total entities were enriched.", numberOfEntitiesEnriched);
+            debugLogger("%i total entities were transformed.", numberOfEntitiesTransformed);
 
             return {
                 utterance: ri.utterance,

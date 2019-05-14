@@ -1,18 +1,18 @@
 import { default as debug } from "debug";
-import { Entity, IIntentEnricher } from "intentalyzer";
+import { Entity, IIntentTransform } from "intentalyzer";
 import { Recognizer, WORD } from "token-flow";
 import { EntityToken, TokenFlowEntity } from "./types";
 import { composeRecognizerArray, isStringArray, loadTokenFileIntoPatternRecognizer } from "./utilities";
 
-const debugLogger = debug("intentalyzer:integration:token-flow:enrichers:full-utterance-enricher");
+const debugLogger = debug("intentalyzer:integration:token-flow:transformers:full-utterance-transformer");
 
-export function createTokenFlowFullUtteranceEnricher<TConversationContext, TEntity extends Entity>(
-    ...recognizers: string[] | Recognizer[]): IIntentEnricher<TConversationContext, TEntity, TEntity|TokenFlowEntity> {
+export function createTokenFlowFullUtteranceTransform<TConversationContext, TEntity extends Entity>(
+    ...recognizers: string[] | Recognizer[]): IIntentTransform<TConversationContext, TEntity, TEntity|TokenFlowEntity> {
     if (recognizers.length === 0) {
         throw new Error("Expected at least one recognizer file/instance to be specified.");
     }
 
-    debugLogger("Creating a new token-flow full utterance enricher...");
+    debugLogger("Creating a new token-flow full utterance transformer...");
 
     if (isStringArray(recognizers)) {
         debugLogger("Loading recognizers from specified files...");
@@ -23,7 +23,7 @@ export function createTokenFlowFullUtteranceEnricher<TConversationContext, TEnti
     const tokenFlowRecognizer = composeRecognizerArray(recognizers);
 
     return {
-        enrich: async (cc, ri) => {
+        apply: async (cc, ri) => {
             debugLogger("Processing recognized intent...");
 
             const wordTokens = ri.utterance.split(/\s+/).map((w) => ({ type: WORD, text: w }));

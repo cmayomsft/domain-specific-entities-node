@@ -32,6 +32,7 @@
                 "<node_internals>/**/*.*",
                 "${workspaceFolder}/**/node_modules/**/*.*"
             ],
+            "env": { "DEBUG": "intentalyzer:*" },
             "outFiles": ["${workspaceFolder}/packages/intentalyzer-cli/dist/**/*.js"],
             "smartStep": true,
             "sourceMaps": true,

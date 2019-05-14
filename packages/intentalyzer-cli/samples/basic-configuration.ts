@@ -13,13 +13,13 @@ export = {
                 },
             },
         ],
-        enrichers: [
+        transforms: [
             {
-                enrich: async (context, recognizedUtterance) => {
+                apply: async (context, recognizedUtterance) => {
                     return {
                         ...recognizedUtterance,
                         entities: [...recognizedUtterance.entities, {
-                            name: "enrichedEntity",
+                            name: "transformedEntity",
                             type: "string",
                             value: `hello ${Date.now()}`,
                         } ],
