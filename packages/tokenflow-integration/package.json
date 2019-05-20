@@ -1,6 +1,6 @@
 {
   "name": "intentalyzer-tokenflow-integration",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.1-beta.0",
   "author": "Drew Marsh (@drub0y)",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "array.prototype.flatmap": "^1.2.1",
-    "intentalyzer": "^0.1.0-beta.2",
+    "intentalyzer": "^0.1.1-beta.0",
     "token-flow": "^0.0.26"
   },
   "devDependencies": {
