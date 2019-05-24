@@ -1,12 +1,21 @@
-import { LUISRuntimeClient, LUISRuntimeModels } from "@azure/cognitiveservices-luis-runtime";
+import { LUISRuntimeClient } from "@azure/cognitiveservices-luis-runtime";
+import { PredictionGetSlotPredictionOptionalParams } from "@azure/cognitiveservices-luis-runtime/esm/models";
+import * as flatMap from "array.prototype.flatmap";
 import { default as debug } from "debug";
 import { IIntentRecognizer } from "intentalyzer";
 import { BasicLuisEntity, LuisCompositeEntity, LuisEntity } from "./types";
 
+flatMap.shim();
+
 const debugLogger = debug("intentalyzer:integration:luis:intent-recognizer");
 
-export function createLuisIntentRecognizer<TConversationContext>(luisClient: LUISRuntimeClient, appId: string, luisPredictionResolveOptions?: LUISRuntimeModels.PredictionResolveOptionalParams): IIntentRecognizer<TConversationContext, BasicLuisEntity> {
-    debugLogger("Creating a LUIS intent recognizer for app '%s' with options: %O", appId, luisPredictionResolveOptions);
+const PredictionGetSlotOptionalParams: PredictionGetSlotPredictionOptionalParams = { verbose: true, customHeaders: { "User-Agent": "intentalyzer-luis-integration" } };
+
+export function createLuisIntentRecognizer<TConversationContext>(
+    luisClient: LUISRuntimeClient,
+    appId: string,
+    slotName: string = "production"): IIntentRecognizer<TConversationContext, BasicLuisEntity> {
+    debugLogger("Creating a LUIS intent recognizer for app '%s' and slot '%s'...", appId, slotName);
 
     return {
         recognize: async (cc, utterance) => {
@@ -14,37 +23,27 @@ export function createLuisIntentRecognizer<TConversationContext>(luisClient: LUI
 
             debugLogger("Calling LUIS...");
 
-            const luisResult = await luisClient.prediction.resolve(appId, utterance, luisPredictionResolveOptions);
+            const luisResult = await luisClient.prediction.getSlotPrediction(appId, slotName, { query: utterance }, PredictionGetSlotOptionalParams);
 
             debugLogger("LUIS returned a result: %O", luisResult);
 
-            const topScoringIntent = luisResult.topScoringIntent;
+            const prediction = luisResult.prediction;
+            const topIntentName = prediction.topIntent;
 
-            if (!topScoringIntent) {
+            if (!topIntentName) {
                 debugLogger("LUIS didn't recognize any intent.");
 
                 return null;
             }
 
-            debugLogger("Top scoring intent was '%s' with a score of %f.", topScoringIntent.intent, topScoringIntent.score);
+            const topIntent = prediction.intents[topIntentName];
 
-            const entities = luisResult.entities;
+            debugLogger("Top scoring intent was '%s' with a score of %f.", topIntentName, topIntent.score);
+
             let normalizedEntities: BasicLuisEntity[];
 
-            if (entities) {
-                debugLogger("Mapping %i entities...", entities.length);
-
-                normalizedEntities = entities.map(mapEntity);
-
-                const compositeEntities = luisResult.compositeEntities;
-
-                if (compositeEntities) {
-                    debugLogger("Mapping %i composite entities...", compositeEntities.length);
-
-                    normalizedEntities.push(...compositeEntities.map(mapCompositeEntity));
-                } else {
-                    debugLogger("No composite entities to map.");
-                }
+            if (prediction.entities) {
+                normalizedEntities = mapEntities(prediction.entities);
             } else {
                 debugLogger("No entities to map.");
 
@@ -53,38 +52,74 @@ export function createLuisIntentRecognizer<TConversationContext>(luisClient: LUI
 
             return {
                 utterance,
-                intent: topScoringIntent.intent ? topScoringIntent.intent : "<unknown>",
+                intent: topIntentName ? topIntentName : "<unknown>",
                 entities: normalizedEntities,
             };
         },
     };
 }
 
-function mapEntity(luisEntity: LUISRuntimeModels.EntityModel): LuisEntity {
+function mapEntities(entities: any): BasicLuisEntity[] {
+    const predictionInstanceDetails = entities.$instance;
+    const entityEntries = Object.entries(entities).filter(([key]) => key !== "$instance");
+
+    debugLogger("Mapping %i entities...", entityEntries.length);
+
+    const results = entityEntries.flatMap(([key, values]) => {
+        const entityInstanceDetails = predictionInstanceDetails[key];
+
+        return (values as any[]).flatMap((value, index) => mapEntity(key, value, entityInstanceDetails[index]));
+    });
+
+    debugLogger("Mapped %i entities", results.length);
+
+    return results;
+}
+
+function mapEntity(name: string, value: any, entityInstanceDetails: any): BasicLuisEntity|BasicLuisEntity[] {
+    // If the value object contains the $instance property we use that as a sign it's a composite entity
+    if (value.$instance) {
+        return mapCompositeEntity(name, value, entityInstanceDetails);
+    }
+
+    // If there is more than one value then we need to map out an instance for each value
+    if (Array.isArray(value)) {
+        debugLogger("Mapping entity '%s' with multiple (%i) values...", name, value.length);
+
+        return value.map((v) => mapSingleEntityValue(name, v, entityInstanceDetails));
+    }
+
+    debugLogger("Mapping entity '%s' with single value...", name, value.length);
+
+    // There's only a single value, just map it to a single entity instance
+    return mapSingleEntityValue(name, value, entityInstanceDetails);
+}
+
+function mapSingleEntityValue(name: string, value: any, entityInstanceDetails: any): LuisEntity {
+    const role = entityInstanceDetails.role;
+
     return {
-        $raw: luisEntity,
-        name: luisEntity.type,
+        $raw: entityInstanceDetails,
+        name: role !== undefined ? role : name,
         type: "luis",
-        value: luisEntity.entity,
+        value,
         utteranceOffsets: {
-            startIndex: luisEntity.startIndex,
-            endIndex: luisEntity.endIndex,
+            startIndex: entityInstanceDetails.startIndex,
+            endIndex: entityInstanceDetails.startIndex + entityInstanceDetails.length - 1,
         },
-        score: luisEntity.score,
-        resolution: luisEntity.resolution ? (luisEntity as LUISRuntimeModels.EntityWithResolution).resolution : null,
-        role: luisEntity.role as string,
+        score: entityInstanceDetails.score,
+        resolution: entityInstanceDetails.resolution,
     };
 }
 
-function mapCompositeEntity(luisCompositeEntity: LUISRuntimeModels.CompositeEntityModel): LuisCompositeEntity {
+function mapCompositeEntity(name: string, rawLuisCompositeEntity: any, entityInstanceDetails: any): LuisCompositeEntity {
+    debugLogger("Mapping composite entity '%s'...", name);
+
     return {
-        $raw: luisCompositeEntity,
-        name: luisCompositeEntity.parentType,
-        value: luisCompositeEntity.value,
+        $raw: rawLuisCompositeEntity,
+        name,
+        value: entityInstanceDetails.text,
         type: "luis.composite",
-        children: luisCompositeEntity.children.map((c) => ({
-            type: c.type,
-            value: c.value,
-        })),
+        children: mapEntities(rawLuisCompositeEntity),
     };
 }
