@@ -12,7 +12,8 @@ export = {
             createLuisIntentRecognizer(new LUISRuntimeClient(
                 new ApiKeyCredentials({ inHeader: { "Ocp-Apim-Subscription-Key": process.env.LUIS_SUBSCRIPTION_KEY! }}),
                 process.env.LUIS_ENDPOINT_URL!),
-                process.env.LUIS_APP_ID!),
+                process.env.LUIS_APP_ID!,
+                "Production"),
             ],
         },
 } as IntentResolverConfiguration;
