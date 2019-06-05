@@ -35,7 +35,7 @@
   "dependencies": {
     "array.prototype.flatmap": "^1.2.1",
     "intentalyzer": "^0.1.1-beta.0",
-    "token-flow": "^0.0.26"
+    "token-flow": "^0.0.30"
   },
   "devDependencies": {
     "@types/array.prototype.flatmap": "^1.2.0",
