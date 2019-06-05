@@ -32,7 +32,6 @@ export class FuzzyTextMatcher<TMatch> {
         const stemmed = terms.map(this.lexicon.termModel.stem);
         const hashed = stemmed.map(this.lexicon.termModel.hashTerm);
 
-        // TODO: terms should be stemmed and hashed by TermModel in Lexicon.
         const graph = this.tokenizer.generateGraph(hashed, stemmed);
         const path = graph.findPath([], 0);
 
@@ -44,8 +43,7 @@ export class FuzzyTextMatcher<TMatch> {
             }
         }
 
-        // TODO: check sort order
-        return matches.sort( (a, b) => b.score - a.score);
+        return matches.sort((a, b) => b.score - a.score);
     }
 }
 
