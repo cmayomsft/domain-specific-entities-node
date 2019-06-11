@@ -1,4 +1,5 @@
 import { Entity, RecognizedIntent } from "intentalyzer";
+import { FuzzyItemDefinition } from "../src/fuzzy-text-matcher";
 import { createTokenFlowEntityTransform } from "../src/individual-entity-transformer";
 import { isTokenFlowMatchedEntity } from "../src/types";
 
@@ -12,90 +13,160 @@ interface TestEntity extends Entity {
     value: string;
 }
 
-describe("createTokenFlowEntityTransform", () => {
-    it("Transforms expected entity", async () => {
-        const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
-            (e) => e.value,
-            [ { pattern: "foo", match: { id: 123, name: "Foo Bar" } }].values(),
-        );
+describe("Individual Entity Transform Tests", () => {
+    describe("Factory Tests", () => {
+        it("Injests fuzzy match item definitions - empty", () => {
+            let wasEnumerated = false;
 
-        const originalIntent = {
-            entities: [ {
-                name: "TestEntity",
-                type: "test",
-                value: "foo",
-            } ],
-            intent: "test-intent",
-            utterance: "Test Utterance",
-        } as RecognizedIntent<TestEntity>;
+            function* getFuzzyMatchItemDefinitions(): IterableIterator<FuzzyItemDefinition<TestItemDefinition>> {
+                wasEnumerated = true;
+            }
 
-        const transformedIntent = await transform.apply(null, originalIntent);
+            createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+                (e) => e.value,
+                getFuzzyMatchItemDefinitions(),
+            );
 
-        const entity = transformedIntent.entities[0];
+            expect(wasEnumerated).toBe(true);
+        });
 
-        if (isTokenFlowMatchedEntity<TestItemDefinition>(entity)) {
-            expect(entity.matches.length).toBe(1);
-            expect(entity.matches[0].match.id).toBe(123);
+        it("Injests fuzzy match item definitions - non-empty", () => {
+            let wasFullyEnumerated = false;
 
-            return;
-        }
+            function* getFuzzyMatchItemDefinitions(): IterableIterator<FuzzyItemDefinition<TestItemDefinition>> {
+                for (let i = 0; i < 10; i++) {
+                    yield {
+                        pattern: `test ${i}`,
+                        match: {
+                            id: i,
+                            name: `Test Item Definition - ${i}`,
+                        },
+                    } as FuzzyItemDefinition<TestItemDefinition>;
+                }
 
-        fail("Expected a token flow matched entity.");
+                wasFullyEnumerated = true;
+            }
+
+            createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+                (e) => e.value,
+                getFuzzyMatchItemDefinitions(),
+            );
+
+            expect(wasFullyEnumerated).toBe(true);
+        });
     });
 
-    it("Does not transform intent that contains entities that don't return words", async () => {
-        const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
-            (e) => undefined,
-            [].values(),
-        );
+    describe("Transform Tests", () => {
+        it("Transforms expected entity", async () => {
+            const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+                (e) => e.value,
+                [ { pattern: "foo", match: { id: 123, name: "Foo Bar" } }].values(),
+            );
 
-        const originalIntent = {
-            entities: [ {
-                name: "TestEntity",
-                type: "test",
-                value: "test",
-            } ],
-            intent: "test-intent",
-            utterance: "Test Utterance",
-        } as RecognizedIntent<TestEntity>;
+            const originalIntent = {
+                entities: [ {
+                    name: "TestEntity",
+                    type: "test",
+                    value: "foo",
+                } ],
+                intent: "test-intent",
+                utterance: "Test Utterance",
+            } as RecognizedIntent<TestEntity>;
 
-        const transformedIntent = await transform.apply(null, originalIntent);
+            const transformedIntent = await transform.apply(null, originalIntent);
 
-        expect(transformedIntent).toEqual(originalIntent);
-    });
+            const entity = transformedIntent.entities[0];
 
-    it("Only transforms entities that produce words", async () => {
-        const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
-            (e) => e.name === "TestEntityWithWords" ? e.value : undefined,
-            [ { pattern: "foo", match: { id: 123, name: "Foo Bar" } }].values(),
-        );
+            if (isTokenFlowMatchedEntity<TestItemDefinition>(entity)) {
+                expect(entity.matches.length).toBe(1);
+                expect(entity.matches[0].match.id).toBe(123);
 
-        const originalIntent = {
-            entities: [ {
-                name: "TestEntityWithWords",
-                type: "test",
-                value: "foo",
-            },
-            {
-                name: "TestEntityWithoutWords",
-                type: "test",
-                value: "bar",
-            } ],
-            intent: "test-intent",
-            utterance: "Test Utterance",
-        } as RecognizedIntent<TestEntity>;
+                return;
+            }
 
-        const transformedIntent = await transform.apply(null, originalIntent);
+            fail("Expected a token flow matched entity.");
+        });
 
-        const expectedTransformedEntity = transformedIntent.entities[0];
+        it("Does not transform intent that contains entities that don't return words", async () => {
+            const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+                (e) => undefined,
+                [].values(),
+            );
 
-        if (isTokenFlowMatchedEntity<TestItemDefinition>(expectedTransformedEntity)) {
-            expect(expectedTransformedEntity.matches.length).toBe(1);
-            expect(expectedTransformedEntity.matches[0].match.id).toBe(123);
-        } else {
-            fail("Expected first entity to be a token flow matched entity.");
-        }
+            const originalIntent = {
+                entities: [ {
+                    name: "TestEntity",
+                    type: "test",
+                    value: "test",
+                } ],
+                intent: "test-intent",
+                utterance: "Test Utterance",
+            } as RecognizedIntent<TestEntity>;
 
-        expect(isTokenFlowMatchedEntity(transformedIntent.entities[1])).toBe(false);
+            const transformedIntent = await transform.apply(null, originalIntent);
+
+            expect(transformedIntent).toEqual(originalIntent);
+        });
+
+        it("Only transforms entities that produce words", async () => {
+            const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+                (e) => e.name === "TestEntityWithWords" ? e.value : undefined,
+                [ { pattern: "foo", match: { id: 123, name: "Foo Bar" } }].values(),
+            );
+
+            const originalIntent = {
+                entities: [ {
+                    name: "TestEntityWithWords",
+                    type: "test",
+                    value: "foo",
+                },
+                {
+                    name: "TestEntityWithoutWords",
+                    type: "test",
+                    value: "bar",
+                } ],
+                intent: "test-intent",
+                utterance: "Test Utterance",
+            } as RecognizedIntent<TestEntity>;
+
+            const transformedIntent = await transform.apply(null, originalIntent);
+
+            const expectedTransformedEntity = transformedIntent.entities[0];
+
+            if (isTokenFlowMatchedEntity<TestItemDefinition>(expectedTransformedEntity)) {
+                expect(expectedTransformedEntity.matches.length).toBe(1);
+                expect(expectedTransformedEntity.matches[0].match.id).toBe(123);
+            } else {
+                fail("Expected first entity to be a token flow matched entity.");
+            }
+
+            expect(isTokenFlowMatchedEntity(transformedIntent.entities[1])).toBe(false);
+        });
+
+        it("Doesn't do anything if no text matches found", async () => {
+            const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+                (e) => e.name === "TestEntityWithWords" ? e.value : undefined,
+                [].values(),
+            );
+
+            const originalIntent = {
+                entities: [ {
+                    name: "TestEntityWithWords",
+                    type: "test",
+                    value: "foo",
+                },
+                {
+                    name: "TestEntityWithoutWords",
+                    type: "test",
+                    value: "bar",
+                } ],
+                intent: "test-intent",
+                utterance: "Test Utterance",
+            } as RecognizedIntent<TestEntity>;
+
+            const transformedIntent = await transform.apply(null, originalIntent);
+
+            expect(transformedIntent).toEqual(originalIntent);
+        });
     });
 });
