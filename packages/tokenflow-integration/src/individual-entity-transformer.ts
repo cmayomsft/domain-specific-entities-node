@@ -35,7 +35,7 @@ export function createTokenFlowEntityTransform<TConversationContext, TEntity ext
 
                         return {
                             entity,
-                            matches: undefined,
+                            matches: null,
                         };
                     }
 
@@ -46,16 +46,24 @@ export function createTokenFlowEntityTransform<TConversationContext, TEntity ext
                         matches: entityFuzzyTextMatcher.matches(selectedWords),
                     };
 
-                    const topMatch = entityWithMatches.matches[0];
+                    if (debugLogger.enabled) {
+                        if (entityWithMatches.matches.length > 0) {
+                            debugLogger("Entity with name '%s' and words '%s' resulted in %n matches.", entity.name, selectedWords, entityWithMatches.matches.length);
 
-                    debugLogger("Entity with name '%s' and words '%s' resulted in %n matches. Top match with score of %n was: %o", entity.name, selectedWords, entityWithMatches.matches.length, topMatch.score, topMatch.match);
+                            const topMatch = entityWithMatches.matches[0];
+
+                            debugLogger("Top match with score of %n was: %o", topMatch.score, topMatch.match);
+                        } else {
+                            debugLogger("No matches were found for entity with name '%s' and words '%s'.", entity.name, selectedWords);
+                        }
+                    }
 
                     return entityWithMatches;
                 })
                 .map((entityWithMatches) => {
                   const originalEntity = entityWithMatches.entity;
 
-                  if (!entityWithMatches.matches) {
+                  if (entityWithMatches.matches === null || entityWithMatches.matches.length === 0) {
                     return originalEntity;
                   }
 
