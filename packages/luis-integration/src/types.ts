@@ -13,7 +13,7 @@ export interface LuisEntity extends LuisEntityBase {
 
 export interface LuisCompositeEntity extends LuisEntityBase {
     readonly type: "luis.composite";
-    readonly children: BasicLuisEntity[];
+    readonly children: LuisEntity[];
 }
 
 export type BasicLuisEntity = LuisEntity | LuisCompositeEntity;
