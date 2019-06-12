@@ -108,7 +108,6 @@ function mapSingleEntityValue(name: string, value: any, entityInstanceDetails: a
             endIndex: entityInstanceDetails.startIndex + entityInstanceDetails.length - 1,
         },
         score: entityInstanceDetails.score,
-        resolution: entityInstanceDetails.resolution,
     };
 }
 

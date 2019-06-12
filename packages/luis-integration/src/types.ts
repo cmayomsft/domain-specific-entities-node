@@ -2,13 +2,12 @@ import { Entity } from "intentalyzer";
 
 export interface LuisEntityBase extends Entity {
     readonly $raw: any;
-    readonly value: string;
+    readonly value: any;
 }
 
 export interface LuisEntity extends LuisEntityBase {
     readonly type: "luis";
     readonly score?: number;
-    readonly resolution?: any;
 }
 
 export interface LuisCompositeEntity extends LuisEntityBase {
