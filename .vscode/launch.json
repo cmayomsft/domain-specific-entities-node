@@ -19,15 +19,15 @@
             "port": 9229
         },
         {
-            "name": "Debug CP-CLI - REPL",
+            "name": "Debug CP-CLI - REPL - No Config",
             "type":"node",
             "request": "launch",
             "protocol": "inspector",
             "preLaunchTask": "Build All",
-            "cwd": "${workspaceFolder}/packages/intentalyzer-cli",
+            "cwd": "${workspaceFolder}",
             "program": "${workspaceFolder}/packages/intentalyzer-cli/dist/index.js",
-            "args": ["repl", "./samples/basic-configuration.ts"],
-            "runtimeArgs": [ "-r", "ts-node/register" ],
+            "args": ["repl"],
+            "runtimeArgs": [ "-r", "dotenv/config", "-r", "ts-node/register" ],
             "skipFiles": [
                 "<node_internals>/**/*.*",
                 "${workspaceFolder}/**/node_modules/**/*.*"

@@ -9,20 +9,14 @@ export interface LuisEntity extends LuisEntityBase {
     readonly type: "luis";
     readonly score?: number;
     readonly resolution?: any;
-    readonly role?: string;
 }
 
 export interface LuisCompositeEntity extends LuisEntityBase {
     readonly type: "luis.composite";
-    readonly children: CompositeEntityChildEntity[];
+    readonly children: BasicLuisEntity[];
 }
 
 export type BasicLuisEntity = LuisEntity | LuisCompositeEntity;
-
-export interface CompositeEntityChildEntity {
-    readonly type: string;
-    readonly value: string;
-}
 
 export function isLuisEntity(entity: Entity): entity is LuisEntity {
     return entity.type === "luis" && (entity as LuisEntityBase).$raw !== undefined;
