@@ -5,10 +5,7 @@
         "composite": true,
         "outDir": "lib",
         "declaration": true,
-        "declarationMap": true,
-        "lib": [
-            "esnext.array"
-        ]
+        "declarationMap": true
     },    
     "include": ["./src"],
     "references": [{ "path": "../intentalyzer" }]

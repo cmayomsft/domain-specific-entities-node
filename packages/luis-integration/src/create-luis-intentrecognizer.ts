@@ -120,6 +120,6 @@ function mapCompositeEntity(name: string, rawLuisCompositeEntity: any, entityIns
         name,
         value: entityInstanceDetails.text,
         type: "luis.composite",
-        children: mapEntities(rawLuisCompositeEntity),
+        children: mapEntities(rawLuisCompositeEntity) as LuisEntity[],
     };
 }
