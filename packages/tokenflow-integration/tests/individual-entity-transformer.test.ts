@@ -1,4 +1,4 @@
-import { Entity, RecognizedIntent } from "intentalyzer";
+import { CompositeEntity, Entity, RecognizedIntent } from "intentalyzer";
 import { FuzzyItemDefinition } from "../src/fuzzy-text-matcher";
 import { createTokenFlowEntityTransform } from "../src/individual-entity-transformer";
 import { isTokenFlowMatchedEntity } from "../src/types";
@@ -8,10 +8,16 @@ interface TestItemDefinition {
     name: string;
 }
 
-interface TestEntity extends Entity {
+interface TestBasicEntity extends Entity {
     type: "test";
     value: string;
 }
+
+interface TestCompositeEntity extends CompositeEntity<TestBasicEntity> {
+    type: "test.composite";
+}
+
+type TestEntity = TestBasicEntity | TestCompositeEntity;
 
 describe("Individual Entity Transform Tests", () => {
     describe("Factory Tests", () => {
@@ -22,7 +28,7 @@ describe("Individual Entity Transform Tests", () => {
                 wasEnumerated = true;
             }
 
-            createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+            createTokenFlowEntityTransform<any, TestBasicEntity, TestItemDefinition>(
                 (e) => e.value,
                 getFuzzyMatchItemDefinitions(),
             );
@@ -47,7 +53,7 @@ describe("Individual Entity Transform Tests", () => {
                 wasFullyEnumerated = true;
             }
 
-            createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+            createTokenFlowEntityTransform<any, TestBasicEntity, TestItemDefinition>(
                 (e) => e.value,
                 getFuzzyMatchItemDefinitions(),
             );
@@ -58,7 +64,7 @@ describe("Individual Entity Transform Tests", () => {
 
     describe("Transform Tests", () => {
         it("Transforms expected entity", async () => {
-            const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+            const transform = createTokenFlowEntityTransform<any, TestBasicEntity, TestItemDefinition>(
                 (e) => e.value,
                 [ { pattern: "foo", match: { id: 123, name: "Foo Bar" } }].values(),
             );
@@ -71,7 +77,7 @@ describe("Individual Entity Transform Tests", () => {
                 } ],
                 intent: "test-intent",
                 utterance: "Test Utterance",
-            } as RecognizedIntent<TestEntity>;
+            } as RecognizedIntent<TestBasicEntity>;
 
             const transformedIntent = await transform.apply(null, originalIntent);
 
@@ -88,7 +94,7 @@ describe("Individual Entity Transform Tests", () => {
         });
 
         it("Does not transform intent that contains entities that don't return words", async () => {
-            const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+            const transform = createTokenFlowEntityTransform<any, TestBasicEntity, TestItemDefinition>(
                 (e) => undefined,
                 [].values(),
             );
@@ -101,7 +107,7 @@ describe("Individual Entity Transform Tests", () => {
                 } ],
                 intent: "test-intent",
                 utterance: "Test Utterance",
-            } as RecognizedIntent<TestEntity>;
+            } as RecognizedIntent<TestBasicEntity>;
 
             const transformedIntent = await transform.apply(null, originalIntent);
 
@@ -109,7 +115,7 @@ describe("Individual Entity Transform Tests", () => {
         });
 
         it("Only transforms entities that produce words", async () => {
-            const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+            const transform = createTokenFlowEntityTransform<any, TestBasicEntity, TestItemDefinition>(
                 (e) => e.name === "TestEntityWithWords" ? e.value : undefined,
                 [ { pattern: "foo", match: { id: 123, name: "Foo Bar" } }].values(),
             );
@@ -127,7 +133,7 @@ describe("Individual Entity Transform Tests", () => {
                 } ],
                 intent: "test-intent",
                 utterance: "Test Utterance",
-            } as RecognizedIntent<TestEntity>;
+            } as RecognizedIntent<TestBasicEntity>;
 
             const transformedIntent = await transform.apply(null, originalIntent);
 
@@ -144,7 +150,7 @@ describe("Individual Entity Transform Tests", () => {
         });
 
         it("Doesn't do anything if no text matches found", async () => {
-            const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+            const transform = createTokenFlowEntityTransform<any, TestBasicEntity, TestItemDefinition>(
                 (e) => e.name === "TestEntityWithWords" ? e.value : undefined,
                 [].values(),
             );
@@ -162,11 +168,59 @@ describe("Individual Entity Transform Tests", () => {
                 } ],
                 intent: "test-intent",
                 utterance: "Test Utterance",
-            } as RecognizedIntent<TestEntity>;
+            } as RecognizedIntent<TestBasicEntity>;
 
             const transformedIntent = await transform.apply(null, originalIntent);
 
             expect(transformedIntent).toEqual(originalIntent);
+        });
+
+        it("Should transform children of composite entities", async () => {
+            const transform = createTokenFlowEntityTransform<any, TestEntity, TestItemDefinition>(
+                (e) => e.name === "TestEntity" ? (e as TestBasicEntity).value : undefined,
+                [ {
+                    pattern: "quux",
+                    match: {
+                        id: 13177,
+                        name: "Ultimate Quux",
+                    },
+                } ].values(),
+            );
+
+            const originalIntent = {
+                entities: [ {
+                    name: "TestEntity",
+                    type: "test",
+                    value: "foo",
+                },
+                {
+                    name: "TestEntity",
+                    type: "test",
+                    value: "bar",
+                },
+                {
+                    name: "TestCompositeEntity",
+                    children: [ {
+                        name: "TestEntity",
+                        type: "test",
+                        value: "quux",
+                    } ],
+                } ],
+                intent: "test-intent",
+                utterance: "Test Utterance",
+            } as RecognizedIntent<TestBasicEntity>;
+
+            const transformedIntent = await transform.apply(null, originalIntent);
+
+            const matchedChildEntity = (transformedIntent.entities[2] as TestCompositeEntity).children[0];
+
+            if (!isTokenFlowMatchedEntity<TestItemDefinition>(matchedChildEntity)) {
+                fail("Expected the child entity to have been matched.");
+
+                return;
+            }
+
+            expect(matchedChildEntity.matches[0].match.id).toBe(13177);
         });
     });
 });
