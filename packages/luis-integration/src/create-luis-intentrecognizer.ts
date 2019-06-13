@@ -3,7 +3,7 @@ import { PredictionGetSlotPredictionOptionalParams } from "@azure/cognitiveservi
 import * as flatMap from "array.prototype.flatmap";
 import { default as debug } from "debug";
 import { IIntentRecognizer } from "intentalyzer";
-import { BasicLuisEntity, LuisCompositeEntity, LuisEntity } from "./types";
+import { LuisBasicEntity, LuisCompositeEntity, LuisEntity } from "./types";
 
 flatMap.shim();
 
@@ -14,7 +14,7 @@ const PredictionGetSlotOptionalParams: PredictionGetSlotPredictionOptionalParams
 export function createLuisIntentRecognizer<TConversationContext>(
     luisClient: LUISRuntimeClient,
     appId: string,
-    slotName: string = "production"): IIntentRecognizer<TConversationContext, BasicLuisEntity> {
+    slotName: string = "production"): IIntentRecognizer<TConversationContext, LuisEntity> {
     debugLogger("Creating a LUIS intent recognizer for app '%s' and slot '%s'...", appId, slotName);
 
     return {
@@ -40,7 +40,7 @@ export function createLuisIntentRecognizer<TConversationContext>(
 
             debugLogger("Top scoring intent was '%s' with a score of %f.", topIntentName, topIntent.score);
 
-            let normalizedEntities: BasicLuisEntity[];
+            let normalizedEntities: LuisEntity[];
 
             if (prediction.entities) {
                 normalizedEntities = mapEntities(prediction.entities);
@@ -59,7 +59,7 @@ export function createLuisIntentRecognizer<TConversationContext>(
     };
 }
 
-function mapEntities(entities: any): BasicLuisEntity[] {
+function mapEntities(entities: any): LuisEntity[] {
     const predictionInstanceDetails = entities.$instance;
     const entityEntries = Object.entries(entities).filter(([key]) => key !== "$instance");
 
@@ -76,7 +76,7 @@ function mapEntities(entities: any): BasicLuisEntity[] {
     return results;
 }
 
-function mapEntity(name: string, value: any, entityInstanceDetails: any): BasicLuisEntity|BasicLuisEntity[] {
+function mapEntity(name: string, value: any, entityInstanceDetails: any): LuisEntity|LuisEntity[] {
     // If the value object contains the $instance property we use that as a sign it's a composite entity
     if (value.$instance) {
         return mapCompositeEntity(name, value, entityInstanceDetails);
@@ -95,7 +95,7 @@ function mapEntity(name: string, value: any, entityInstanceDetails: any): BasicL
     return mapSingleEntityValue(name, value, entityInstanceDetails);
 }
 
-function mapSingleEntityValue(name: string, value: any, entityInstanceDetails: any): LuisEntity {
+function mapSingleEntityValue(name: string, value: any, entityInstanceDetails: any): LuisBasicEntity {
     const role = entityInstanceDetails.role;
 
     return {
@@ -107,7 +107,7 @@ function mapSingleEntityValue(name: string, value: any, entityInstanceDetails: a
             startIndex: entityInstanceDetails.startIndex,
             endIndex: entityInstanceDetails.startIndex + entityInstanceDetails.length - 1,
         },
-        score: entityInstanceDetails.score,
+        // score: entityInstanceDetails.score,
     };
 }
 
@@ -119,6 +119,6 @@ function mapCompositeEntity(name: string, rawLuisCompositeEntity: any, entityIns
         name,
         value: entityInstanceDetails.text,
         type: "luis.composite",
-        children: mapEntities(rawLuisCompositeEntity) as LuisEntity[],
+        children: mapEntities(rawLuisCompositeEntity) as LuisBasicEntity[],
     };
 }
