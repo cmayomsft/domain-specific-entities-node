@@ -1,6 +1,6 @@
 import * as flatMap from "array.prototype.flatmap";
 import { default as debug } from "debug";
-import { Entity, IIntentTransform } from "intentalyzer";
+import { Entity, IIntentTransform, isCompositeEntity } from "intentalyzer";
 import { FuzzyItemDefinition, FuzzyTextMatcher } from "./fuzzy-text-matcher";
 import { TokenFlowMatchedEntity } from "./types";
 
@@ -18,65 +18,63 @@ export function createTokenFlowEntityTransform<TConversationContext, TEntity ext
 
     const entityFuzzyTextMatcher = new FuzzyTextMatcher(fuzzyItemDefinitions, /* debugMode */ false);
 
+    function* processEntities(entities: TEntity[]): IterableIterator<TEntity | TEntity & TokenFlowMatchedEntity<TFuzzyMatch>> {
+        for (const entity of entities) {
+            // If it's a composite, recurse into it
+            if (isCompositeEntity<TEntity>(entity)) {
+                yield {
+                    ...entity,
+                    children: Array.from(processEntities(entity.children)),
+                };
+
+                continue;
+            }
+
+            const selectedWords = entityWordSelector(entity as TEntity);
+
+            if (selectedWords === undefined) {
+                debugLogger("Entity with name '%s' produced no words, just returning original entity.", entity.name);
+
+                yield entity;
+
+                continue;
+            }
+
+            debugLogger("Entity with name '%s' produced words '%s' which will now be fuzzy matched...", entity.name, selectedWords);
+
+            const matches = entityFuzzyTextMatcher.matches(selectedWords);
+
+            if (matches.length === 0) {
+                debugLogger("No matches were found for entity with name '%s' and words '%s', just returning original entity.", entity.name, selectedWords);
+
+                yield entity;
+
+                continue;
+            }
+
+            debugLogger("Entity with name '%s' and words '%s' resulted in %n matches.", entity.name, selectedWords, matches.length);
+
+            const topMatch = matches[0];
+
+            debugLogger("Top match with score of %n was: %o", topMatch.score, topMatch.match);
+
+            yield {
+                ...entity,
+                matches,
+            };
+        }
+    }
+
     return {
         apply: async (_, ri) => {
             const entities = ri.entities;
 
             debugLogger("Processing RecognizedIntent with %i entities...", entities.length);
 
-            const finalMappedEntities = entities
-                .map((entity) => ({ entity, selectedWords: entityWordSelector(entity as TEntity) }))
-                .map((it) => {
-                    const selectedWords = it.selectedWords;
-                    const entity = it.entity;
-
-                    if (selectedWords === undefined) {
-                        debugLogger("Entity with name '%s' produced no words.", entity.name);
-
-                        return {
-                            entity,
-                            matches: null,
-                        };
-                    }
-
-                    debugLogger("Entity with name '%s' produced words '%s' which will now be fuzzy matched...", entity.name, selectedWords);
-
-                    const entityWithMatches = {
-                        entity,
-                        matches: entityFuzzyTextMatcher.matches(selectedWords),
-                    };
-
-                    if (debugLogger.enabled) {
-                        if (entityWithMatches.matches.length > 0) {
-                            debugLogger("Entity with name '%s' and words '%s' resulted in %n matches.", entity.name, selectedWords, entityWithMatches.matches.length);
-
-                            const topMatch = entityWithMatches.matches[0];
-
-                            debugLogger("Top match with score of %n was: %o", topMatch.score, topMatch.match);
-                        } else {
-                            debugLogger("No matches were found for entity with name '%s' and words '%s'.", entity.name, selectedWords);
-                        }
-                    }
-
-                    return entityWithMatches;
-                })
-                .map((entityWithMatches) => {
-                  const originalEntity = entityWithMatches.entity;
-
-                  if (entityWithMatches.matches === null || entityWithMatches.matches.length === 0) {
-                    return originalEntity;
-                  }
-
-                  return {
-                    ...originalEntity,
-                    matches: entityWithMatches.matches,
-                  } as TEntity & TokenFlowMatchedEntity<TFuzzyMatch>;
-                });
-
             return {
                 utterance: ri.utterance,
                 intent: ri.intent,
-                entities: finalMappedEntities,
+                entities: Array.from(processEntities(entities)),
             };
         },
     };
