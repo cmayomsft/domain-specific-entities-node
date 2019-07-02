@@ -33,17 +33,26 @@ export class FuzzyTextMatcher<TMatch> {
         const hashed = stemmed.map(this.lexicon.termModel.hashTerm);
 
         const graph = this.tokenizer.generateGraph(hashed, stemmed);
-        const path = graph.findPath([], 0);
 
-        const matches: Array<FuzzyMatchResult<TMatch>> = [];
-        for (const edge of path.values()) {
-            const token = this.tokenizer.tokenFromEdge(edge);
-            if (isFuzzyMatchToken<TMatch>(token)) {
-                matches.push({ match: token.match, score: edge.score });
+        let matches: Array<FuzzyMatchResult<TMatch>> = [];
+
+        for (const edges of graph.edgeLists) {
+            for (const edge of edges) {
+                const token = this.tokenizer.tokenFromEdge(edge);
+
+                if (isFuzzyMatchToken<TMatch>(token)) {
+                    matches.push({ match: token.match, score: edge.score });
+                }
             }
         }
 
-        return matches.sort((a, b) => b.score - a.score);
+        // Filter out duplicate matches with scores that below the threshold
+        matches = matches.filter((t) => t.score > 0);
+
+        // Sort the matches by score (highest to lowest)
+        matches = matches.sort( (a, b) => b.score - a.score);
+
+        return matches;
     }
 }
 
