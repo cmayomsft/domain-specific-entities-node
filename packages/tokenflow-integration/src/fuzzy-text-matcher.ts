@@ -14,7 +14,7 @@ export class FuzzyTextMatcher<TMatch> {
     private readonly lexicon: Lexicon;
     private readonly tokenizer: Tokenizer;
 
-    constructor(items: IterableIterator<FuzzyItemDefinition<TMatch>>, debugMode: boolean = false) {
+    constructor(items: IterableIterator<FuzzyItemDefinition<TMatch>>, public readonly minScoreThreshold: number = 0, debugMode: boolean = false) {
         this.lexicon = new Lexicon();
 
         this.tokenizer = new Tokenizer(
@@ -34,25 +34,32 @@ export class FuzzyTextMatcher<TMatch> {
 
         const graph = this.tokenizer.generateGraph(hashed, stemmed);
 
-        let matches: Array<FuzzyMatchResult<TMatch>> = [];
+        const distinctMatches = new Map<TMatch, FuzzyMatchResult<TMatch>>();
 
         for (const edges of graph.edgeLists) {
             for (const edge of edges) {
                 const token = this.tokenizer.tokenFromEdge(edge);
 
                 if (isFuzzyMatchToken<TMatch>(token)) {
-                    matches.push({ match: token.match, score: edge.score });
+                    const match = token.match;
+                    const existingMatch = distinctMatches.get(match);
+
+                    // If there isn't an existing match or this match is a higher score than the existing one, add it
+                    if (existingMatch === undefined
+                            ||
+                        edge.score > existingMatch.score) {
+                        distinctMatches.set(match, { match, score: edge.score });
+                    }
                 }
             }
         }
 
-        // Filter out duplicate matches with scores that below the threshold
-        matches = matches.filter((t) => t.score > 0);
+        // Filter matches with scores below the threshold and sort the matches by score (highest to lowest)
+        const filteredAndSortedMatches = Array.from(distinctMatches.values())
+            .filter((e) => e.score >= this.minScoreThreshold)
+            .sort((lhe, rhe) => rhe.score - lhe.score);
 
-        // Sort the matches by score (highest to lowest)
-        matches = matches.sort( (a, b) => b.score - a.score);
-
-        return matches;
+        return filteredAndSortedMatches;
     }
 }
 
