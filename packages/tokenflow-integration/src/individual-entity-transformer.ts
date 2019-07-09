@@ -12,11 +12,12 @@ export type EntityWordSelector<TEntity extends Entity> = (entity: TEntity) => st
 
 export function createTokenFlowEntityTransform<TConversationContext, TEntity extends Entity, TFuzzyMatch>(
     entityWordSelector: EntityWordSelector<TEntity>,
-    fuzzyItemDefinitions: IterableIterator<FuzzyItemDefinition<TFuzzyMatch>>): IIntentTransform<TConversationContext, TEntity, TEntity|TEntity & TokenFlowMatchedEntity<TFuzzyMatch>> {
+    fuzzyItemDefinitions: IterableIterator<FuzzyItemDefinition<TFuzzyMatch>>,
+    minScoreThreshold: number = 0): IIntentTransform<TConversationContext, TEntity, TEntity|TEntity & TokenFlowMatchedEntity<TFuzzyMatch>> {
 
     debugLogger("Creating a new token-flow entity transform...");
 
-    const entityFuzzyTextMatcher = new FuzzyTextMatcher(fuzzyItemDefinitions, /* debugMode */ false);
+    const entityFuzzyTextMatcher = new FuzzyTextMatcher(fuzzyItemDefinitions, /* minScoreThreshold */ 0, /* debugMode */ false);
 
     function* processEntities(entities: TEntity[]): IterableIterator<TEntity | TEntity & TokenFlowMatchedEntity<TFuzzyMatch>> {
         for (const entity of entities) {

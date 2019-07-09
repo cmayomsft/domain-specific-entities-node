@@ -103,4 +103,20 @@ describe("matches tests", () => {
         expect(matches[0].match.id).toBe(3);
 
     });
+
+    test("Filters results below the min threshold", () => {
+        const fuzzyTextMatcher = new FuzzyTextMatcher<TestItemDefinition>([
+            { pattern: "valueA", match: { id: 1, name: "A" }  },
+            { pattern: "valueA valueB", match: { id: 2, name: "A B" }  },
+            { pattern: "valueA valueB valueC", match: { id: 3, name: "A B C" }  },
+            { pattern: "valueD valueE valueF", match: { id: 4, name: "D E F" }  },
+            { pattern: "valueG valueH valueI", match: { id: 5, name: "G H I" }  },
+        ].values(),
+        .5);
+
+        const matches = fuzzyTextMatcher.matches("valueA");
+
+        expect(matches).not.toBeUndefined();
+        expect(matches.length).toBe(2);
+    });
 });
