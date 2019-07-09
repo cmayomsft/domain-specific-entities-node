@@ -38,13 +38,18 @@ export class FuzzyTextMatcher<TMatch> {
 
         for (const edges of graph.edgeLists) {
             for (const edge of edges) {
+                // If this edge is below the min-score threshold, just skip it
+                if (edge.score < this.minScoreThreshold) {
+                    continue;
+                }
+
                 const token = this.tokenizer.tokenFromEdge(edge);
 
                 if (isFuzzyMatchToken<TMatch>(token)) {
                     const match = token.match;
                     const existingMatch = distinctMatches.get(match);
 
-                    // If there isn't an existing match or this match is a higher score than the existing one, add it
+                    // If there isn't already an existing match or this match has a higher score than the existing one, add it
                     if (existingMatch === undefined
                             ||
                         edge.score > existingMatch.score) {
@@ -54,9 +59,8 @@ export class FuzzyTextMatcher<TMatch> {
             }
         }
 
-        // Filter matches with scores below the threshold and sort the matches by score (highest to lowest)
+        // Sort the matches by score (highest to lowest)
         const filteredAndSortedMatches = Array.from(distinctMatches.values())
-            .filter((e) => e.score >= this.minScoreThreshold)
             .sort((lhe, rhe) => rhe.score - lhe.score);
 
         return filteredAndSortedMatches;
