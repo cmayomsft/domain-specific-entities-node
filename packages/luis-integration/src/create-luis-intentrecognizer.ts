@@ -1,9 +1,9 @@
 import { LUISRuntimeClient } from "@azure/cognitiveservices-luis-runtime";
-import { PredictionGetSlotPredictionOptionalParams } from "@azure/cognitiveservices-luis-runtime/esm/models";
+import { PredictionGetSlotPredictionOptionalParams, PredictionRequest } from "@azure/cognitiveservices-luis-runtime/esm/models";
 import * as flatMap from "array.prototype.flatmap";
 import { default as debug } from "debug";
 import { IIntentRecognizer } from "intentalyzer";
-import { LuisBasicEntity, LuisCompositeEntity, LuisEntity } from "./types";
+import { isLuisEnrichedConversationContext, LuisBasicEntity, LuisCompositeEntity, LuisEntity } from "./types";
 
 flatMap.shim();
 
@@ -21,9 +21,13 @@ export function createLuisIntentRecognizer<TConversationContext>(
         recognize: async (cc, utterance) => {
             debugLogger("Recognize called for utterance: %s", utterance);
 
-            debugLogger("Calling LUIS...");
+            debugLogger("Calling LUIS to get prediction...");
 
-            const luisResult = await luisClient.prediction.getSlotPrediction(appId, slotName, { query: utterance }, PredictionGetSlotOptionalParams);
+            const luisResult = await luisClient.prediction.getSlotPrediction(
+                appId,
+                slotName,
+                createPredictionRequest(cc, utterance),
+                PredictionGetSlotOptionalParams);
 
             debugLogger("LUIS returned a result: %O", luisResult);
 
@@ -57,6 +61,28 @@ export function createLuisIntentRecognizer<TConversationContext>(
             };
         },
     };
+}
+
+function createPredictionRequest(conversationContext: any, utterance: string): PredictionRequest {
+    const predictionRequest: PredictionRequest = {
+        query: utterance,
+    };
+
+    if (isLuisEnrichedConversationContext(conversationContext)) {
+        const predictionCallContext = conversationContext.predictionCallContext;
+
+        // If there's a prediction call context, enrich the prediction request
+        if (predictionCallContext !== undefined) {
+            debugLogger("A prediction call context was present and will be used in building the prediction request: %o", predictionCallContext);
+
+            // NOTE: we explicitly read and assign the expected properties vs. splatting the whole object
+            // to avoid any potentially unintended properties being serialized and sent over the wire
+            predictionRequest.dynamicLists = predictionCallContext.dynamicLists;
+            predictionRequest.externalEntities = predictionCallContext.externalEntities;
+        }
+    }
+
+    return predictionRequest;
 }
 
 function mapEntities(entities: any): LuisEntity[] {
