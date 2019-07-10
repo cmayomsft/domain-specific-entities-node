@@ -1,6 +1,9 @@
 import { Entity, IIntentResolver, IIntentTransform } from ".";
+import { RecognizedIntent } from "./core-types";
 
-export function createIntentResolverTransform<TConversationContext, TEntity extends Entity, TTransformedEntity extends Entity>(intentResolver: IIntentResolver<TConversationContext, TTransformedEntity>): IIntentTransform<TConversationContext, TEntity, TEntity | TTransformedEntity> {
+export type RecognizedIntentAggregator = <TEntity extends Entity, TTransformedEntity extends Entity>(originalRecognizedIntent: RecognizedIntent<TEntity>, newlyRecognizedIntent: RecognizedIntent<TTransformedEntity>) => RecognizedIntent<TTransformedEntity>;
+
+export function createIntentResolverTransform<TConversationContext, TEntity extends Entity, TTransformedEntity extends Entity>(intentResolver: IIntentResolver<TConversationContext, TTransformedEntity>, intentAggregator?: RecognizedIntentAggregator): IIntentTransform<TConversationContext, TEntity, TEntity | TTransformedEntity> {
     return {
         apply: async (c, ri) => {
             const newlyRecognizedIntent = await intentResolver.processUtterance(c, ri.utterance);
@@ -10,7 +13,12 @@ export function createIntentResolverTransform<TConversationContext, TEntity exte
                 return ri;
             }
 
-            return newlyRecognizedIntent;
+            // If no aggregator was supplied, just return the newly recognized intent
+            if (intentAggregator === undefined) {
+                return newlyRecognizedIntent;
+            }
+
+            return intentAggregator(ri, newlyRecognizedIntent);
         },
     };
 }
