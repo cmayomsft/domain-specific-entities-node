@@ -1,5 +1,5 @@
 import { default as debug } from "debug";
-import { IIntentTransform } from "./core-types";
+import { IIntentTransform, RecognizedIntent } from "./core-types";
 import { Entity } from "./entities";
 
 const utilityDebugLogger = debug("intentalyzer:utilities");
@@ -38,6 +38,33 @@ export function transformSpecificIntent<TConversationContext, TEntity extends En
 
             // transform and return the recognized intent
             return await transform.apply(c, ri);
+        },
+    };
+}
+
+/**
+ * A predicate that, given the context and recognized intent, should return true if the specified transform should be executed.
+ */
+export type TransformIfPredicate<TConversationContext, TEntity extends Entity> = (c: TConversationContext, ri: RecognizedIntent<TEntity>) => boolean;
+
+/**
+ * Conditionally evaluates the specified transformed based on the results of the supplied predicate.
+ *
+ * If the predicate returns true the transform will be applied, otherwise it will be skipped and
+ * the original recognized intent will be returned.
+ */
+export function transformIf<TConversationContext, TEntity extends Entity, TTransformedEntity extends Entity>(intentTransform: IIntentTransform<TConversationContext, TEntity, TTransformedEntity>, predicate: TransformIfPredicate<TConversationContext, TEntity>): IIntentTransform<TConversationContext, TEntity, TEntity | TTransformedEntity> {
+    return {
+        apply: async (c, ri) => {
+            if (!predicate(c, ri)) {
+                utilityDebugLogger("transformIf predicate returned false, just returning original intent.");
+
+                return ri;
+            }
+
+            utilityDebugLogger("transformIf predicate returned true, applying the supplied transform...");
+
+            return intentTransform.apply(c, ri);
         },
     };
 }
