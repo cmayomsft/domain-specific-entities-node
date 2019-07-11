@@ -2,7 +2,7 @@ import { DynamicList, ExternalEntity } from "@azure/cognitiveservices-luis-runti
 import { CompositeEntity, Entity, isCompositeEntity } from "intentalyzer";
 
 export interface LuisEnrichedConversationContext {
-    readonly predictionCallContext?: LuisPredictionCallContext;
+    predictionCallContext?: LuisPredictionCallContext;
 }
 
 export function isLuisEnrichedConversationContext(conversationContext: any): conversationContext is LuisEnrichedConversationContext {
