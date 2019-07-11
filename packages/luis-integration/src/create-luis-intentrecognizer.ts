@@ -146,5 +146,9 @@ function mapCompositeEntity(name: string, rawLuisCompositeEntity: any, entityIns
         value: entityInstanceDetails.text,
         type: "luis.composite",
         children: mapEntities(rawLuisCompositeEntity) as LuisBasicEntity[],
+        utteranceOffsets: {
+            startIndex: entityInstanceDetails.startIndex,
+            endIndex: entityInstanceDetails.startIndex + entityInstanceDetails.length - 1,
+        },
     };
 }
