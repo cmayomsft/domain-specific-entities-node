@@ -1,6 +1,6 @@
 {
   "name": "intentalyzer-luis-integration",
-  "version": "0.3.0-beta",
+  "version": "0.4.0-beta",
   "author": "Drew Marsh (@drub0y)",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -35,7 +35,7 @@
   "dependencies": {
     "@azure/cognitiveservices-luis-runtime": "^3.0.0",
     "array.prototype.flatmap": "^1.2.1",
-    "intentalyzer": "^0.2.0-beta"
+    "intentalyzer": "^0.3.0-beta"
   },
   "devDependencies": {
     "@types/array.prototype.flatmap": "^1.2.0",
