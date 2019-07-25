@@ -132,6 +132,7 @@ function mapSingleEntityValue(name: string, value: any, entityInstanceDetails: a
         utteranceOffsets: {
             startIndex: entityInstanceDetails.startIndex,
             endIndex: entityInstanceDetails.startIndex + entityInstanceDetails.length - 1,
+            length: entityInstanceDetails.length,
         },
         // score: entityInstanceDetails.score,
     };
@@ -149,6 +150,7 @@ function mapCompositeEntity(name: string, rawLuisCompositeEntity: any, entityIns
         utteranceOffsets: {
             startIndex: entityInstanceDetails.startIndex,
             endIndex: entityInstanceDetails.startIndex + entityInstanceDetails.length - 1,
+            length: entityInstanceDetails.length,
         },
     };
 }

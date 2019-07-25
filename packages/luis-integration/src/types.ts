@@ -17,6 +17,11 @@ export interface LuisPredictionCallContext {
 interface LuisEntityBase extends Entity {
     readonly $raw: any;
     readonly value: any;
+    readonly utteranceOffsets: {
+        startIndex: number;
+        endIndex: number;
+        length: number;
+    };
 }
 
 export interface LuisBasicEntity extends LuisEntityBase {
