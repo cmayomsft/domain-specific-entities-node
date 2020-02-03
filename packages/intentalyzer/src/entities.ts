@@ -4,6 +4,7 @@ export interface Entity {
     readonly utteranceOffsets?: {
         startIndex: number;
         endIndex: number;
+        length?: number;
     };
 }
 
